@@ -1,8 +1,21 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { useContext } from "react";
+import { Navbar } from "./components/navbar";
+import { navCtx } from "./context/navContext";
+import { Videos } from "./components/videos";
+import { Music } from "./components/music"
+import { YT } from "./components/yt"
+import { Add } from "./components/add"
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <h1>Test</h1>
-  </StrictMode>,
-)
+export function Main() {
+    const { current } = useContext(navCtx);
+
+    return (
+        <>
+            <Navbar />
+            {current === "Videos" && <Videos />}
+            {current === "Music" && <Music />}
+            {current === "YT" && <YT />}
+            {current === "Add" && <Add />}
+        </>
+    );
+};
