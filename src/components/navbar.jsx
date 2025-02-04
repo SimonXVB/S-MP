@@ -8,7 +8,7 @@ export function Navbar() {
 
     return (
         <nav className="flex flex-col max-w-[250px] w-full h-screen bg-linear-to-b from-gray-800 to-gray-700">
-            <div className="flex flex-col items-center max-h-full h-full overflow-y-scroll">
+            <div className="flex flex-col items-center max-h-full h-full overflow-y-auto">
                 <div className="bg-gray-900 w-full flex justify-center py-3">
                     <img src={pfp} className="max-w-[75px]"/>
                 </div>
