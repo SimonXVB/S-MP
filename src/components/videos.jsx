@@ -1,13 +1,33 @@
 import { useEffect, useState } from "react";
 import pfp from "../assets/smallerPFP.jpg"
+import { DelModal } from "./modals/delModal";
+import { RenameModal } from "./modals/renameModal";
 
 export function Videos() {
     const [videos, setVideos] = useState([]);
+    const [delModal, setDelModal] = useState([false, ""]);
+    const [renameModal, setRenameModal] = useState([false, ""]);
+    const [renameInput, setRenameInput] = useState("");
 
     async function getVideos() {
         const files = await window.FS.readVideoDir();
         setVideos(files);
     };
+
+    function delVideo(path) {
+        window.FS.delVideoFile(path);
+        setDelModal([false, ""]);
+        getVideos();
+    };
+
+    function renameVideo(oldName, newName) {
+        window.FS.renameVideoFile(oldName, newName);
+        setRenameModal([false, ""]);
+        setRenameInput("");
+        getVideos();
+    };
+
+    console.log(renameInput);
 
     useEffect(() => {
         getVideos();
@@ -26,14 +46,15 @@ export function Videos() {
                             </div>
                             <div className="w-full flex justify-center items-center">
                                 <button className="cursor-pointer w-[50%] p-2 bg-gray-900">Play</button>
-                                <button className="cursor-pointer w-[50%] p-2 bg-gray-900 flex justify-center items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff"><path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/></svg>
-                                </button>
+                                <button className="cursor-pointer w-[50%] p-2 bg-gray-900" onClick={() => setDelModal([true, video])}>Delete</button>
+                                <button className="cursor-pointer w-[50%] p-2 bg-gray-900 flex justify-center items-center" onClick={() => setRenameModal([true, video])}>Rename</button>
                             </div>
                         </div>
                     ))}
                 </div>
             </div>
+            {delModal[0] && <DelModal name={delModal[1]} setModal={() => setDelModal([false, ""])} del={() => delVideo(delModal[1])}/>}
+            {renameModal[0] && <RenameModal name={delModal[1]} setModal={() => setRenameModal([false, ""])} rename={() => renameVideo(renameModal[1], renameInput)} onChange={(e) => setRenameInput(e.target.value)}/>}
         </div>
     );
 };

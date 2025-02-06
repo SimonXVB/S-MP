@@ -36,10 +36,11 @@ app.on('window-all-closed', () => {
 
 async function handleVideoFile() {
   const { canceled, filePaths } = await dialog.showOpenDialog()
-  const fileName = path.basename(filePaths[0]);
   const formats = [".mp4", "webm", ".ogg"];
 
   if (!canceled) {
+    const fileName = path.basename(filePaths[0]);
+
     if(formats.includes(path.extname(fileName))) {
       fs.copyFile(filePaths[0], "./devTemp/videos/" + fileName, (err) => {
         if(err) {
@@ -55,10 +56,11 @@ ipcMain.handle("copyVideoFile", handleVideoFile);
 
 async function handleAudioFile() {
   const { canceled, filePaths } = await dialog.showOpenDialog();
-  const fileName = path.basename(filePaths[0]);
   const formats = [".mp3", "wav", ".ogg"];
 
   if (!canceled) {
+    const fileName = path.basename(filePaths[0]);
+
     if(formats.includes(path.extname(fileName))) {
       fs.copyFile(filePaths[0], "./devTemp/music/" + fileName, (err) => {
         if(err) {
@@ -72,14 +74,34 @@ async function handleAudioFile() {
 };
 ipcMain.handle("copyAudioFile", handleAudioFile);
 
-async function handleReadVideo() {
+function handleReadVideo() {
   const data = fs.readdirSync("./devTemp/videos");
   return data;
 };
 ipcMain.handle("readVideoDir", handleReadVideo);
 
-async function handleReadAudio() {
+function handleReadAudio() {
   const data = fs.readdirSync("./devTemp/music");
   return data;
 };
 ipcMain.handle("readAudioDir", handleReadAudio);
+
+function handleDelVideo(event, path) {
+  fs.unlinkSync("./devTemp/videos/" + path);
+};
+ipcMain.handle("delVideoFile", handleDelVideo);
+
+function handleDelAudio(event, path) {
+  fs.unlinkSync("./devTemp/music/" + path);
+};
+ipcMain.handle("delAudioFile", handleDelAudio);
+
+function handleRenameVideo(event, [oldName, newName]) {
+  fs.renameSync("./devTemp/videos/" + oldName, "./devTemp/videos/" + newName + path.extname(oldName));
+};
+ipcMain.handle("renameVideoFile", handleRenameVideo);
+
+function handleRenameAudio(event, [oldName, newName]) {
+  fs.renameSync("./devTemp/music/" + oldName, "./devTemp/music/" + newName + path.extname(oldName));
+};
+ipcMain.handle("renameAudioFile", handleRenameAudio);
