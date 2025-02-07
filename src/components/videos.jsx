@@ -14,20 +14,18 @@ export function Videos() {
         setVideos(files);
     };
 
-    function delVideo(path) {
-        window.FS.delVideoFile(path);
+    async function delVideo(path) {
+        await window.FS.delVideoFile(path);
         setDelModal([false, ""]);
         getVideos();
     };
 
-    function renameVideo(oldName, newName) {
-        window.FS.renameVideoFile(oldName, newName);
+    async function renameVideo(oldName, newName) {
+        await window.FS.renameVideoFile(oldName, newName);
         setRenameModal([false, ""]);
         setRenameInput("");
         getVideos();
     };
-
-    console.log(renameInput);
 
     useEffect(() => {
         getVideos();
