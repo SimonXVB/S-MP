@@ -4,7 +4,7 @@ const fs = require('fs');
 
 async function handleVideoFile() {
   const { canceled, filePaths } = await dialog.showOpenDialog()
-  const formats = [".mp4", "webm", ".ogg"];
+  const formats = [".mp4", ".webm", ".ogg"];
 
   if (!canceled) {
     const fileName = path.basename(filePaths[0]);
@@ -23,7 +23,7 @@ async function handleVideoFile() {
 
 async function handleAudioFile() {
   const { canceled, filePaths } = await dialog.showOpenDialog();
-  const formats = [".mp3", "wav", ".ogg"];
+  const formats = [".mp3", ".wav", ".ogg"];
 
   if (!canceled) {
     const fileName = path.basename(filePaths[0]);
