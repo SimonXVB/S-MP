@@ -1,13 +1,12 @@
 import { useContext } from "react";
 import { navCtx } from "../context/navContext";
 import pfp from "../assets/smallerPFP.jpg";
-import yt from "../assets/youtube.png";
 
 export function Navbar() {
     const { setCurrent, current } = useContext(navCtx);
 
     return (
-        <nav className="flex flex-col max-w-[250px] w-full h-screen">
+        <nav className="flex flex-col min-w-[250px] h-screen">
             <div className="w-full min-h-[100px] flex justify-center items-center bg-gray-900 border-r-4 border-red-400">
                 <img src={pfp} className="max-w-[75px] aspect-square"/>
             </div>
@@ -22,10 +21,7 @@ export function Navbar() {
                 </button>
             </div>
             <div className="flex items-center w-full min-h-[75px] bg-gray-900">
-                <button className={`text-3xl px-3 py-3 h-full max-w-[50%] w-full font-bold flex justify-center items-center cursor-pointer ${current === "YT" && "bg-red-400"}`} onClick={() => setCurrent("YT")}>
-                    <img src={yt} className="max-h-[40px]"/>
-                </button>
-                <button className={`text-3xl px-3 py-3 h-full max-w-[50%] w-full font-bold flex justify-center items-center cursor-pointer ${current === "Add" && "bg-red-400"}`} onClick={() => setCurrent("Add")}>
+                <button className={`text-3xl px-3 py-3 h-full w-full font-bold flex justify-center items-center cursor-pointer ${current === "Add" && "bg-red-400"} hover:bg-red-400`} onClick={() => setCurrent("Add")}>
                     <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#ffffff"><path d="M427.67-427.67H172v-104.66h255.67v-256.34h104.66v256.34h256.34v104.66H532.33V-172H427.67v-255.67Z"/></svg>
                 </button>
             </div>
