@@ -14,6 +14,7 @@ export function VideoPlayer({ src }) {
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [duration, setDuration] = useState(0);
     const [current, setCurrent] = useState(0);
+    const [isMuted, setIsMuted] = useState(false);
  
     function play() {
         if(videoRef.current.paused) {
@@ -63,6 +64,18 @@ export function VideoPlayer({ src }) {
 
     function changeAudio() {
         videoRef.current.volume = audioRef.current.value;
+        videoRef.current.muted = false;
+        setIsMuted(false);
+    };
+
+    function mute() {
+        if(isMuted) {
+            videoRef.current.muted = false;
+            setIsMuted(false);
+        } else {
+            videoRef.current.muted = true;
+            setIsMuted(true);
+        };
     };
 
     function displayControls() {
@@ -96,7 +109,7 @@ export function VideoPlayer({ src }) {
                                 <div>/{Math.floor(duration / 60) + ":" + ("0" + Math.floor(duration % 60)).slice(-2)}</div>
                             </div>
                             <div className="flex items-center justify-center">
-                                <img className="h-[24px]" src="../src/assets/playerAssets/volume.png"/>
+                                <PlayerButton text={isMuted ? <img className="h-[24px]" src="../src/assets/playerAssets/muted.png"/> : <img className="h-[24px]" src="../src/assets/playerAssets/volume.png"/>} onclick={mute}/>
                                 <input type="range" ref={audioRef} step={0.01} min={0} max={1} onChange={changeAudio} id="audioSlider"/>
                             </div>
                         </div>
