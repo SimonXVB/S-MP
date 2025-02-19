@@ -15,6 +15,7 @@ export function VideoPlayer({ src }) {
     const [duration, setDuration] = useState(0);
     const [current, setCurrent] = useState(0);
     const [isMuted, setIsMuted] = useState(false);
+    const [source, setSource] = useState(src[0]);
  
     function play() {
         if(videoRef.current.paused) {
@@ -40,16 +41,6 @@ export function VideoPlayer({ src }) {
             fullscreenRef.current.requestFullscreen();
             setIsFullscreen(true);
         };
-    };
-
-    function plusFive() {
-        videoRef.current.currentTime = videoRef.current.currentTime + 5;
-        updateTime();
-    };
-
-    function minusFive() {
-        videoRef.current.currentTime = videoRef.current.currentTime - 5;
-        updateTime();
     };
 
     function updateTime() {
@@ -88,32 +79,59 @@ export function VideoPlayer({ src }) {
         }, 3000);
     };
 
+    function next() {
+        clearInterval(intervalRef.current);
+        setPlaying(false);
+
+        if((src[1].indexOf(source) + 1) < src[1].length) {
+            setSource(src[1][src[1].indexOf(source) + 1]);
+            clearInterval(intervalRef.current);
+            seekerRef.current.value = 0;
+            setCurrent(0);
+        };
+    };
+
+    function prev() {
+        if((src[1].indexOf(source) - 1) >= 0) {
+            setSource(src[1][src[1].indexOf(source) - 1]);
+            clearInterval(intervalRef.current);
+            seekerRef.current.value = 0;
+            setCurrent(0);
+        };
+    };
+
     useEffect(() => {
         seekerRef.current.value = 0;
-        return () => clearInterval(intervalRef.current);
+        return () =>  {
+            clearInterval(intervalRef.current);
+            clearTimeout(timeoutRef.current);
+        };
     }, []);
     
     return (
         <section className="h-screen w-full flex flex-col items-center justify-center p-8">
             <div className="max-h-[90%] relative flex flex-col items-center justify-center" ref={fullscreenRef} onMouseMove={displayControls}>
-                <video ref={videoRef} onEnded={() => {clearInterval(intervalRef.current); setPlaying(false)}} onClick={play} src={src} className="max-h-full"/>
-                <div className="flex flex-col w-full absolute bottom-0" ref={controlsRef}>
-                    <input type="range" ref={seekerRef} step={1} min={0} max={100} onChange={seek} id="videoSlider"/>
-                    <div className="flex justify-between">
-                        <div className="flex w-full bg-gray-900">
-                            <PlayerButton text={"-5"} onclick={minusFive}/>
-                            <PlayerButton text={playing ? <img className="h-[24px]" src="../src/assets/playerAssets/pause.png"/> : <img className="h-[24px]" src="../src/assets/playerAssets/play.png"/>} onclick={play}/>
-                            <PlayerButton text={"+5"} onclick={plusFive}/>
-                            <div className="flex items-center justify-center text-white py-1 max-w-24 w-full bg-gray-900 font-bold">
-                                <div>{Math.floor(current / 60) + ":" + ("0" + Math.floor(current % 60)).slice(-2)}</div>
-                                <div>/{Math.floor(duration / 60) + ":" + ("0" + Math.floor(duration % 60)).slice(-2)}</div>
+                <video ref={videoRef} onEnded={() => {clearInterval(intervalRef.current); setPlaying(false);}} onClick={play} src={".././devTemp/videos/" + source} className="max-h-full"/>
+                <div ref={controlsRef} className="w-full">
+                    <div className="w-full absolute top-0 text-white text-2xl font-bold m-2">{source}</div>
+                    <div className="flex flex-col w-full absolute bottom-0">
+                        <input type="range" ref={seekerRef} step={1} min={0} max={100} onChange={seek} id="videoSlider"/>
+                        <div className="flex justify-between">
+                            <div className="flex w-full bg-gray-900">
+                                <PlayerButton text={<img className="h-[24px]" src="../src/assets/playerAssets/prev.png"/>} onclick={prev}/>
+                                <PlayerButton text={playing ? <img className="h-[24px]" src="../src/assets/playerAssets/pause.png"/> : <img className="h-[24px]" src="../src/assets/playerAssets/play.png"/>} onclick={play}/>
+                                <PlayerButton text={<img className="h-[24px]" src="../src/assets/playerAssets/next.png"/>} onclick={next}/>
+                                <div className="flex items-center justify-center text-white py-1 max-w-24 w-full bg-gray-900 font-bold">
+                                    <div>{Math.floor(current / 60) + ":" + ("0" + Math.floor(current % 60)).slice(-2)}</div>
+                                    <div>/{Math.floor(duration / 60) + ":" + ("0" + Math.floor(duration % 60)).slice(-2)}</div>
+                                </div>
+                                <div className="flex items-center justify-center">
+                                    <PlayerButton text={isMuted ? <img className="h-[24px]" src="../src/assets/playerAssets/muted.png"/> : <img className="h-[24px]" src="../src/assets/playerAssets/volume.png"/>} onclick={mute}/>
+                                    <input type="range" ref={audioRef} step={0.01} min={0} max={1} onChange={changeAudio} id="audioSlider"/>
+                                </div>
                             </div>
-                            <div className="flex items-center justify-center">
-                                <PlayerButton text={isMuted ? <img className="h-[24px]" src="../src/assets/playerAssets/muted.png"/> : <img className="h-[24px]" src="../src/assets/playerAssets/volume.png"/>} onclick={mute}/>
-                                <input type="range" ref={audioRef} step={0.01} min={0} max={1} onChange={changeAudio} id="audioSlider"/>
-                            </div>
+                            <PlayerButton text={<img className="h-[24px]" src="../src/assets/playerAssets/fullscreen.png"/>} onclick={toggleFullscreen}/>
                         </div>
-                        <PlayerButton text={<img className="h-[24px]" src="../src/assets/playerAssets/fullscreen.png"/>} onclick={toggleFullscreen}/>
                     </div>
                 </div>
             </div>

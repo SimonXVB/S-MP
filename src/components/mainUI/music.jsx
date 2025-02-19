@@ -38,7 +38,7 @@ export function Music() {
 
     function playAudio(src) {
         setCurrent("playingAudio");
-        setAudioSrc(".././devTemp/music/" + src);
+        setAudioSrc([src, audio]);
     };
 
     function search(input) {
@@ -63,7 +63,6 @@ export function Music() {
                 <Header 
                     name={"Audio"} 
                     onChange={(e) => {setSearchInput(e.target.value); search(e.target.value)}}
-                    refresh={getAudio}
                 />
                 <div className="w-full text-white p-8">
                     {audio.length === 0 && <NoMedia />}

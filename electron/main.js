@@ -16,7 +16,6 @@ const createWindow = () => {
       webviewTag: true
     }
   });
-
   win.loadFile('./dist/index.html');
 };
 

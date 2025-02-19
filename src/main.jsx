@@ -11,13 +11,13 @@ export function Main() {
     const { current, vidSrc, audioSrc } = useContext(navCtx);
 
     return (
-        <>
+        <div className="flex">
             <Navbar />
             {current === "Videos" && <Videos />}
             {current === "Music" && <Music />}
             {current === "Add" && <Add />}
             {current === "playingVideo" && <VideoPlayer src={vidSrc} />}
             {current === "playingAudio" && <AudioPlayer src={audioSrc} />}
-        </>
+        </div>
     );
 };

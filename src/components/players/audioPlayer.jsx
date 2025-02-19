@@ -12,6 +12,7 @@ export function AudioPlayer({ src }) {
     const [duration, setDuration] = useState(0);
     const [current, setCurrent] = useState(0);
     const [isMuted, setIsMuted] = useState(false);
+    const [source, setSource] = useState(src[0]);
  
     function play() {
         if(audioRef.current.paused) {
@@ -26,16 +27,6 @@ export function AudioPlayer({ src }) {
             setPlaying(false);
             clearInterval(intervalRef.current);
         };
-    };
-
-    function plusFive() {
-        audioRef.current.currentTime = audioRef.current.currentTime + 5;
-        updateTime();
-    };
-
-    function minusFive() {
-        audioRef.current.currentTime = audioRef.current.currentTime - 5;
-        updateTime();
     };
 
     function updateTime() {
@@ -64,6 +55,27 @@ export function AudioPlayer({ src }) {
         };
     };
 
+    function next() {
+        clearInterval(intervalRef.current);
+        setPlaying(false);
+
+        if((src[1].indexOf(source) + 1) < src[1].length) {
+            setSource(src[1][src[1].indexOf(source) + 1]);
+            clearInterval(intervalRef.current);
+            seekerRef.current.value = 0;
+            setCurrent(0);
+        };
+    };
+
+    function prev() {
+        if((src[1].indexOf(source) - 1) >= 0) {
+            setSource(src[1][src[1].indexOf(source) - 1]);
+            clearInterval(intervalRef.current);
+            seekerRef.current.value = 0;
+            setCurrent(0);
+        };
+    };
+
     useEffect(() => {
         seekerRef.current.value = 0;
         return () => clearInterval(intervalRef.current);
@@ -72,13 +84,14 @@ export function AudioPlayer({ src }) {
     return (
         <section className="h-screen w-full flex flex-col items-center justify-center p-8">
             <div className="max-h-[90%] relative flex flex-col items-center justify-center max-w-[80%] w-full">
-                <audio ref={audioRef} onEnded={() => {clearInterval(intervalRef.current); setPlaying(false)}} onClick={play} src={src} className="max-h-full"/>
-                <div className="flex flex-col w-full absolute bottom-0" ref={controlsRef}>
+                <audio ref={audioRef} onEnded={() => {clearInterval(intervalRef.current); setPlaying(false)}} onClick={play} src={".././devTemp/music/" + source} className="max-h-full"/>
+                <div className="flex flex-col w-full absolute bottom-0 border-4 border-red-400" ref={controlsRef}>
+                    <div className="text-white text-2xl font-bold p-2 bg-gray-900">{source}</div>
                     <input type="range" ref={seekerRef} step={1} min={0} max={100} onChange={seek} id="videoSlider"/>
                     <div className="flex w-full bg-gray-900">
-                        <PlayerButton text={"-5"} onclick={minusFive}/>
+                        <PlayerButton text={<img className="h-[24px]" src="../src/assets/playerAssets/prev.png"/>} onclick={prev}/>
                         <PlayerButton text={playing ? <img className="h-[24px]" src="../src/assets/playerAssets/pause.png"/> : <img className="h-[24px]" src="../src/assets/playerAssets/play.png"/>} onclick={play}/>
-                        <PlayerButton text={"+5"} onclick={plusFive}/>
+                        <PlayerButton text={<img className="h-[24px]" src="../src/assets/playerAssets/next.png"/>} onclick={next}/>
                         <div className="flex items-center justify-center text-white py-1 max-w-24 w-full bg-gray-900 font-bold">
                             <div>{Math.floor(current / 60) + ":" + ("0" + Math.floor(current % 60)).slice(-2)}</div>
                             <div>/{Math.floor(duration / 60) + ":" + ("0" + Math.floor(duration % 60)).slice(-2)}</div>
