@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { navCtx } from "../context/navContext";
+import { navCtx } from "../../context/navContext";
 
 export function Navbar() {
     const { setCurrent, current } = useContext(navCtx);

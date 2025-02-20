@@ -8,7 +8,7 @@ function handleRenameVideo(event, [oldName, newName]) {
 };
 
 function handleRenameAudio(event, [oldName, newName]) {
-  fs.rename("./devTemp/music/" + oldName, "./devTemp/music/" + newName + path.extname(oldName), (err) => {
+  fs.rename("./devTemp/audio/" + oldName, "./devTemp/audio/" + newName + path.extname(oldName), (err) => {
     if (err) console.log(err);
   });
 };

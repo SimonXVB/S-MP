@@ -5,51 +5,54 @@ import { RenameModal } from "../modals/renameModal";
 import { Entry } from "../individuals/entry";
 import { NoMedia } from "../individuals/noMedia";
 import { Header } from "../individuals/header";
-import { useFetchVideos } from "../../hooks/videoHooks/useFetchVideos";
-import { useDelVideos } from "../../hooks/videoHooks/useDelVideos";
-import { useRenameVideo } from "../../hooks/videoHooks/useRenameVideo";
-import { useSearchVideos } from "../../hooks/videoHooks/useSearchVideos";
-import { useSelectVideos } from "../../hooks/videoHooks/useSelectVideos";
+import { useFetch } from "../../hooks/libraryHooks/useFetch";
+import { useDelete } from "../../hooks/libraryHooks/useDelete";
+import { useRename } from "../../hooks/libraryHooks/useRename";
+import { useSearch } from "../../hooks/libraryHooks/useSearch";
+import { useSelect } from "../../hooks/libraryHooks/useSelect";
 
 export function Videos() {
     const { setCurrent, setVidSrc } = useContext(navCtx);
 
-    const { fetchVideos, videos } = useFetchVideos();
-    const { delVideos, setDelModal, delModal, setDelMultipleModal, delMultipleModal } = useDelVideos();
-    const { renameVideo, setRenameModal, renameModal, setRenameInput, renameInput } = useRenameVideo();
-    const { search, setSearchInput, searchInput, filtered } = useSearchVideos();
-    const { isChecked, toggleSelect, setIsSelect, isSelect, setSelectedEntries, selectedEntries } = useSelectVideos();
+    const { fetchMedia, media } = useFetch();
+    const { deleteMedia, setDelModal, delModal, setDelMultipleModal, delMultipleModal } = useDelete();
+    const { renameMedia, setRenameModal, renameModal, setRenameInput, renameInput } = useRename();
+    const { searchMedia, setSearchInput, searchInput, filtered } = useSearch();
+    const { isChecked, toggleSelect, setIsSelect, isSelect, setSelectedEntries, selectedEntries } = useSelect();
 
     function playVid(src) {
         setCurrent("playingVideo");
-        setVidSrc([src, videos]);
+        setVidSrc([src, media]);
     };
 
     function searchVideos(e) {
         setIsSelect(false);
         setSearchInput(e.target.value);
-        search(e.target.value, videos);
+        searchMedia(e.target.value, media);
     };
 
-    async function editVideo(oldName, newName) {
-        await renameVideo(oldName, newName);
-        fetchVideos();
+    async function renameVideo(oldName, newName) {
+        await renameMedia(oldName, newName, "video");
+        await fetchMedia("video");
     };
 
     async function deleteVideos(array) {
-        await delVideos(array);
+        await deleteMedia(array, "video");
         setIsSelect(false);
         setSelectedEntries([]);
         setDelMultipleModal(false);
-        fetchVideos();
+        await fetchMedia("video");
     };
 
     function isFiltered() {
-        return searchInput !== "" ? filtered : videos;
+        return searchInput !== "" ? filtered : media;
     };
 
     useEffect(() => {
-        fetchVideos();
+        async function fetch() {
+            await fetchMedia("video");  
+        };
+        fetch();
     }, []);
 
     return (
@@ -63,14 +66,14 @@ export function Videos() {
                     delMultipleModal={() => setDelMultipleModal([true, selectedEntries])}
                 />
                 <div className="w-full text-white p-8">
-                    {videos.length === 0 && <NoMedia />}
-                    {isFiltered(videos).map((video) => (
+                    {media.length === 0 && <NoMedia />}
+                    {isFiltered(media).map((file) => (
                         <Entry
-                            media={video}
-                            play={() => playVid(video)}
-                            renameModal={() => setRenameModal([true, video])}
-                            deleteModal={() => setDelModal([true, video])}
-                            check={(e) => isChecked(e, video)}
+                            media={file}
+                            play={() => playVid(file)}
+                            renameModal={() => setRenameModal([true, file])}
+                            deleteModal={() => setDelModal([true, file])}
+                            check={(e) => isChecked(e, file)}
                             isSelect={isSelect}
                         />
                     ))}
@@ -78,7 +81,7 @@ export function Videos() {
             </section>
             {delModal[0] && <DelModal name={delModal[1]} setModal={() => setDelModal([false, ""])} del={() => deleteVideos([delModal[1]])}/>}
             {delMultipleModal && <DelModal name={`${selectedEntries.length} videos`} setModal={() => setDelMultipleModal(false)} del={() => deleteVideos(selectedEntries)}/>}
-            {renameModal[0] && <RenameModal name={renameModal[1]} setModal={() => setRenameModal([false, ""])} rename={() => editVideo(renameModal[1], renameInput)} onChange={(e) => setRenameInput(e.target.value)}/>}
+            {renameModal[0] && <RenameModal name={renameModal[1]} setModal={() => setRenameModal([false, ""])} rename={() => renameVideo(renameModal[1], renameInput)} onChange={(e) => setRenameInput(e.target.value)}/>}
         </>
     );
 };

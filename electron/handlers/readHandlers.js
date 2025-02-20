@@ -7,7 +7,7 @@ function handleReadVideo() {
 };
 
 function handleReadAudio() {
-  const data = fs.readdirSync("./devTemp/music");
+  const data = fs.readdirSync("./devTemp/audio");
   return data;
 };
 

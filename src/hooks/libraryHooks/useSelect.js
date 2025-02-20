@@ -1,14 +1,14 @@
 import { useState } from "react";
 
-export function useSelectVideos() {
+export function useSelect() {
     const [isSelect, setIsSelect] = useState(false);
     const [selectedEntries, setSelectedEntries] = useState([]);
 
-    function isChecked(event, video) {
+    function isChecked(event, media) {
         if(!event.target.checked) {
-            setSelectedEntries(selectedEntries.filter((e) => e !== video));
+            setSelectedEntries(selectedEntries.filter((e) => e !== media));
         } else {
-            setSelectedEntries([...selectedEntries, video]);
+            setSelectedEntries([...selectedEntries, media]);
         };
     };
 

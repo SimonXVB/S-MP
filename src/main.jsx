@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Navbar } from "./components/navbar";
+import { Navbar } from "./components/mainUI/navbar"
 import { navCtx } from "./context/navContext";
 import { Videos } from "./components/mainUI/videos";
 import { Music } from "./components/mainUI/music";

@@ -112,21 +112,21 @@ export function VideoPlayer({ src }) {
         <section className="h-screen w-full flex flex-col items-center justify-center p-8">
             <div className="max-h-[90%] relative flex flex-col items-center justify-center" ref={fullscreenRef} onMouseMove={displayControls}>
                 <video ref={videoRef} onEnded={() => {clearInterval(intervalRef.current); setPlaying(false);}} onClick={play} src={".././devTemp/videos/" + source} className="max-h-full"/>
-                <div ref={controlsRef} className="w-full">
-                    <div className="w-full absolute top-0 text-white text-2xl font-bold m-2">{source}</div>
+                <div ref={controlsRef} className="w-full overflow-auto">
+                    <div className="w-full absolute top-0 text-white text-2xl font-bold m-2 max-w-[95%] overflow-x-auto whitespace-nowrap">{source}</div>
                     <div className="flex flex-col w-full absolute bottom-0">
                         <input type="range" ref={seekerRef} step={1} min={0} max={100} onChange={seek} id="videoSlider"/>
                         <div className="flex justify-between">
                             <div className="flex w-full bg-gray-900">
                                 <PlayerButton text={<img className="h-[24px]" src="../src/assets/playerAssets/prev.png"/>} onclick={prev}/>
-                                <PlayerButton text={playing ? <img className="h-[24px]" src="../src/assets/playerAssets/pause.png"/> : <img className="h-[24px]" src="../src/assets/playerAssets/play.png"/>} onclick={play}/>
+                                <PlayerButton text={<img className="h-[24px]" src={playing ? "../src/assets/playerAssets/pause.png" : "../src/assets/playerAssets/play.png"}/>} onclick={play}/>
                                 <PlayerButton text={<img className="h-[24px]" src="../src/assets/playerAssets/next.png"/>} onclick={next}/>
                                 <div className="flex items-center justify-center text-white py-1 max-w-24 w-full bg-gray-900 font-bold">
                                     <div>{Math.floor(current / 60) + ":" + ("0" + Math.floor(current % 60)).slice(-2)}</div>
                                     <div>/{Math.floor(duration / 60) + ":" + ("0" + Math.floor(duration % 60)).slice(-2)}</div>
                                 </div>
                                 <div className="flex items-center justify-center">
-                                    <PlayerButton text={isMuted ? <img className="h-[24px]" src="../src/assets/playerAssets/muted.png"/> : <img className="h-[24px]" src="../src/assets/playerAssets/volume.png"/>} onclick={mute}/>
+                                    <PlayerButton text={<img className="h-[24px]" src={isMuted ? "../src/assets/playerAssets/muted.png": "../src/assets/playerAssets/volume.png"}/>} onclick={mute}/>
                                     <input type="range" ref={audioRef} step={0.01} min={0} max={1} onChange={changeAudio} id="audioSlider"/>
                                 </div>
                             </div>

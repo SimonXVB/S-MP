@@ -29,7 +29,7 @@ async function handleAudioFile() {
     const fileName = path.basename(filePaths[0]);
 
     if(formats.includes(path.extname(fileName))) {
-      fs.copyFile(filePaths[0], "./devTemp/music/" + fileName, (err) => {
+      fs.copyFile(filePaths[0], "./devTemp/audio/" + fileName, (err) => {
         if(err) {
           console.log(err);
         };
