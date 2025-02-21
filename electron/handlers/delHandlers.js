@@ -3,17 +3,13 @@ const fs = require('fs');
 
 function handleDelVideo(event, path) {
   path.forEach((el) => {
-    fs.unlink("./devTemp/videos/" + el, (err) => {
-      if(err) console.log(err);
-    });
+    fs.unlinkSync("./devTemp/videos/" + el)
   });
 };
 
 function handleDelAudio(event, path) {
   path.forEach((el) => {
-    fs.unlink("./devTemp/audio/" + el, (err) => {
-      if(err) console.log(err);
-    });
+    fs.unlinkSync("./devTemp/audio/" + el)
   });
 };
 

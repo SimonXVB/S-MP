@@ -1,10 +1,25 @@
+import { useState } from "react";
+import { ResModal } from "../modals/resModal";
+
 export function Add() {
+    const [res, setRes] = useState("");
+
     async function videoFile() {
-        await window.FS.copyVideoFile();
+        try {
+            const res = await window.FS.copyVideoFile();
+            res === "success" && setRes("success");
+        } catch (error) {
+            setRes(error);
+        };
     };
 
     async function audioFile() {
-        await window.FS.copyAudioFile();
+        try {
+            const res = await window.FS.copyAudioFile();
+            res === "success" && setRes("success");
+        } catch (error) {
+            setRes(error);
+        };
     };
     
     return (
@@ -14,12 +29,15 @@ export function Add() {
                 <button className="border-4 border-red-400 max-w-[250px] aspect-square w-full flex flex-col justify-center items-center cursor-pointer hover:bg-red-400" onClick={videoFile}>
                     <img src="../src/assets/addAssets/movie.png"/>
                     <p className="text-2xl font-bold">Add Video</p>
+                    <div className="text-[13px]">.mp4, .webm, .ogg</div>
                 </button>
                 <button className="border-4 border-red-400 max-w-[250px] aspect-square w-full flex flex-col justify-center items-center cursor-pointer hover:bg-red-400" onClick={audioFile}>
                     <img src="../src/assets/addAssets/music.png"/>
                     <p className="text-2xl font-bold">Add Audio</p>
+                    <div className="text-[13px]">.mp3, .wav, .ogg</div>
                 </button>
             </div>
+            {res && <ResModal setRes={setRes} res={res}/>}
         </section>
     );
 };

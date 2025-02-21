@@ -3,6 +3,7 @@ const { handleVideoFile, handleAudioFile } = require("./handlers/copyHandlers");
 const { handleReadVideo, handleReadAudio } = require("./handlers/readHandlers");
 const { handleDelVideo, handleDelAudio } = require("./handlers/delHandlers");
 const { handleRenameVideo, handleRenameAudio } = require("./handlers/renameHandlers");
+const { openFolder } = require("./handlers/openHandlers");
 const path = require('path');
 
 const createWindow = () => {
@@ -50,3 +51,6 @@ ipcMain.handle("delAudioFile", handleDelAudio);
 //rename
 ipcMain.handle("renameVideoFile", handleRenameVideo);
 ipcMain.handle("renameAudioFile", handleRenameAudio);
+
+//open
+ipcMain.handle("openFolder", openFolder);

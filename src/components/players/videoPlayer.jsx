@@ -102,6 +102,7 @@ export function VideoPlayer({ src }) {
 
     useEffect(() => {
         seekerRef.current.value = 0;
+        audioRef.current.value = 0.5;
         return () =>  {
             clearInterval(intervalRef.current);
             clearTimeout(timeoutRef.current);

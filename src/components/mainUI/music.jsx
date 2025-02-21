@@ -16,7 +16,7 @@ export function Music() {
 
     const { fetchMedia, media } = useFetch();
     const { deleteMedia, setDelModal, delModal, setDelMultipleModal, delMultipleModal } = useDelete();
-    const { renameMedia, setRenameModal, renameModal, setRenameInput, renameInput } = useRename();
+    const { renameMedia, closeRenameModal, setRenameModal, renameModal, setRenameInput, renameInput, renameError } = useRename();
     const { searchMedia, setSearchInput, searchInput, filtered } = useSearch();
     const { isChecked, toggleSelect, setIsSelect, isSelect, setSelectedEntries, selectedEntries } = useSelect();
 
@@ -44,8 +44,14 @@ export function Music() {
         await fetchMedia("audio");
     };
 
-    function isFiltered() {
-        return searchInput !== "" ? filtered : media;
+    function filter() {
+        const array = searchInput !== "" ? filtered : media;
+
+        return array.filter((el) => {
+            if(el.endsWith(".mp3") || el.endsWith(".wav") || el.endsWith(".ogg")) {
+                return el;
+            };
+        });
     };
 
     useEffect(() => {
@@ -64,10 +70,11 @@ export function Music() {
                     toggleSelect={toggleSelect}
                     isSelect={isSelect}
                     delMultipleModal={() => setDelMultipleModal([true, selectedEntries])}
+                    openFolder={() => window.FS.openFolder("/devTemp/audio")}
                 />
                 <div className="w-full text-white p-8">
-                    {media.length === 0 && <NoMedia />}
-                    {isFiltered(media).map((file) => (
+                    {media && media.length === 0 && <NoMedia />}
+                    {filter().map((file) => (
                         <Entry
                             media={file}
                             play={() => playAudio(file)}
@@ -80,8 +87,8 @@ export function Music() {
                 </div>
             </section>
             {delModal[0] && <DelModal name={delModal[1]} setModal={() => setDelModal([false, ""])} del={() => deleteAudio([delModal[1]])}/>}
-            {delMultipleModal && <DelModal name={`${selectedEntries.length} files`} setModal={() => setDelMultipleModal(false)} del={() => deleteAudio(selectedEntries)}/>}
-            {renameModal[0] && <RenameModal name={renameModal[1]} setModal={() => setRenameModal([false, ""])} rename={() => renameAudio(renameModal[1], renameInput)} onChange={(e) => setRenameInput(e.target.value)}/>}
+            {delMultipleModal && <DelModal name={`${selectedEntries.length} file/s`} setModal={() => setDelMultipleModal(false)} del={() => deleteAudio(selectedEntries)}/>}
+            {renameModal[0] && <RenameModal name={renameModal[1]} setModal={closeRenameModal} rename={() => renameAudio(renameModal[1], renameInput)} onChange={(e) => setRenameInput(e.target.value)} error={renameError}/>}
         </>
     );
 };

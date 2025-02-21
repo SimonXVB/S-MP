@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { navCtx } from "../../context/navContext";
 import { DelModal } from "../modals/delModal";
 import { RenameModal } from "../modals/renameModal";
@@ -14,9 +14,11 @@ import { useSelect } from "../../hooks/libraryHooks/useSelect";
 export function Videos() {
     const { setCurrent, setVidSrc } = useContext(navCtx);
 
+    const [loading, setLoading] = useState(true);
+
     const { fetchMedia, media } = useFetch();
     const { deleteMedia, setDelModal, delModal, setDelMultipleModal, delMultipleModal } = useDelete();
-    const { renameMedia, setRenameModal, renameModal, setRenameInput, renameInput } = useRename();
+    const { renameMedia, closeRenameModal, setRenameModal, renameModal, setRenameInput, renameInput, renameError } = useRename();
     const { searchMedia, setSearchInput, searchInput, filtered } = useSearch();
     const { isChecked, toggleSelect, setIsSelect, isSelect, setSelectedEntries, selectedEntries } = useSelect();
 
@@ -31,28 +33,31 @@ export function Videos() {
         searchMedia(e.target.value, media);
     };
 
-    async function renameVideo(oldName, newName) {
-        await renameMedia(oldName, newName, "video");
-        await fetchMedia("video");
+    function renameVideo(oldName, newName) {
+        renameMedia(oldName, newName, "video");
+        fetchMedia("video");
     };
 
-    async function deleteVideos(array) {
-        await deleteMedia(array, "video");
+    function deleteVideos(array) {
+        deleteMedia(array, "video");
         setIsSelect(false);
         setSelectedEntries([]);
         setDelMultipleModal(false);
-        await fetchMedia("video");
+        fetchMedia("video");
     };
 
-    function isFiltered() {
-        return searchInput !== "" ? filtered : media;
+    function filter() {
+        const array = searchInput !== "" ? filtered : media;
+
+        return array.filter((el) => {
+            if(el.endsWith(".mp4") || el.endsWith(".webm") || el.endsWith(".ogg")) {
+                return el;
+            };
+        });
     };
 
     useEffect(() => {
-        async function fetch() {
-            await fetchMedia("video");  
-        };
-        fetch();
+        fetchMedia("video");
     }, []);
 
     return (
@@ -64,10 +69,11 @@ export function Videos() {
                     toggleSelect={toggleSelect}
                     isSelect={isSelect}
                     delMultipleModal={() => setDelMultipleModal([true, selectedEntries])}
+                    openFolder={() => window.FS.openFolder("/devTemp/videos")}
                 />
                 <div className="w-full text-white p-8">
                     {media.length === 0 && <NoMedia />}
-                    {isFiltered(media).map((file) => (
+                    {filter().map((file) => (
                         <Entry
                             media={file}
                             play={() => playVid(file)}
@@ -80,8 +86,8 @@ export function Videos() {
                 </div>
             </section>
             {delModal[0] && <DelModal name={delModal[1]} setModal={() => setDelModal([false, ""])} del={() => deleteVideos([delModal[1]])}/>}
-            {delMultipleModal && <DelModal name={`${selectedEntries.length} videos`} setModal={() => setDelMultipleModal(false)} del={() => deleteVideos(selectedEntries)}/>}
-            {renameModal[0] && <RenameModal name={renameModal[1]} setModal={() => setRenameModal([false, ""])} rename={() => renameVideo(renameModal[1], renameInput)} onChange={(e) => setRenameInput(e.target.value)}/>}
+            {delMultipleModal && <DelModal name={`${selectedEntries.length} video/s`} setModal={() => setDelMultipleModal(false)} del={() => deleteVideos(selectedEntries)}/>}
+            {renameModal[0] && <RenameModal name={renameModal[1]} setModal={closeRenameModal} rename={() => renameVideo(renameModal[1], renameInput)} onChange={(e) => setRenameInput(e.target.value)} error={renameError}/>}
         </>
     );
 };

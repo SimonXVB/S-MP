@@ -5,9 +5,11 @@ export function useFetch() {
 
     async function fetchMedia(media) {
         if(media === "video") {
-            setMedia(await window.FS.readVideoDir());
+            const res = await window.FS.readVideoDir();
+            setMedia(res);
         } else if(media === "audio") {
-            setMedia(await window.FS.readAudioDir());
+            const res = await window.FS.readAudioDir();
+            setMedia(res);
         };
     };
 
