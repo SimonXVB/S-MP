@@ -11,7 +11,7 @@ export function ResModal({ setRes, res }){
 
     return (
         <div className={`absolute top-3 right-3 flex justify-center items-center p-2 ${res === "success" ? "bg-green-600" : "bg-red-600"}`}>
-            {String(res).endsWith("exists") && <p className="font-bold text-white">A file with this name already exists in your library!</p>}
+            {String(res).endsWith("exists") && <p className="font-bold text-white">A file with this name already exists!</p>}
             {String(res).endsWith("format") && <p className="font-bold text-white">File format not supported!</p>}
             {res === "success" && <p className="font-bold text-white">Media added!</p>}
         </div>

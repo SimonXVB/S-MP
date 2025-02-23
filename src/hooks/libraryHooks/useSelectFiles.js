@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function useSelect() {
+export function useSelectFiles() {
     const [isSelect, setIsSelect] = useState(false);
     const [selectedEntries, setSelectedEntries] = useState([]);
 

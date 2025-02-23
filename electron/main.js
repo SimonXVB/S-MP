@@ -1,9 +1,13 @@
 const { ipcMain, app, BrowserWindow } = require('electron');
-const { handleVideoFile, handleAudioFile } = require("./handlers/copyHandlers");
-const { handleReadVideo, handleReadAudio } = require("./handlers/readHandlers");
-const { handleDelVideo, handleDelAudio } = require("./handlers/delHandlers");
-const { handleRenameVideo, handleRenameAudio } = require("./handlers/renameHandlers");
-const { openFolder } = require("./handlers/openHandlers");
+const { handleCopyFile } = require("./handlers/fileHandlers/copyFileHandler");
+const { handleReadDir } = require("./handlers/fileHandlers/readFileHandler");
+const { handleDelFile } = require("./handlers/fileHandlers/delFileHandler");
+const { handleRenameFile } = require("./handlers/fileHandlers/renameFileHandler");
+const { handleOpenFolder } = require("./handlers/fileHandlers/openFolderHandler");
+const { handleReturnDir } = require("./handlers/playlistHandlers/returnDirHandler");
+const { handleCreateDir } = require("./handlers/playlistHandlers/createDirHandler");
+const { handleDelDir } = require("./handlers/playlistHandlers/deleteDirHandler");
+const { handleRenameDir} = require("./handlers/playlistHandlers/renameDirHandler");
 const path = require('path');
 
 const createWindow = () => {
@@ -13,8 +17,7 @@ const createWindow = () => {
     minHeight: 600,
     minWidth: 1000,
     webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
-      webviewTag: true
+      preload: path.join(__dirname, "preload.js")
     }
   });
   win.loadFile('./dist/index.html');
@@ -37,20 +40,25 @@ app.on('window-all-closed', () => {
 });
 
 //copy
-ipcMain.handle("copyVideoFile", handleVideoFile);
-ipcMain.handle("copyAudioFile", handleAudioFile);
-
+ipcMain.handle("copyFile", handleCopyFile);
 //read
-ipcMain.handle("readVideoDir", handleReadVideo);
-ipcMain.handle("readAudioDir", handleReadAudio);
-
+ipcMain.handle("readDir", handleReadDir);
 //del
-ipcMain.handle("delVideoFile", handleDelVideo);
-ipcMain.handle("delAudioFile", handleDelAudio);
-
+ipcMain.handle("delFile", handleDelFile);
 //rename
-ipcMain.handle("renameVideoFile", handleRenameVideo);
-ipcMain.handle("renameAudioFile", handleRenameAudio);
-
+ipcMain.handle("renameFile", handleRenameFile);
 //open
-ipcMain.handle("openFolder", openFolder);
+ipcMain.handle("openFolder", handleOpenFolder);
+
+//return dir
+ipcMain.handle("returnPlaylist", handleReturnDir);
+//create dir
+ipcMain.handle("createPlaylist", handleCreateDir);
+//del dir
+ipcMain.handle("deletePlaylist", handleDelDir);
+//rename dir
+ipcMain.handle("renamePlaylist", handleRenameDir);
+
+ipcMain.handle("getAppPath", () => {
+  return app.getAppPath();
+});

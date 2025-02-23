@@ -4,11 +4,10 @@ const navCtx = createContext();
 
 function NavContext({children}) {
     const [current, setCurrent] = useState("Videos");
-    const [vidSrc, setVidSrc] = useState(["", []]);
-    const [audioSrc, setAudioSrc] = useState(["", []]);
+    const [mediaSrc, setMediaSrc] = useState(["", [], ""]);
 
     return (
-        <navCtx.Provider value={{setCurrent, current, setVidSrc, vidSrc, setAudioSrc, audioSrc}}>
+        <navCtx.Provider value={{setCurrent, current, setMediaSrc, mediaSrc}}>
             {children}
         </navCtx.Provider>
     );

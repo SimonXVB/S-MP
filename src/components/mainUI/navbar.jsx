@@ -14,7 +14,7 @@ export function Navbar() {
                     <img src="../src/assets/navbarAssets/movie.png" className="w-[24px] h-[24px]"/>
                     <div className="text-3xl font-semibold py-1 px-3 max-w-[75%] w-full my-2 text-white">Videos</div>
                 </button>
-                <button className={`flex justify-center items-center w-full cursor-pointer ${current === "Music" && "border-r-4 border-red-400"}`} onClick={() => setCurrent("Music")}>
+                <button className={`flex justify-center items-center w-full cursor-pointer ${current === "Audio" && "border-r-4 border-red-400"}`} onClick={() => setCurrent("Audio")}>
                     <img src="../src/assets/navbarAssets/music.png" className="w-[24px] h-[24px]"/>
                     <div className="text-3xl font-semibold py-1 px-3 max-w-[75%] w-full my-2 text-white">Audio</div>
                 </button>

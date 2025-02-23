@@ -1,13 +1,20 @@
 const { contextBridge, ipcRenderer } = require('electron/renderer')
 
 contextBridge.exposeInMainWorld('FS', {
-  copyVideoFile: () => ipcRenderer.invoke('copyVideoFile'),
-  copyAudioFile: () => ipcRenderer.invoke('copyAudioFile'),
-  readVideoDir: () => ipcRenderer.invoke('readVideoDir'),
-  readAudioDir: () => ipcRenderer.invoke('readAudioDir'),
-  delVideoFile: (path) => ipcRenderer.invoke('delVideoFile', path),
-  delAudioFile: (path) => ipcRenderer.invoke('delAudioFile', path),
-  renameVideoFile: (oldName, newName) => ipcRenderer.invoke('renameVideoFile', [oldName, newName]),
-  renameAudioFile: (oldName, newName) => ipcRenderer.invoke('renameAudioFile', [oldName, newName]),
-  openFolder: (path) => ipcRenderer.invoke("openFolder", path)
+  copyFile: (targetDir, type) => ipcRenderer.invoke('copyFile', [targetDir, type]),
+  readDir: (targetDir) => ipcRenderer.invoke('readDir', targetDir),
+  delFile: (files, targetDir) => ipcRenderer.invoke('delFile', [files, targetDir]),
+  renameFile: (oldName, newName, targetDir) => ipcRenderer.invoke('renameFile', [oldName, newName, targetDir]),
+  openFolder: (targetDir) => ipcRenderer.invoke("openFolder", targetDir)
+});
+
+contextBridge.exposeInMainWorld("Playlist", {
+  returnPlaylist: (targetDir) => ipcRenderer.invoke("returnPlaylist", targetDir),
+  createPlaylist: (targetDir, name) => ipcRenderer.invoke("createPlaylist", [targetDir, name]),
+  deletePlaylist: (targetDir, name) => ipcRenderer.invoke("deletePlaylist", [targetDir, name]),
+  renamePlaylist: (oldName, newName, targetDir) => ipcRenderer.invoke('renamePlaylist', [oldName, newName, targetDir]),
+});
+
+contextBridge.exposeInMainWorld("utils", {
+  getAppPath: () => ipcRenderer.invoke("getAppPath")
 });

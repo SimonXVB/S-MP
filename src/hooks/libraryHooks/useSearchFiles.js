@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function useSearch() {
+export function useSearchFiles() {
     const [searchInput, setSearchInput] = useState("");
     const [filtered, setFiltered] = useState([]);
 
