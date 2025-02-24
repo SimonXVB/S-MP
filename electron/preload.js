@@ -1,7 +1,7 @@
 const { contextBridge, ipcRenderer } = require('electron/renderer')
 
 contextBridge.exposeInMainWorld('FS', {
-  copyFile: (targetDir, type) => ipcRenderer.invoke('copyFile', [targetDir, type]),
+  copyFile: (targetDir) => ipcRenderer.invoke('copyFile', targetDir),
   readDir: (targetDir) => ipcRenderer.invoke('readDir', targetDir),
   delFile: (files, targetDir) => ipcRenderer.invoke('delFile', [files, targetDir]),
   renameFile: (oldName, newName, targetDir) => ipcRenderer.invoke('renameFile', [oldName, newName, targetDir]),

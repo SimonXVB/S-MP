@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 function handleReturnDir(event, targetDir) {
-  const data = fs.readdirSync(path.join(app.getAppPath(), "/devTemp/", targetDir), { withFileTypes: true });
+  const data = fs.readdirSync(path.join(app.getAppPath(), "media", targetDir), { withFileTypes: true });
 
   return data.filter((el) => {
     return el.isDirectory();

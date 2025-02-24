@@ -10,7 +10,8 @@ export function RenameModal({name, setModal, rename, onChange, error}) {
                 <button onClick={rename} className="cursor-pointer px-4 py-2 max-w-32 w-full bg-green-400 hover:bg-green-400/50">Confirm</button>
                 <button onClick={setModal} className="cursor-pointer px-4 py-2 max-w-32 w-full bg-red-400 hover:bg-red-400/50">Cancel</button>
                 {String(error).endsWith("empty") && <ModalError name={"Field cannot be empty"}/>}
-                {String(error).endsWith("exists") && <ModalError name={"A file with this name already exists"}/>}
+                {String(error).endsWith("exists") && <ModalError name={"A file/folder with this name already exists"}/>}
+                {String(error).includes("EINVAL") && <ModalError name={"Name cannot contain special characters e.g. <>:/\|?*"}/>}
             </div>
         </div>
     );

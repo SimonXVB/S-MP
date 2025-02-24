@@ -11,6 +11,7 @@ export function NewPlaylistModal({setModal, create, onChange, error}) {
                 <button onClick={setModal} className="cursor-pointer px-4 py-2 max-w-32 w-full bg-red-400 hover:bg-red-400/50">Cancel</button>
                 {String(error).endsWith("empty") && <ModalError name={"Field cannot be empty"}/>}
                 {String(error).endsWith("exists") && <ModalError name={"A playlist with this name already exists"}/>}
+                {String(error).includes("EINVAL") && <ModalError name={"Name cannot contain special characters e.g. <>:/\|?*"}/>}
             </div>
         </div>
     );

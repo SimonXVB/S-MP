@@ -4,7 +4,7 @@ import { useDeletePlaylist } from "../../../hooks/playlistHooks/useDeletePlaylis
 import { useRenamePlaylist } from "../../../hooks/playlistHooks/useRenamePlaylist";
 import { useFetchPlaylists } from "../../../hooks/playlistHooks/useFetchPlaylist";
 import { NewPlaylistModal } from "../../modals/newPlaylistModal";
-import { PlaylistModal } from "../../modals/playlistModal";
+import { PlaylistModal } from "../../mainUI/playlistModal";
 import { RenameModal } from "../../modals/renameModal";
 import { DelModal } from "../../modals/delModal";
 
@@ -50,8 +50,8 @@ export function Playlists({ dir }) {
                         </div>
                     ))}
                 </div>
+                {playlist && <PlaylistModal setModal={() => setPlaylist("")} dir={`${dir}/${playlist}`}/>}
                 {newPLModal && <NewPlaylistModal onChange={(e) => setNewPLName(e.target.value)} setModal={closeNewPLModal} create={newPlaylist} error={newPLError}/>}
-                {playlist && <PlaylistModal playlist={playlist} setModal={() => setPlaylist("")} dir={dir}/>}
                 {delPLModal && <DelModal name={delPLModal} setModal={() => setDelPLModal("")} del={() => delPlaylist(delPLModal)}/>}
                 {renamePLModal && <RenameModal name={renamePLModal} setModal={closeRenameModal} rename={() => editPlaylist(renamePLModal, renamePLInput)} onChange={(e) => setRenamePLInput(e.target.value)} error={renamePLError}/>}
             </div>

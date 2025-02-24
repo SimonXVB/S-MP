@@ -11,6 +11,7 @@ import { Header } from "../individuals/major/header";
 import { RenameModal } from "../modals/renameModal";
 import { Entry } from "../individuals/major/entry";
 import { DelModal } from "../modals/delModal";
+import { useAppPath } from "../../hooks/useAppPath";
 
 export function Media({ dir }) {
     const { setCurrent, setMediaSrc } = useContext(navCtx);
@@ -21,9 +22,11 @@ export function Media({ dir }) {
     const { deleteMedia, setDelModal, delModal } = useDeleteFiles();
     const { fetchMedia, media } = useFetchFiles();
 
-    function playMedia(src) {
+    const { getAppPath, appPath } = useAppPath();
+
+    function playMedia(file) {
         setCurrent(dir === "videos" ? "playingVideo" : "playingAudio");
-        setMediaSrc([src, media, `/devTemp/${dir}/`]);
+        setMediaSrc([`${appPath}/media/${dir}/`, file, media]);
     };
 
     function searchFiles(e) {
@@ -50,6 +53,7 @@ export function Media({ dir }) {
 
     useEffect(() => {
         fetchMedia(dir, dir);
+        getAppPath();
     }, []);
 
     return (
@@ -61,7 +65,7 @@ export function Media({ dir }) {
                     toggleSelect={toggleSelect}
                     isSelect={isSelect}
                     deleteModal={() => setDelModal(selectedEntries)}
-                    openFolder={() => window.FS.openFolder("/devTemp/" + dir)}
+                    openFolder={() => window.FS.openFolder("/media/" + dir)}
                 />
                 <div className="w-full text-white p-8">
                     <Playlists dir={dir}/>
