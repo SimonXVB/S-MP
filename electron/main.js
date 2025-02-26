@@ -4,11 +4,14 @@ const { handleReadDir } = require("./handlers/fileHandlers/readFileHandler");
 const { handleDelFile } = require("./handlers/fileHandlers/delFileHandler");
 const { handleRenameFile } = require("./handlers/fileHandlers/renameFileHandler");
 const { handleOpenFolder } = require("./handlers/fileHandlers/openFolderHandler");
-const { handleReturnDir } = require("./handlers/playlistHandlers/returnDirHandler");
-const { handleCreateDir } = require("./handlers/playlistHandlers/createDirHandler");
-const { handleDelDir } = require("./handlers/playlistHandlers/deleteDirHandler");
-const { handleRenameDir} = require("./handlers/playlistHandlers/renameDirHandler");
+const { handleReturnDir } = require("./handlers/dirHandlers/returnDirHandler");
+const { handleCreateDir } = require("./handlers/dirHandlers/createDirHandler");
+const { handleDelDir } = require("./handlers/dirHandlers/deleteDirHandler");
+const { handleRenameDir} = require("./handlers/dirHandlers/renameDirHandler");
+const { handlerCreateMediaDir } = require("./handlers/dirHandlers/createMediaDirHandler");
 const path = require('path');
+
+if (require('electron-squirrel-startup')) app.quit();
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -17,9 +20,11 @@ const createWindow = () => {
     minHeight: 600,
     minWidth: 1000,
     webPreferences: {
-      preload: path.join(__dirname, "preload.js")
+      preload: path.join(__dirname, "preload.js"),
     }
   });
+  win.setMenu(null);
+  win.setIcon(path.join(__dirname, "swan.png"));
   win.loadFile('./dist/index.html');
 };
 
@@ -58,7 +63,9 @@ ipcMain.handle("createPlaylist", handleCreateDir);
 ipcMain.handle("deletePlaylist", handleDelDir);
 //rename dir
 ipcMain.handle("renamePlaylist", handleRenameDir);
+//create media dir
+ipcMain.handle("createMediaDir", handlerCreateMediaDir);
 
 ipcMain.handle("getAppPath", () => {
-  return app.getAppPath();
+  return app.getPath("documents");
 });

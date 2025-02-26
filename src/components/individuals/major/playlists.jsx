@@ -36,14 +36,14 @@ export function Playlists({ dir }) {
     }, []);
 
     return (
-        <>
+        <div className="border-4 border-red-400 p-4">
             <p className="font-bold text-2xl pb-2">Playlists</p>
             <div className="flex items-center h-[80px]">
-                <button className="h-[45px] aspect-square cursor-pointer bg-gray-900 hover:bg-red-400" onClick={() => setNewPLModal(true)}><img className="m-auto w-[30px] h-[30px]" src="../src/assets/libraryAssets/playlist.png"/></button>
-                <div className="max-w-full overflow-x-auto flex gap-4 p-2 ml-2">
+                <button className="h-full aspect-square cursor-pointer bg-gray-900 hover:bg-red-400" onClick={() => setNewPLModal(true)}><img className="m-auto w-[30px] h-[30px]" src="../src/assets/libraryAssets/playlist.png"/></button>
+                <div className="h-full max-w-full overflow-x-auto flex gap-4 ml-2">
                     {playlists.map((playlist) => (
-                        <div className="border-2 h-[45px] border-red-400 flex items-center justify-between">
-                            <p className="whitespace-nowrap p-1 font-bold w-[200px] overflow-x-auto">{playlist.name}</p>
+                        <div className="border-2 h-full border-red-400 flex items-center justify-between">
+                            <p className="whitespace-nowrap p-1 text-2xl font-bold w-[200px] overflow-x-auto">{playlist.name}</p>
                             <button className="h-full aspect-square cursor-pointer bg-gray-900 hover:bg-red-400" onClick={() => setDelPLModal(playlist.name)}><img className="mx-auto w-[30px] h-[30px]" src="../src/assets/libraryAssets/delete.png"/></button>
                             <button className="h-full aspect-square cursor-pointer bg-gray-900 hover:bg-red-400" onClick={() => setRenamePLModal(playlist.name)}><img className="mx-auto w-[30px] h-[30px]" src="../src/assets/libraryAssets/edit.png"/></button>
                             <button className="h-full aspect-square cursor-pointer bg-gray-900 hover:bg-red-400" onClick={() => setPlaylist(playlist.name)}><img className="mx-auto w-[30px] h-[30px]" src="../src/assets/libraryAssets/openPlaylist.png"/></button>
@@ -55,6 +55,6 @@ export function Playlists({ dir }) {
                 {delPLModal && <DelModal name={delPLModal} setModal={() => setDelPLModal("")} del={() => delPlaylist(delPLModal)}/>}
                 {renamePLModal && <RenameModal name={renamePLModal} setModal={closeRenameModal} rename={() => editPlaylist(renamePLModal, renamePLInput)} onChange={(e) => setRenamePLInput(e.target.value)} error={renamePLError}/>}
             </div>
-        </>
+        </div>
     );
 };

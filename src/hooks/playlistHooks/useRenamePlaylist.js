@@ -18,6 +18,7 @@ export function useRenamePlaylist() {
 
     function closeRenameModal() {
         setRenamePLModal("");
+        setRenamePLInput("");
         setRenamePLError("");
     };
 

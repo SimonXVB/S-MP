@@ -1,15 +1,22 @@
 const { FusesPlugin } = require('@electron-forge/plugin-fuses');
 const { FuseV1Options, FuseVersion } = require('@electron/fuses');
+const path = require('path');
+const { app } = require("electron");
+const fs = require('fs');
 
 module.exports = {
   packagerConfig: {
     asar: true,
+    "icon": __dirname + "/electron/swan"
   },
   rebuildConfig: {},
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {},
+      config: {
+        iconUrl: __dirname + "/electron/swan.ico",
+        setupIcon: __dirname + "/electron/swan.ico"
+      },
     },
     {
       name: '@electron-forge/maker-zip',
@@ -40,5 +47,5 @@ module.exports = {
       [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
       [FuseV1Options.OnlyLoadAppFromAsar]: true,
     }),
-  ],
+  ]
 };

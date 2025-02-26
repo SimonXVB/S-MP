@@ -16,5 +16,6 @@ contextBridge.exposeInMainWorld("Playlist", {
 });
 
 contextBridge.exposeInMainWorld("utils", {
-  getAppPath: () => ipcRenderer.invoke("getAppPath")
+  getAppPath: () => ipcRenderer.invoke("getAppPath"),
+  createMediaDir: () => ipcRenderer.invoke("createMediaDir")
 });

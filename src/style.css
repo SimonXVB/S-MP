@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@font-face {
+    font-family: "Lobster";
+    src: url(./assets/Lobster-Regular.ttf);
+}
+
+@theme {
+    --font-logo: "Lobster", serif;
+}
+
 ::-webkit-scrollbar {
     height: 7px;
     width: 7px;

@@ -18,6 +18,7 @@ export function useSelectFiles() {
             setSelectedEntries([]);
         } else {
             setIsSelect(true);
+            setSelectedEntries([]);
         };
     };
 

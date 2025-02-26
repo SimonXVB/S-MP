@@ -26,11 +26,12 @@ export function Media({ dir }) {
 
     function playMedia(file) {
         setCurrent(dir === "videos" ? "playingVideo" : "playingAudio");
-        setMediaSrc([`${appPath}/media/${dir}/`, file, media]);
+        setMediaSrc([`${appPath}/swan-media-player/${dir}/`, file, media]);
     };
 
     function searchFiles(e) {
         setIsSelect(false);
+        setSelectedEntries([]);
         setSearchInput(e.target.value);
         searchMedia(e.target.value, media);
     };
@@ -41,18 +42,22 @@ export function Media({ dir }) {
 
     function renameFile(oldName, newName) {
         renameMedia(oldName, newName, dir);
-        fetchMedia(dir, dir);
+        fetchMedia(dir);
     };
 
     function deleteFiles(array) {
-        deleteMedia(array, dir);
+        if(searchInput !== "") {
+            setSearchInput("");
+        };
+
         setIsSelect(false);
-        setSelectedEntries[[]];
-        fetchMedia(dir, dir);
+        setSelectedEntries([]);
+        deleteMedia(array, dir);
+        fetchMedia(dir);
     };
 
     useEffect(() => {
-        fetchMedia(dir, dir);
+        fetchMedia(dir);
         getAppPath();
     }, []);
 
@@ -62,10 +67,11 @@ export function Media({ dir }) {
                 <Header
                     name={dir === "videos" ? "Videos" : "Audio"} 
                     search={(e) => searchFiles(e)}
+                    searchValue={searchInput}
                     toggleSelect={toggleSelect}
                     isSelect={isSelect}
                     deleteModal={() => setDelModal(selectedEntries)}
-                    openFolder={() => window.FS.openFolder("/media/" + dir)}
+                    openFolder={() => window.FS.openFolder(dir)}
                 />
                 <div className="w-full text-white p-8">
                     <Playlists dir={dir}/>

@@ -23,7 +23,7 @@ export function PlaylistModal({ dir, setModal }) {
 
     function playMedia(file) {
         setCurrent(dir.split("/")[0] === "videos" ? "playingVideo" : "playingAudio");
-        setMediaSrc([`${appPath}/media/${dir}/`, file, media]);
+        setMediaSrc([`${appPath}/swan-media-player/${dir}/`, file, media]);
     };
 
     function renameFile(oldName, newName) {
@@ -39,7 +39,7 @@ export function PlaylistModal({ dir, setModal }) {
     async function copyFile() {
         try {
             const res = await window.FS.copyFile(dir);
-            res === "success" && setRes("success");
+            !res && setRes("success");
             fetchMedia(dir);
         } catch (error) {
             setRes(error);

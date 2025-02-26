@@ -7,7 +7,7 @@ export function Add() {
     async function copyFile(dir) {
         try {
             const res = await window.FS.copyFile(dir);
-            res === "success" && setRes("success");
+            !res && setRes("success");
         } catch (error) {
             setRes(error);
         };

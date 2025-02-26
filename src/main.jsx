@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Navbar } from "./components/mainUI/navbar"
 import { navCtx } from "./context/navContext";
 import { Media } from "./components/mainUI/media";
@@ -8,6 +8,13 @@ import { AudioPlayer } from "./components/players/audioPlayer";
 
 export function Main() {
     const { current, mediaSrc } = useContext(navCtx);
+
+    useEffect(() => {
+        async function createIf() {
+            window.utils.createMediaDir();  
+        };
+        createIf();
+    }, []);
 
     return (
         <div className="flex">

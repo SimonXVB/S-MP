@@ -7,7 +7,7 @@ export function Navbar() {
     return (
         <nav className="flex flex-col min-w-[250px] h-screen">
             <div className="w-full min-h-[100px] flex justify-center items-center bg-gray-900 border-r-4 border-red-400">
-                <img src="" className="max-w-[75px] aspect-square"/>
+                <p className="font-logo text-white text-4xl">Swan 🦢</p>
             </div>
             <div className="w-full min-h-[325px] h-full flex flex-col items-center py-4">
                 <button className={`flex justify-center items-center w-full cursor-pointer ${current === "Videos" && "border-r-4 border-red-400"}`} onClick={() => setCurrent("Videos")}>

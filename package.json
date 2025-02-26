@@ -1,10 +1,11 @@
 {
-  "name": "multi-xvb",
+  "name": "swan-mp",
+  "productName": "Swan MP",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "main": "./electron/main.js",
   "author": "SimonXVB",
-  "description": "A simple multimedia app",
+  "description": "A simple multimedia app using Electron",
   "scripts": {
     "build": "vite build",
     "start": "electron-forge start",

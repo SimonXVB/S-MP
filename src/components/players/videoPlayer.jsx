@@ -86,7 +86,6 @@ export function VideoPlayer({ src }) {
             clearInterval(intervalRef.current);
             setPlaying(false);
             setSource(src[2][src[2].indexOf(source) + 1]);
-            clearInterval(intervalRef.current);
             seekerRef.current.value = 0;
             setCurrent(0);
         };
@@ -97,7 +96,6 @@ export function VideoPlayer({ src }) {
             clearInterval(intervalRef.current);
             setPlaying(false);
             setSource(src[2][src[2].indexOf(source) - 1]);
-            clearInterval(intervalRef.current);
             seekerRef.current.value = 0;
             setCurrent(0);
         };
