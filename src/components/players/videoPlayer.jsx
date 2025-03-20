@@ -9,6 +9,7 @@ export function VideoPlayer({ src }) {
     const controlsRef = useRef();
     const intervalRef = useRef();
     const timeoutRef = useRef();
+    const playerRef = useRef();
 
     const [isPlaying, setIsPlaying] = useState(false);
     const [isMuted, setIsMuted] = useState(false);
@@ -103,15 +104,24 @@ export function VideoPlayer({ src }) {
         };
     };
 
+    function spacePause(e) {
+        if(videoRef.current && e.code === "Space") {
+            play();
+        };
+    };
+
     useEffect(() => {
+        document.addEventListener("keydown", spacePause);
+
         return () =>  {
             clearInterval(intervalRef.current);
             clearTimeout(timeoutRef.current);
+            document.removeEventListener("keydown", spacePause);
         };
     }, []);
     
     return (
-        <section className="h-screen w-full flex flex-col items-center justify-center p-8">
+        <section className="h-screen w-full flex flex-col items-center justify-center p-8" ref={playerRef}>
             <div className="max-h-[90%] relative flex flex-col items-center justify-center" ref={fullscreenRef} onMouseMove={displayControls}>
                 <video ref={videoRef} onEnded={() => {clearInterval(intervalRef.current); setIsPlaying(false);}} onLoadedMetadata={() => setMetadata(true)} onClick={play} src={src[0] + source} className="max-h-full"/>
                 {metadata && 

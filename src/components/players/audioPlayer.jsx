@@ -98,8 +98,19 @@ export function AudioPlayer({ src }) {
         };
     };
  
+    function spacePause(e) {
+        if(audioRef.current && e.code === "Space") {
+            play();
+        };
+    };
+
     useEffect(() => {
-        return () => clearInterval(intervalRef.current);
+        document.addEventListener("keydown", spacePause);
+
+        return () => {
+            clearInterval(intervalRef.current)
+            document.removeEventListener("keydown", spacePause);
+        };
     }, []);
     
     return (
