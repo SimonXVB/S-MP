@@ -10,7 +10,7 @@ export function ResModal({ setRes, res }){
     }, []);
 
     return (
-        <div className={`absolute top-3 right-3 flex justify-center items-center p-2 ${res === "success" ? "bg-green-600" : "bg-red-600"}`}>
+        <div className={`absolute top-3 right-3 rounded-2xl flex justify-center items-center p-2 ${res === "success" ? "bg-green-600" : "bg-red-600"}`} id="transition">
             {String(res).endsWith("exists") && <p className="font-bold text-white">A file with this name already exists!</p>}
             {String(res).endsWith("format") && <p className="font-bold text-white">File format not supported!</p>}
             {String(res).endsWith("canceled") && <p className="font-bold text-white">Add canceled!</p>}

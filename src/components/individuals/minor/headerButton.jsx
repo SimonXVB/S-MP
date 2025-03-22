@@ -1,5 +1,7 @@
-export function HeaderButton({ onclick, src }) {
+export function HeaderButton({ onclick, children }) {
     return (
-        <button onClick={onclick} className="hover:bg-red-400 rounded-full p-1 cursor-pointer"><img src={src} className="h-6"/></button>
+        <button onClick={onclick} className="rounded-lg p-1 cursor-pointer *:fill-white hover:bg-white hover:*:fill-red-400">
+            {children}
+        </button>
     );
 };

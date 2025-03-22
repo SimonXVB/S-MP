@@ -73,7 +73,7 @@ export function Media({ dir }) {
                     deleteModal={() => setDelModal(selectedEntries)}
                     openFolder={() => window.FS.openFolder(dir)}
                 />
-                <div className="w-full text-white p-8">
+                <div className="w-full text-white pr-4 pb-4 p-16 z-10">
                     <Playlists dir={dir}/>
                     {media.length === 0 && <NoMedia />}
                     {filter().map((file) => (

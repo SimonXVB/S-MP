@@ -23,8 +23,9 @@ const createWindow = () => {
       preload: path.join(__dirname, "preload.js"),
     }
   });
-  win.setMenu(null);
+
   win.setIcon(path.join(__dirname, "swan.png"));
+  win.setMenu(null);
   win.loadFile('./dist/index.html');
 };
 

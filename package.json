@@ -2,7 +2,7 @@
   "name": "swan-mp",
   "productName": "Swan MP",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.2",
   "main": "./electron/main.js",
   "author": "SimonXVB",
   "description": "A simple multimedia app using Electron",
