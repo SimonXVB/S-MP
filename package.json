@@ -7,13 +7,7 @@
   "author": "SimonXVB",
   "description": "A simple multimedia app using Electron",
   "scripts": {
-    "build": "vite build",
-    "start": "electron-forge start",
-    "electron" : "vite build && electron .",
-    "dev": "vite",
-    "preview": "vite preview",
-    "package": "electron-forge package",
-    "make": "electron-forge make"
+    "dev": "vite build && electron ."
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.3",
@@ -22,13 +16,6 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^7.6.1",
-    "@electron-forge/maker-deb": "^7.6.1",
-    "@electron-forge/maker-rpm": "^7.6.1",
-    "@electron-forge/maker-squirrel": "^7.6.1",
-    "@electron-forge/maker-zip": "^7.6.1",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.6.1",
-    "@electron-forge/plugin-fuses": "^7.6.1",
     "@electron/fuses": "^1.8.0",
     "@eslint/js": "^9.17.0",
     "@types/react": "^18.3.18",

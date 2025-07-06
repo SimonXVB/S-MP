@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 
 const navCtx = createContext();
 
-function NavContext({children}) {
+function NavContext({ children }) {
     const [current, setCurrent] = useState("Videos");
     const [mediaSrc, setMediaSrc] = useState([]);
 
