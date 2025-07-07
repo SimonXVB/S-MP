@@ -7,7 +7,8 @@
   "author": "SimonXVB",
   "description": "A simple multimedia app using Electron",
   "scripts": {
-    "dev": "vite build && electron ."
+    "dev": "vite build && electron .",
+    "vite": "vite"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.3",

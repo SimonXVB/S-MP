@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function useAppPath() {
+export function useGetAppPath() {
     const [appPath, setAppPath] = useState("");
 
     async function getAppPath() {

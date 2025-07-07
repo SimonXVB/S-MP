@@ -1,29 +1,27 @@
 import { useContext, useEffect } from "react";
-import { Navbar } from "./components/mainUI/navbar"
-import { navCtx } from "./context/navContext";
+import { mainContext } from "./context/context";
+import { Navbar } from "./components/mainUI/navbar";
 import { Media } from "./components/mainUI/media";
-import { Add } from "./components/mainUI/add";
 import { VideoPlayer } from "./components/players/videoPlayer";
-import { AudioPlayer } from "./components/players/audioPlayer"; 
+import { AudioPlayer } from "./components/players/audioPlayer";
 
 export function Main() {
-    const { current, mediaSrc } = useContext(navCtx);
+    const { current, mediaSrc } = useContext(mainContext);
 
     useEffect(() => {
-        async function createIf() {
+        async function createDir() {
             window.utils.createMediaDir();  
         };
-        createIf();
+        createDir();
     }, []);
 
     return (
-        <div className="flex">
-            <Navbar />
-            {current === "Videos" && <Media dir={"videos"}/>}
-            {current === "Audio" && <Media dir={"audio"}/>}
-            {current === "Add" && <Add />}
+        <>
+            <Navbar/>
+            {current === "videos" && <Media dir={"videos"}/>}
+            {current === "audio" && <Media dir={"audio"}/>}
             {current === "playingVideo" && <VideoPlayer src={mediaSrc} />}
             {current === "playingAudio" && <AudioPlayer src={mediaSrc} />}
-        </div>
+        </>
     );
 };
