@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { PlayerButton } from "../individuals/minor/playerButton";
+import { PlayerButton } from "./Individuals/PlayerButton";
 
 export function VideoPlayer({ src }) {
     const videoRef = useRef();
@@ -118,6 +118,7 @@ export function VideoPlayer({ src }) {
             clearTimeout(timeoutRef.current);
             document.removeEventListener("keydown", spacePause);
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     
     return (

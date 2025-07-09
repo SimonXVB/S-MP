@@ -1,9 +1,9 @@
 import { useContext, useEffect } from "react";
-import { mainContext } from "./context/context";
-import { Navbar } from "./components/mainUI/navbar";
-import { Media } from "./components/mainUI/media";
-import { VideoPlayer } from "./components/players/videoPlayer";
-import { AudioPlayer } from "./components/players/audioPlayer";
+import { mainContext } from "./Context/context";
+import { Navbar } from "./components/Navbar";
+import { MediaTab } from "./components/MediaTabComps/MediaTab";
+import { VideoPlayer } from "./Components/PlayerComps/VideoPlayer";
+import { AudioPlayer } from "./Components/PlayerComps/AudioPlayer";
 
 export function Main() {
     const { current, mediaSrc } = useContext(mainContext);
@@ -16,12 +16,12 @@ export function Main() {
     }, []);
 
     return (
-        <>
+        <div className="h-screen flex flex-col">
             <Navbar/>
-            {current === "videos" && <Media dir={"videos"}/>}
-            {current === "audio" && <Media dir={"audio"}/>}
-            {current === "playingVideo" && <VideoPlayer src={mediaSrc} />}
-            {current === "playingAudio" && <AudioPlayer src={mediaSrc} />}
-        </>
+            {current === "videos" && <MediaTab/>}
+            {current === "audio" && <MediaTab/>}
+            {current === "playingVideo" && <VideoPlayer src={mediaSrc}/>}
+            {current === "playingAudio" && <AudioPlayer src={mediaSrc}/>}
+        </div>
     );
 };

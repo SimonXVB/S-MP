@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { PlayerButton } from "../individuals/minor/playerButton";
+import { PlayerButton } from "./Individuals/PlayerButton";
 
 export function AudioPlayer({ src }) {
     const audioRef = useRef();
@@ -111,6 +111,7 @@ export function AudioPlayer({ src }) {
             clearInterval(intervalRef.current)
             document.removeEventListener("keydown", spacePause);
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     
     return (
