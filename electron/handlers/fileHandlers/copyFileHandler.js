@@ -6,6 +6,7 @@ async function handleCopyFile(event, targetDir) {
   const { canceled, filePaths } = await dialog.showOpenDialog({
     properties: ["multiSelections"]
   });
+  
   const formatsVideo = [".mp4", ".webm", ".ogg"];
   const formatsAudio = [".mp3", ".wav", ".ogg"];
 

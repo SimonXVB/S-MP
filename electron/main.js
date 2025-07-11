@@ -6,10 +6,10 @@ const { handleDelFile } = require("./handlers/fileHandlers/delFileHandler");
 const { handleRenameFile } = require("./handlers/fileHandlers/renameFileHandler");
 const { handleOpenFolder } = require("./handlers/fileHandlers/openFolderHandler");
 const { handleReturnDir } = require("./handlers/dirHandlers/returnDirHandler");
-const { handleCreateDir } = require("./handlers/dirHandlers/createDirHandler");
+const { createCollection } = require("./handlers/dirHandlers/createCollection");
 const { handleDelDir } = require("./handlers/dirHandlers/deleteDirHandler");
 const { handleRenameDir} = require("./handlers/dirHandlers/renameDirHandler");
-const { handlerCreateMediaDir } = require("./handlers/dirHandlers/createMediaDirHandler");
+const { createRootDirs } = require("./handlers/dirHandlers/createRootDirs");
 
 const createWindow = () => {
   const displays = screen.getAllDisplays()
@@ -65,27 +65,12 @@ app.on('window-all-closed', () => {
   };
 });
 
-//copy
-ipcMain.handle("copyFile", handleCopyFile);
-//read
-ipcMain.handle("readDir", handleReadDir);
-//del
-ipcMain.handle("delFile", handleDelFile);
-//rename
-ipcMain.handle("renameFile", handleRenameFile);
-//open
-ipcMain.handle("openFolder", handleOpenFolder);
+// Create root directories
+ipcMain.handle("createMediaDir", createRootDirs);
 
-//return dir
-ipcMain.handle("returnPlaylist", handleReturnDir);
-//create dir
-ipcMain.handle("createPlaylist", handleCreateDir);
-//del dir
-ipcMain.handle("deletePlaylist", handleDelDir);
-//rename dir
-ipcMain.handle("renamePlaylist", handleRenameDir);
-//create media dir
-ipcMain.handle("createMediaDir", handlerCreateMediaDir);
+// Collection/Playlist handlers
+
+
 
 ipcMain.handle("getAppPath", () => {
   return app.getPath("documents");
