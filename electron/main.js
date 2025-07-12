@@ -5,11 +5,11 @@ const { handleReadDir } = require("./handlers/fileHandlers/readFileHandler");
 const { handleDelFile } = require("./handlers/fileHandlers/delFileHandler");
 const { handleRenameFile } = require("./handlers/fileHandlers/renameFileHandler");
 const { handleOpenFolder } = require("./handlers/fileHandlers/openFolderHandler");
-const { handleReturnDir } = require("./handlers/dirHandlers/returnDirHandler");
-const { createCollection } = require("./handlers/dirHandlers/createCollection");
-const { handleDelDir } = require("./handlers/dirHandlers/deleteDirHandler");
-const { handleRenameDir} = require("./handlers/dirHandlers/renameDirHandler");
-const { createRootDirs } = require("./handlers/dirHandlers/createRootDirs");
+const { handleReturnDir } = require("./handlers/collectionHandlers/returnDirHandler");
+const { createCollection } = require("./handlers/collectionHandlers/createCollection");
+const { handleDelDir } = require("./handlers/collectionHandlers/deleteDirHandler");
+const { handleRenameDir} = require("./handlers/collectionHandlers/renameDirHandler");
+const { createRootDirs } = require("./handlers/collectionHandlers/createRootDirs");
 
 const createWindow = () => {
   const displays = screen.getAllDisplays()
@@ -51,7 +51,6 @@ const createWindow = () => {
 app.whenReady().then(() => {
   createWindow();
 
-
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
@@ -66,11 +65,10 @@ app.on('window-all-closed', () => {
 });
 
 // Create root directories
-ipcMain.handle("createMediaDir", createRootDirs);
+ipcMain.handle("createRootDirs", createRootDirs);
 
 // Collection/Playlist handlers
-
-
+ipcMain.handle("createCollection", createCollection);
 
 ipcMain.handle("getAppPath", () => {
   return app.getPath("documents");

@@ -4,7 +4,6 @@ const fs = require('fs');
 
 // eslint-disable-next-line no-unused-vars
 function createRootDirs(event) {
-
     //Create "Swan MP Data" folder if folder doesnt't exist
     if(!fs.existsSync(path.join(app.getPath("userData"), "Swan MP Data"))) {
         fs.mkdirSync(path.join(app.getPath("userData"), "Swan MP Data"));
@@ -19,12 +18,12 @@ function createRootDirs(event) {
     };
 
     //Create Video/Audio folders if folders don't exist
-    if(!fs.existsSync(path.join(app.getPath("videos"), "Swan MP Videos"))) {
-        fs.mkdirSync(path.join(app.getPath("videos"), "Swan MP Videos"));
+    if(!fs.existsSync(path.join(app.getPath("videos"), "Swan MP"))) {
+        fs.mkdirSync(path.join(app.getPath("videos"), "Swan MP"));
     };
 
-    if(!fs.existsSync(path.join(app.getPath("music"), "Swan MP Audio"))) {
-        fs.mkdirSync(path.join(app.getPath("music"), "Swan MP Audio"));
+    if(!fs.existsSync(path.join(app.getPath("music"), "Swan MP"))) {
+        fs.mkdirSync(path.join(app.getPath("music"), "Swan MP"));
     };
 };
 

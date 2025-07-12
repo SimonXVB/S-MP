@@ -9,19 +9,19 @@ export function Main() {
     const { current, mediaSrc } = useContext(mainContext);
 
     useEffect(() => {
-        async function createDir() {
-            window.utils.createMediaDir();  
+        async function createRootDirs() {
+            window.utils.createRootDirs();  
         };
-        createDir();
+        createRootDirs();
     }, []);
 
     return (
         <div className="h-screen flex flex-col">
             <Navbar/>
             {current === "videos" && <MediaTab/>}
-            {current === "audio" && <MediaTab/>}
+            {current === "music" && <MediaTab/>}
             {current === "playingVideo" && <VideoPlayer src={mediaSrc}/>}
-            {current === "playingAudio" && <AudioPlayer src={mediaSrc}/>}
+            {current === "playingMusic" && <AudioPlayer src={mediaSrc}/>}
         </div>
     );
 };

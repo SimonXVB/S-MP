@@ -1,21 +1,35 @@
 const path = require('path');
-const { app } = require("electron");
 const fs = require('fs');
+const { app } = require("electron");
 
-function createCollection(event, [targetDirName, collectionName]) {
-    if(collectionName === "") {
+function createCollection(event, collectionData) {
+    const data = require(path.join(app.getPath('appData'), "Swan MP", "Swan MP Data", "data.json"));
+    const collectionPath = path.join(app.getPath(collectionData.targetDir), "Swan MP", collectionData.name);
+
+    // Throw error when name is empty
+    if(collectionData.name === "") {
         throw new Error("empty");
     };
 
-    const directories = fs.readdirSync(path.join(app.getPath("documents"), "swan-media-player", targetDirName), { withFileTypes: true }).filter((el) => {
-        return el.isDirectory();
-    });
+    // Returns sub-dirs of corresponding parent-dir and stores it in "collections" var
+    const collections = fs.readdirSync(path.join(app.getPath(collectionData.targetDir), "Swan MP"), {withFileTypes: true}).filter(el => el.isDirectory());
 
-    if(directories.some(e => e.name.toLowerCase() === collectionName.toLowerCase())) {
+    // Throw error when a folder with the same name aleady exists
+    if(collections.some(e => e.name.toLowerCase() === collectionData.name.toLowerCase())) {
         throw new Error("exists");
     };
 
-    fs.mkdirSync(path.join(app.getPath("documents"), "swan-media-player", targetDirName, collectionName));
+    //Create collection folder and corresponding entry in data.json file
+    fs.mkdirSync(collectionPath);
+
+    data[collectionData.targetDir].push({
+        name: collectionData.name,
+        coverImg: collectionData.imgBase64,
+        path: collectionPath,
+        creationData: Date.now()
+    });
+
+    fs.writeFileSync(path.join(app.getPath('appData'), "Swan MP", "Swan MP Data", "data.json"), JSON.stringify(data));
 };
 
 module.exports = { createCollection };
