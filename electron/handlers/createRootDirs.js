@@ -7,14 +7,10 @@ function createRootDirs(event) {
     //Create "Swan MP Data" folder if folder doesnt't exist
     if(!fs.existsSync(path.join(app.getPath("userData"), "Swan MP Data"))) {
         fs.mkdirSync(path.join(app.getPath("userData"), "Swan MP Data"));
+    };
 
-        if(!fs.existsSync(path.join(app.getPath("userData"), "Swan MP Data", "data.json"))) {
-            fs.writeFileSync(path.join(app.getPath("userData"), "Swan MP Data", "data.json"), '{"videos": [], "audio": []}');
-        };
-
-        if(!fs.existsSync(path.join(app.getPath("userData"), "Swan MP Data", "Cover Images"))) {
-            fs.mkdirSync(path.join(app.getPath("userData"), "Swan MP Data", "Cover Images"));
-        };
+    if(!fs.existsSync(path.join(app.getPath("userData"), "Swan MP Data", "data.json"))) {
+        fs.writeFileSync(path.join(app.getPath("userData"), "Swan MP Data", "data.json"), '{"videos": [], "music": []}');
     };
 
     //Create Video/Audio folders if folders don't exist

@@ -10,7 +10,7 @@ contextBridge.exposeInMainWorld('files', {
 
 contextBridge.exposeInMainWorld("collection", {
   createCollection: collectionData => ipcRenderer.invoke("createCollection", collectionData),
-  returnPlaylist: (targetDir) => ipcRenderer.invoke("returnPlaylist", targetDir),
+  getCollections: () => ipcRenderer.invoke("getCollections"),
   deletePlaylist: (targetDir, name) => ipcRenderer.invoke("deletePlaylist", [targetDir, name]),
   renamePlaylist: (oldName, newName, targetDir) => ipcRenderer.invoke('renamePlaylist', [oldName, newName, targetDir]),
 });

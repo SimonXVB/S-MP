@@ -6,11 +6,11 @@ import { VideoPlayer } from "./Components/PlayerComps/VideoPlayer";
 import { AudioPlayer } from "./Components/PlayerComps/AudioPlayer";
 
 export function Main() {
-    const { current, mediaSrc } = useContext(mainContext);
+    const { current } = useContext(mainContext);
 
     useEffect(() => {
         async function createRootDirs() {
-            window.utils.createRootDirs();  
+            await window.utils.createRootDirs();  
         };
         createRootDirs();
     }, []);
@@ -20,8 +20,8 @@ export function Main() {
             <Navbar/>
             {current === "videos" && <MediaTab/>}
             {current === "music" && <MediaTab/>}
-            {current === "playingVideo" && <VideoPlayer src={mediaSrc}/>}
-            {current === "playingMusic" && <AudioPlayer src={mediaSrc}/>}
+            {current === "playingVideo" && <VideoPlayer/>}
+            {current === "playingMusic" && <AudioPlayer/>}
         </div>
     );
 };

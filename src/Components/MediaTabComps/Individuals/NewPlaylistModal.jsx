@@ -1,7 +1,9 @@
-import { useRef, useContext } from "react";
-import { mainContext } from "../../../Context/context"; 
+import { useRef, useContext, useState } from "react";
+import { mainContext } from "../../../Context/context";
+import { NewPlaylistError } from "./NewPlaylistError";
 
-export function NewPlaylistModal({ setPlaylistModal }) {
+export function NewPlaylistModal({ setPlaylistModal, getCollection }) {
+    const [createError, setCreateError] = useState("");
     const { current } = useContext(mainContext);
     const coverRef = useRef(null);
 
@@ -11,13 +13,13 @@ export function NewPlaylistModal({ setPlaylistModal }) {
         targetDir: current
     };
 
-    function setCover(e) {
+    function setCoverData(e) {
         e.preventDefault();
         const file = e.target.files[0];
 
         if(file.type === "image/jpeg" || file.type === "image/png") {
             const reader = new FileReader();
-            reader.onloadend = () => {
+            reader.onload = () => {
                 collectionData.imgBase64 = reader.result;
                 coverRef.current.src = reader.result;
             };
@@ -25,9 +27,16 @@ export function NewPlaylistModal({ setPlaylistModal }) {
         };
     };
 
-    function createCollection(e) {
+    async function createCollection(e) {
         e.preventDefault();
-        window.collection.createCollection(collectionData);
+        const res = await window.collection.createCollection(collectionData);
+
+        if(res === "created") {
+            setPlaylistModal(false);
+            getCollection();
+        } else {
+            setCreateError(res);
+        };
     };
 
     return (
@@ -55,7 +64,7 @@ export function NewPlaylistModal({ setPlaylistModal }) {
                                     <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
                                 </svg>
                                 <label htmlFor="file" className="absolute top-0 left-0 w-full h-full cursor-pointer"></label>
-                                <input type="file" id="file" className="hidden" onChange={e => setCover(e)}/>
+                                <input type="file" id="file" className="hidden" onChange={e => setCoverData(e)}/>
                             </button>
                         </div>
                         <button type="submit" className="flex justify-center items-center bg-green-400 border-2 border-green-400 cursor-pointer hover:bg-white hover:*:fill-green-400 hover:*:text-green-400">
@@ -66,6 +75,7 @@ export function NewPlaylistModal({ setPlaylistModal }) {
                         </button>
                     </div>
                 </form>
+                {createError && <NewPlaylistError error={createError} setError={setCreateError}/>}
             </div>
         </div>
     )
