@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { mainContext } from "../../../Context/context"
 
-export function NewPlaylistButton({ setPlaylistModal }) {
+export function NewCollectionButton({ setPlaylistModal }) {
     const { current } = useContext(mainContext);
 
     return (

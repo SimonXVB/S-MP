@@ -3,13 +3,13 @@ const { ipcMain, app, BrowserWindow, screen } = require('electron');
 const { createRootDirs } = require("./handlers/createRootDirs");
 const { createCollection } = require("./handlers/collectionHandlers/createCollection");
 const { getCollections } = require("./handlers/collectionHandlers/getCollections");
-const { handleDelDir } = require("./handlers/collectionHandlers/deleteCollection");
+const { deleteCollection } = require("./handlers/collectionHandlers/deleteCollection");
+const { editCollection } = require("./handlers/collectionHandlers/editCollection");
 const { handleCopyFile } = require("./handlers/fileHandlers/copyFileHandler");
 const { handleReadDir } = require("./handlers/fileHandlers/readFileHandler");
 const { handleDelFile } = require("./handlers/fileHandlers/delFileHandler");
 const { handleRenameFile } = require("./handlers/fileHandlers/renameFileHandler");
 const { handleOpenFolder } = require("./handlers/fileHandlers/openFolderHandler");
-const { handleRenameDir} = require("./handlers/collectionHandlers/renameDirHandler");
 
 const createWindow = () => {
   const displays = screen.getAllDisplays()
@@ -70,3 +70,5 @@ ipcMain.handle("createRootDirs", createRootDirs);
 // Collection/Playlist handlers
 ipcMain.handle("createCollection", createCollection);
 ipcMain.handle("getCollections", getCollections);
+ipcMain.handle("deleteCollection", deleteCollection);
+ipcMain.handle("editCollection", editCollection);

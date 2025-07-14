@@ -10,9 +10,9 @@ contextBridge.exposeInMainWorld('files', {
 
 contextBridge.exposeInMainWorld("collection", {
   createCollection: collectionData => ipcRenderer.invoke("createCollection", collectionData),
-  getCollections: () => ipcRenderer.invoke("getCollections"),
-  deletePlaylist: (targetDir, name) => ipcRenderer.invoke("deletePlaylist", [targetDir, name]),
-  renamePlaylist: (oldName, newName, targetDir) => ipcRenderer.invoke('renamePlaylist', [oldName, newName, targetDir]),
+  getCollections: currentTab => ipcRenderer.invoke("getCollections", currentTab),
+  deleteCollection: deleteData => ipcRenderer.invoke("deleteCollection", deleteData),
+  editCollection: editData => ipcRenderer.invoke('editCollection', editData),
 });
 
 contextBridge.exposeInMainWorld("utils", {
