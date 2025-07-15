@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { mainContext } from "./Context/context";
 import { Navbar } from "./components/Navbar";
-import { MediaTab } from "./components/MediaTabComps/MediaTab";
+import { CollectionsTab } from "./Components/CollectionsTabComps/CollectionsTab";
 import { VideoPlayer } from "./Components/PlayerComps/VideoPlayer";
 import { AudioPlayer } from "./Components/PlayerComps/AudioPlayer";
 
@@ -18,8 +18,8 @@ export function Main() {
     return (
         <div className="h-screen flex flex-col">
             <Navbar/>
-            {current === "videos" && <MediaTab/>}
-            {current === "music" && <MediaTab/>}
+            {current === "videos" && <CollectionsTab/>}
+            {current === "music" && <CollectionsTab/>}
             {current === "playingVideo" && <VideoPlayer/>}
             {current === "playingMusic" && <AudioPlayer/>}
         </div>

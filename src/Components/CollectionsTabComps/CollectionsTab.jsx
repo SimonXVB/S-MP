@@ -3,19 +3,29 @@ import { mainContext } from "../../Context/context";
 import { NewCollectionButton } from "./Individuals/NewCollectionButton";
 import { NewCollectionModal } from "./Individuals/NewCollectionModal";
 import { DeleteCollectionModal } from "./Individuals/DeleteCollectionModal";
-import { EditCollectionModal } from "./Individuals/EditCollectionModal";
+import { ContextMenu } from "./Individuals/ContextMenu";
 
-export function MediaTab() {
+export function CollectionsTab() {
     const { current } = useContext(mainContext);
 
     const [playlistModal, setPlaylistModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState("");
-    const [editModal, setEditModal] = useState({});
+    const [contextMenu, setContextMenu] = useState({});
     const [collection, setCollection] = useState([]);
 
     async function getCollection() {
         const data = await window.collection.getCollections(current);
         setCollection(data);
+    };
+
+    function setContextData(e, collectionName) {
+        const contextData = {
+            name: collectionName,
+            x: e.clientX,
+            y: e.clientY
+        };
+
+        setContextMenu(contextData);
     };
 
     useEffect(() => {
@@ -30,13 +40,11 @@ export function MediaTab() {
                     <NewCollectionButton setPlaylistModal={setPlaylistModal}/>
                     {collection.map((entry, i) => (
                         <>
-                            <div key={i} className="relative w-50 h-50 flex flex-col justify-center items-center bg-red-400">
+                            <div key={i} onContextMenu={e => setContextData(e, entry.name)} className="relative w-50 h-50 flex flex-col justify-center items-center bg-red-400">
                                 <img src={entry.img} className="bg-red-400"/>
                                 <p className="absolute top-full left-0 w-full bg-white font-bold backdrop-blur-xl px-1">{entry.name}</p>
                                 <div className="text-white font-bold bg-red-400 absolute top-full left-0 w-full backdrop-blur-xl px-1">
                                     <p className="">{entry.name}</p>
-                                    <button className="mr-5" onClick={() => setDeleteModal(entry.name)}>Del</button>
-                                    <button onClick={() => setEditModal({name: entry.name, img: entry.img})}>Edit</button>
                                 </div>
                             </div>
                         </>
@@ -45,7 +53,7 @@ export function MediaTab() {
             </div>
             {playlistModal && <NewCollectionModal setCollectionModal={setPlaylistModal} getCollection={getCollection}/>}
             {deleteModal && <DeleteCollectionModal setDeleteModal={setDeleteModal} getCollection={getCollection} collectionName={deleteModal}/>}
-            {editModal.name && <EditCollectionModal setEditModal={setEditModal} getCollection={getCollection} collectionName={editModal.name} img={editModal.img}/>}
+            {contextMenu.name && <ContextMenu setContextMenu={setContextMenu} contextData={contextMenu}/>}
         </>
     )
 };

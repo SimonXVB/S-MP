@@ -1,32 +1,24 @@
 const { app } = require("electron");
 const path = require('path');
-const { rename, writeFile } = require('fs/promises');
+const { rename, readdir, writeFile } = require('fs/promises');
 
-async function editCollection(event, editData) {
+async function editName(event, editData) {
 	try {
-		const data = require(path.join(app.getPath('appData'), "Swan MP", "Swan MP Data", "data.json"));
-		const toEditIndex = data[editData.targetDir].findIndex(el => el.name === editData.oldName);
+		const editPath = path.join(app.getPath(editData.targetDir), "Swan MP");
+		const collections = (await readdir(editPath, {withFileTypes: true})).filter(col => col.isDirectory());
 
 		// Throw error when name is empty
-		if(editData.name === "") {
+		if(editData.newName === "") {
 			throw new Error("empty");
 		};
 
         // Throw error when a folder with the same name aleady exists
-        if(data[editData.targetDir].some(e => e.name === editData.name)) {
+       	if(collections.some(col => col.name === editData.newName)) {
             throw new Error("exists");
         };
 
 		// Rename corresponding folder
 		rename(path.join(app.getPath(editData.targetDir), "Swan MP", editData.oldName), path.join(app.getPath(editData.targetDir), "Swan MP", editData.newName));
-
-		// Edit entry in data.json file
-		const entry = data[editData.targetDir][toEditIndex];
-
-		entry.name = editData.newName;
-		entry.img = editData.img;
-		
-		await writeFile(path.join(app.getPath('appData'), "Swan MP", "Swan MP Data", "data.json"), JSON.stringify(data));
 
 		return "edited";
 	} catch (error) {
@@ -35,4 +27,19 @@ async function editCollection(event, editData) {
 	};
 };
 
-module.exports = { editCollection };
+async function editCover(event, editData) {
+	try {
+		const editPath = path.join(app.getPath(editData.targetDir), "Swan MP", editData.name);
+
+		//Edit image
+		const base64Img = editData.img.split(';base64,').pop();
+		await writeFile(path.join(editPath, "coverImg.png"), base64Img, {encoding: "base64"});
+
+		return "edited";
+	} catch (error) {
+		console.log(error);
+		return error.message;
+	};
+};
+
+module.exports = { editName, editCover };

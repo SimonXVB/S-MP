@@ -1,11 +1,11 @@
 const path = require('path');
-const { mkdir, writeFile } = require('fs/promises');
+const { mkdir, writeFile, readdir } = require('fs/promises');
 const { app } = require("electron");
 
 async function createCollection(event, collectionData) {
     try {
-        const data = require(path.join(app.getPath('appData'), "Swan MP", "Swan MP Data", "data.json"));
-        const collectionPath = path.join(app.getPath(collectionData.targetDir), "Swan MP", collectionData.name);
+        const collectionPath = path.join(app.getPath(collectionData.targetDir), "Swan MP");
+        const collections = (await readdir(collectionPath, {withFileTypes: true})).filter(col => col.isDirectory());
 
         // Throw error when name is empty
         if(collectionData.name === "") {
@@ -13,20 +13,17 @@ async function createCollection(event, collectionData) {
         };
 
         // Throw error when a folder with the same name aleady exists
-        if(data[collectionData.targetDir].some(e => e.name === collectionData.name)) {
+        if(collections.some(col => col.name === collectionData.name)) {
             throw new Error("exists");
         };
 
-        //Create collection folder and corresponding entry in data.json file
-        await mkdir(collectionPath);
+        //Create collection folder and add cover image to folder (if present)
+        await mkdir(path.join(collectionPath, collectionData.name));
 
-        data[collectionData.targetDir].push({
-            name: collectionData.name,
-            img: collectionData.img,
-            path: collectionPath,
-            creationDate: Date.now()
-        });
-        await writeFile(path.join(app.getPath('appData'), "Swan MP", "Swan MP Data", "data.json"), JSON.stringify(data));
+        if(collectionData.img) {
+            const base64Img = collectionData.img.split(';base64,').pop();
+            await writeFile(path.join(collectionPath, collectionData.name, "coverImg.png"), base64Img, {encoding: "base64"});
+        };
 
         return "created";
     } catch (error) {

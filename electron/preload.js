@@ -12,10 +12,10 @@ contextBridge.exposeInMainWorld("collection", {
   createCollection: collectionData => ipcRenderer.invoke("createCollection", collectionData),
   getCollections: currentTab => ipcRenderer.invoke("getCollections", currentTab),
   deleteCollection: deleteData => ipcRenderer.invoke("deleteCollection", deleteData),
-  editCollection: editData => ipcRenderer.invoke('editCollection', editData),
+  editName: editData => ipcRenderer.invoke("editName", editData),
+  editCover: img => ipcRenderer.invoke("editCover", img) 
 });
 
 contextBridge.exposeInMainWorld("utils", {
-  getAppPath: () => ipcRenderer.invoke("getAppPath"),
   createRootDirs: () => ipcRenderer.invoke("createRootDirs")
 });

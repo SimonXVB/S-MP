@@ -7,8 +7,6 @@ export function DeleteCollectionModal({ setDeleteModal, getCollection, collectio
     
     const collectionType = current === "videos" ? "Collection" : "Playlist";
 
-    console.log(collectionName)
-
     async function deleteCollection() {
         const res = await window.collection.deleteCollection({name: collectionName, targetDir: current});
         getCollection();
