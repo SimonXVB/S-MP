@@ -1,7 +1,43 @@
 import { useEffect, useRef } from "react";
 
-export function ContextMenu({ setContextMenu, contextData }) {
+export function ContextMenu({ setContextMenu, setDeleteModal, contextData }) {
     const contextRef = useRef();
+
+    const contextMenuEntries = [
+        {
+            text: "Open",
+            action: () => openCollection(contextData.name)
+        },
+        {
+            text: "Change Cover Image",
+            action: () => changeCoverImage(contextData.name)
+        },
+        {
+            text: "Rename",
+            action: () => renameCollection(contextData.name)
+        },
+        {
+            text: "Delete",
+            action: () => openDeleteModal(contextData.name)
+        }
+    ];
+
+    function openCollection(name) {
+
+    };
+
+    function changeCoverImage(name) {
+
+    };
+
+    function renameCollection(name) {
+
+    };
+
+    function openDeleteModal(name) {
+        setDeleteModal(name);
+        setContextMenu({});
+    };
 
     function getCoords() {
         let x, y;
@@ -15,15 +51,11 @@ export function ContextMenu({ setContextMenu, contextData }) {
         return { x, y };
     };
 
-    function closeContextMenu(e) {
-        !contextRef.current.contains(e.target) && setContextMenu({});
-    };
-
     useEffect(() => {
-        const { x, y } = getCoords();
+        const closeContextMenu = e => !contextRef.current.contains(e.target) && setContextMenu({});
 
-        contextRef.current.style.top = y + "px";
-        contextRef.current.style.left = x + "px";
+        contextRef.current.style.top = getCoords().y + "px";
+        contextRef.current.style.left = getCoords().x + "px";
 
         document.addEventListener("click", closeContextMenu);
 
@@ -34,8 +66,12 @@ export function ContextMenu({ setContextMenu, contextData }) {
     }, [contextData.x, contextData.y]);
 
     return (
-        <div ref={contextRef} className="fixed bg-green-400 h-80 w-36 z-20">
-            <div>contextMenu</div>
+        <div ref={contextRef} className="fixed flex flex-col z-20">
+            {contextMenuEntries.map((entry, i) => (
+                <button key={i} onClick={entry.action} className="bg-white text-red-400 text-left font-bold p-2 pr-4 py-1 cursor-pointer last:rounded-b-md first:rounded-t-md hover:bg-red-300 hover:text-white">
+                    <p>{entry.text}</p>
+                </button>
+            ))}
         </div>
     );
 };

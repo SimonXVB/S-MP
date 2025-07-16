@@ -1,6 +1,6 @@
 import { useRef, useContext, useState } from "react";
 import { mainContext } from "../../../Context/context";
-import { CollectionModalError } from "./CollectionModalError";
+import { CollectionModalError } from "./NewCollectionModalError";
 
 export function NewCollectionModal({ setCollectionModal, getCollection }) {
     const { current } = useContext(mainContext);

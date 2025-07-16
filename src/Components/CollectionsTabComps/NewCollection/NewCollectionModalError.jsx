@@ -16,7 +16,7 @@ export function CollectionModalError({ error, setError }) {
             case "empty":
                 return " Name field cannot be empty";
             default:
-                " An error occurred"
+                " An error occurred!"
         };
     };
 
