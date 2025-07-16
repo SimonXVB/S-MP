@@ -13,7 +13,7 @@ contextBridge.exposeInMainWorld("collection", {
   getCollections: currentTab => ipcRenderer.invoke("getCollections", currentTab),
   deleteCollection: deleteData => ipcRenderer.invoke("deleteCollection", deleteData),
   editName: editData => ipcRenderer.invoke("editName", editData),
-  editCover: img => ipcRenderer.invoke("editCover", img) 
+  editCover: editData => ipcRenderer.invoke("editCover", editData)
 });
 
 contextBridge.exposeInMainWorld("utils", {

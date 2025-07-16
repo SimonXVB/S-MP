@@ -40,7 +40,7 @@ export function CollectionsTab() {
                     <NewCollectionButton setPlaylistModal={setNewColletion}/>
                     {collection.map((entry, i) => (
                         <button key={i} onContextMenu={e => setContextData(e, entry.name)} className="relative w-50 h-50 flex flex-col justify-center items-center bg-red-400">
-                            <img src={entry.img}/>
+                            <img src={entry.img && `${entry.img}?${Date.now()}`}/>
                             <p className="absolute bottom-0 left-0 w-full bg-white/70 font-bold backdrop-blur-xl px-1 overflow-hidden">{entry.name}</p>
                         </button>
                     ))}
@@ -48,7 +48,14 @@ export function CollectionsTab() {
             </div>
             {newCollection && <NewCollectionModal setCollectionModal={setNewColletion} getCollection={getCollection}/>}
             {deleteModal && <DeleteCollectionModal setDeleteModal={setDeleteModal} getCollection={getCollection} collectionName={deleteModal}/>}
-            {contextMenu.name && <ContextMenu setContextMenu={setContextMenu} setDeleteModal={setDeleteModal} getCollection={getCollection} contextData={contextMenu}/>}
+            {contextMenu.name &&
+                <ContextMenu 
+                    setContextMenu={setContextMenu} 
+                    setDeleteModal={setDeleteModal} 
+                    getCollection={getCollection}
+                    contextData={contextMenu}
+                />
+            }
         </>
     )
 };

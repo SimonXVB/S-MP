@@ -17,7 +17,7 @@ async function getCollections(event, targetDir) {
     // Push name and image (if exists) data to collectionsData array
     collectionsData.push({
       name: col.name,
-      img: imgExists ? path.join(collectionsPath, col.name, "coverImg.png") : ""
+      img: imgExists && path.join(collectionsPath, col.name, "coverImg.png")
     });
   });
 

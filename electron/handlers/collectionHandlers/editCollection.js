@@ -1,6 +1,6 @@
-const { app } = require("electron");
+const { app, dialog } = require("electron");
 const path = require('path');
-const { rename, readdir, writeFile } = require('fs/promises');
+const { rename, readdir, copyFile } = require('fs/promises');
 
 async function editName(event, editData) {
 	try {
@@ -29,11 +29,18 @@ async function editName(event, editData) {
 
 async function editCover(event, editData) {
 	try {
-		const editPath = path.join(app.getPath(editData.targetDir), "Swan MP", editData.name);
+		const res = await dialog.showOpenDialog({properties: ["openFile", ""]});
+		const imgPath = res.filePaths[0];
+
+		if(res.canceled) return;
+
+		// Check for correct file format
+		if(!imgPath.endsWith("jpg") && !imgPath.endsWith("jpeg") && !imgPath.endsWith("png")) {
+			throw new Error("format");
+		};
 
 		//Edit image
-		const base64Img = editData.img.split(';base64,').pop();
-		await writeFile(path.join(editPath, "coverImg.png"), base64Img, {encoding: "base64"});
+		await copyFile(imgPath, path.join(app.getPath(editData.targetDir), "Swan MP", editData.name, "coverImg.png"));
 
 		return "edited";
 	} catch (error) {

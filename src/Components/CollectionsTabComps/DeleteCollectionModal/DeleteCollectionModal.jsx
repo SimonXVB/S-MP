@@ -10,7 +10,8 @@ export function DeleteCollectionModal({ setDeleteModal, getCollection, collectio
 
     async function deleteCollection() {
         const res = await window.collection.deleteCollection({name: collectionName, targetDir: current});
-        getCollection();
+        
+        await getCollection();
 
         if(res === "deleted") {
             setDeleteModal("");

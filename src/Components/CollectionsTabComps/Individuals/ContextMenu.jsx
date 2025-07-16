@@ -1,6 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useContext } from "react";
+import { mainContext } from "../../../Context/context";
 
-export function ContextMenu({ setContextMenu, setDeleteModal, contextData }) {
+export function ContextMenu({ setContextMenu, setDeleteModal, getCollection, contextData }) {
+    const { current } = useContext(mainContext);
     const contextRef = useRef();
 
     const contextMenuEntries = [
@@ -10,7 +12,7 @@ export function ContextMenu({ setContextMenu, setDeleteModal, contextData }) {
         },
         {
             text: "Change Cover Image",
-            action: () => changeCoverImage(contextData.name)
+            action: () => changeCoverImage()
         },
         {
             text: "Rename",
@@ -18,7 +20,7 @@ export function ContextMenu({ setContextMenu, setDeleteModal, contextData }) {
         },
         {
             text: "Delete",
-            action: () => openDeleteModal(contextData.name)
+            action: () => openDeleteModal()
         }
     ];
 
@@ -26,16 +28,22 @@ export function ContextMenu({ setContextMenu, setDeleteModal, contextData }) {
 
     };
 
-    function changeCoverImage(name) {
+    async function changeCoverImage() {
+        await window.collection.editCover({
+            name: contextData.name,
+            targetDir: current
+        });
 
+        setContextMenu({});
+        getCollection();
     };
 
     function renameCollection(name) {
 
     };
 
-    function openDeleteModal(name) {
-        setDeleteModal(name);
+    function openDeleteModal() {
+        setDeleteModal(contextData.name);
         setContextMenu({});
     };
 
