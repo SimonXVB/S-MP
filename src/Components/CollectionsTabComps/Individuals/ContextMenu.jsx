@@ -1,8 +1,6 @@
-import { useEffect, useRef, useContext } from "react";
-import { mainContext } from "../../../Context/context";
+import { useEffect, useRef } from "react";
 
-export function ContextMenu({ setContextMenu, setDeleteModal, getCollection, contextData }) {
-    const { current } = useContext(mainContext);
+export function ContextMenu({ setContextMenu, openDeleteModal, editCoverImage, coords }) {
     const contextRef = useRef();
 
     const contextMenuEntries = [
@@ -24,40 +22,22 @@ export function ContextMenu({ setContextMenu, setDeleteModal, getCollection, con
         }
     ];
 
-    async function editCoverImage() {
-        setContextMenu(prev => {
-            return {
-                ...prev,
-                open: false
-            };
-        });
-
-        await window.collection.editCover({
-            name: contextData.name,
-            targetDir: current
-        });
-
-        setContextMenu({});
-        getCollection();
-    };
-
-    function openDeleteModal() {
-        setDeleteModal(contextData.name);
-        setContextMenu({});
-    };
-
     function openCollection() {
+
+    };
+
+    function enableRename() {
 
     };
 
     function getCoords() {
         let x, y;
 
-        const totalX = (contextData.x + contextRef.current.clientWidth);
-        const totalY = (contextData.y + contextRef.current.clientHeight);
+        const totalX = (coords.x + contextRef.current.clientWidth);
+        const totalY = (coords.y + contextRef.current.clientHeight);
 
-        totalX > window.innerWidth ? x = contextData.x - (totalX - window.innerWidth) : x = contextData.x;
-        totalY > window.innerHeight ? y = contextData.y - (totalY - window.innerHeight) : y = contextData.y;
+        totalX > window.innerWidth ? x = coords.x - (totalX - window.innerWidth) : x = coords.x;
+        totalY > window.innerHeight ? y = coords.y - (totalY - window.innerHeight) : y = coords.y;
 
         return { x, y };
     };
@@ -76,19 +56,15 @@ export function ContextMenu({ setContextMenu, setDeleteModal, getCollection, con
             };
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [contextData.open, contextData.x, contextData.y]);
+    }, [coords.x, coords.y]);
 
     return (
-        <>
-            {contextData.open &&
-                <div ref={contextRef} className="fixed flex flex-col z-20">
-                    {contextMenuEntries.map((entry, i) => (
-                        <button key={i} onClick={entry.action} className="bg-white text-red-400 text-left font-bold p-2 pr-4 py-1 cursor-pointer last:rounded-b-md first:rounded-t-md hover:bg-red-300 hover:text-white">
-                            <p>{entry.text}</p>
-                        </button>
-                    ))}
-                </div>
-            }
-        </>
+        <div ref={contextRef} className="fixed flex flex-col z-20">
+            {contextMenuEntries.map((entry, i) => (
+                <button key={i} onClick={entry.action} className="bg-white text-red-400 text-left font-bold p-2 pr-4 py-1 cursor-pointer last:rounded-b-md first:rounded-t-md hover:bg-red-300 hover:text-white">
+                    <p>{entry.text}</p>
+                </button>
+            ))}
+        </div>
     );
 };
