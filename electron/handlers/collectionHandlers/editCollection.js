@@ -18,7 +18,7 @@ async function editName(event, editData) {
         };
 
 		// Rename corresponding folder
-		rename(path.join(app.getPath(editData.targetDir), "Swan MP", editData.oldName), path.join(app.getPath(editData.targetDir), "Swan MP", editData.newName));
+		await rename(path.join(editPath, editData.oldName), path.join(editPath, editData.newName));
 
 		return "edited";
 	} catch (error) {
@@ -29,7 +29,7 @@ async function editName(event, editData) {
 
 async function editCover(event, editData) {
 	try {
-		const res = await dialog.showOpenDialog({properties: ["openFile", ""]});
+		const res = await dialog.showOpenDialog({properties: ["openFile"]});
 		const imgPath = res.filePaths[0];
 
 		if(res.canceled) return;

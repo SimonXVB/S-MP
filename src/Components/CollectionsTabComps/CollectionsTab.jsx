@@ -18,8 +18,9 @@ export function CollectionsTab() {
         setCollection(data);
     };
 
-    function setContextData(e, collectionName) {
+    function setContextMenuData(e, collectionName) {
         const contextData = {
+            open: true,
             name: collectionName,
             x: e.clientX,
             y: e.clientY
@@ -39,23 +40,21 @@ export function CollectionsTab() {
                 <div className="w-fit h-[calc(100vh-54px)] overflow-y-auto flex flex-wrap gap-2 p-6">
                     <NewCollectionButton setPlaylistModal={setNewColletion}/>
                     {collection.map((entry, i) => (
-                        <button key={i} onContextMenu={e => setContextData(e, entry.name)} className="relative w-50 h-50 flex flex-col justify-center items-center bg-red-400">
+                        <button key={i} onContextMenu={e => setContextMenuData(e, entry.name)} className="relative w-50 h-50 flex flex-col justify-center items-center bg-red-400">
                             <img src={entry.img && `${entry.img}?${Date.now()}`}/>
-                            <p className="absolute bottom-0 left-0 w-full bg-white/70 font-bold backdrop-blur-xl px-1 overflow-hidden">{entry.name}</p>
+                            <input className="absolute bottom-0 left-0 w-full bg-white/70 font-bold backdrop-blur-xl px-1 overflow-hidden outline-0" readOnly/>
                         </button>
                     ))}
                 </div>
             </div>
+            <ContextMenu
+                setContextMenu={setContextMenu}
+                setDeleteModal={setDeleteModal}
+                getCollection={getCollection}
+                contextData={contextMenu}
+            />
             {newCollection && <NewCollectionModal setCollectionModal={setNewColletion} getCollection={getCollection}/>}
             {deleteModal && <DeleteCollectionModal setDeleteModal={setDeleteModal} getCollection={getCollection} collectionName={deleteModal}/>}
-            {contextMenu.name &&
-                <ContextMenu 
-                    setContextMenu={setContextMenu} 
-                    setDeleteModal={setDeleteModal} 
-                    getCollection={getCollection}
-                    contextData={contextMenu}
-                />
-            }
         </>
     )
 };

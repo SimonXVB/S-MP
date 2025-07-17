@@ -8,15 +8,15 @@ export function ContextMenu({ setContextMenu, setDeleteModal, getCollection, con
     const contextMenuEntries = [
         {
             text: "Open",
-            action: () => openCollection(contextData.name)
+            action: () => openCollection()
         },
         {
             text: "Change Cover Image",
-            action: () => changeCoverImage()
+            action: () => editCoverImage()
         },
         {
             text: "Rename",
-            action: () => renameCollection(contextData.name)
+            action: () => enableRename()
         },
         {
             text: "Delete",
@@ -24,11 +24,14 @@ export function ContextMenu({ setContextMenu, setDeleteModal, getCollection, con
         }
     ];
 
-    function openCollection(name) {
+    async function editCoverImage() {
+        setContextMenu(prev => {
+            return {
+                ...prev,
+                open: false
+            };
+        });
 
-    };
-
-    async function changeCoverImage() {
         await window.collection.editCover({
             name: contextData.name,
             targetDir: current
@@ -38,13 +41,13 @@ export function ContextMenu({ setContextMenu, setDeleteModal, getCollection, con
         getCollection();
     };
 
-    function renameCollection(name) {
-
-    };
-
     function openDeleteModal() {
         setDeleteModal(contextData.name);
         setContextMenu({});
+    };
+
+    function openCollection() {
+
     };
 
     function getCoords() {
@@ -60,26 +63,32 @@ export function ContextMenu({ setContextMenu, setDeleteModal, getCollection, con
     };
 
     useEffect(() => {
-        const closeContextMenu = e => !contextRef.current.contains(e.target) && setContextMenu({});
+        if(contextRef.current) {
+            const closeContextMenu = e => !contextRef.current.contains(e.target) && setContextMenu({});
 
-        contextRef.current.style.top = getCoords().y + "px";
-        contextRef.current.style.left = getCoords().x + "px";
+            contextRef.current.style.top = getCoords().y + "px";
+            contextRef.current.style.left = getCoords().x + "px";
 
-        document.addEventListener("click", closeContextMenu);
+            document.addEventListener("click", closeContextMenu);
 
-        return () => {
-            document.removeEventListener("click", closeContextMenu);
+            return () => {
+                document.removeEventListener("click", closeContextMenu);
+            };
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [contextData.x, contextData.y]);
+    }, [contextData.open, contextData.x, contextData.y]);
 
     return (
-        <div ref={contextRef} className="fixed flex flex-col z-20">
-            {contextMenuEntries.map((entry, i) => (
-                <button key={i} onClick={entry.action} className="bg-white text-red-400 text-left font-bold p-2 pr-4 py-1 cursor-pointer last:rounded-b-md first:rounded-t-md hover:bg-red-300 hover:text-white">
-                    <p>{entry.text}</p>
-                </button>
-            ))}
-        </div>
+        <>
+            {contextData.open &&
+                <div ref={contextRef} className="fixed flex flex-col z-20">
+                    {contextMenuEntries.map((entry, i) => (
+                        <button key={i} onClick={entry.action} className="bg-white text-red-400 text-left font-bold p-2 pr-4 py-1 cursor-pointer last:rounded-b-md first:rounded-t-md hover:bg-red-300 hover:text-white">
+                            <p>{entry.text}</p>
+                        </button>
+                    ))}
+                </div>
+            }
+        </>
     );
 };
