@@ -9,6 +9,7 @@ export function CollectionsTab() {
 
     const [newCollection, setNewColletion] = useState(false);
     const [collection, setCollection] = useState([]);
+    const [contextMenu, setContextMenu] = useState("");
 
     async function getCollection() {
         const data = await window.collection.getCollections(current);
@@ -25,7 +26,7 @@ export function CollectionsTab() {
             <div className="w-full h-[calc(100vh-54px)] overflow-y-auto flex flex-wrap gap-2 p-6 bg-gray-950 grow">
                 <NewCollectionButton setPlaylistModal={setNewColletion}/>
                 {collection.map(entry => (
-                    <Entry key={entry.name} collectionName={entry.name} img={entry.img} getCollection={getCollection}/>
+                    <Entry key={entry.name} collectionName={entry.name} img={entry.img} getCollection={getCollection} contextMenu={contextMenu} setContextMenu={setContextMenu}/>
                 ))}
             </div>
             {newCollection && <NewCollectionModal setCollectionModal={setNewColletion} getCollection={getCollection}/>}

@@ -39,7 +39,7 @@ export function ContextMenu({ setContextMenu, openDeleteModal, editCoverImage, e
     };
 
     useEffect(() => {
-        const closeContextMenu = e => !contextRef.current.contains(e.target) && setContextMenu(false);
+        const closeContextMenu = e => !contextRef.current.contains(e.target) && setContextMenu("");
 
         contextRef.current.style.top = getCoords().y + "px";
         contextRef.current.style.left = getCoords().x + "px";

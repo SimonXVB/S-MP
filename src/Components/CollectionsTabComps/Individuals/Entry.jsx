@@ -3,23 +3,22 @@ import { mainContext } from "../../../Context/context";
 import { ContextMenu } from "./ContextMenu";
 import { DeleteCollectionModal } from "./DeleteCollectionModal";
 
-export function Entry({collectionName, img, getCollection}) {
+export function Entry({collectionName, img, getCollection, contextMenu, setContextMenu}) {
     const { current } = useContext(mainContext);
 
     const inputRef = useRef();
 
     const [name, setName] = useState(collectionName);
     const [deleteModal, setDeleteModal] = useState(false);
-    const [contextMenu, setContextMenu] = useState(false);
     const [coords, setCoords] = useState({});
 
     function setContextData(e) {
         setCoords({x: e.clientX, y: e.clientY});
-        setContextMenu(true);
+        setContextMenu(collectionName);
     };
 
     async function editCoverImage() {
-        setContextMenu(false);
+        setContextMenu("");
 
         await window.collection.editCover({
             name: collectionName,
@@ -36,7 +35,7 @@ export function Entry({collectionName, img, getCollection}) {
         inputRef.current.disabled = false;
         inputRef.current.select();
 
-        setContextMenu(false);
+        setContextMenu("");
 
         setTimeout(() => {
             document.body.addEventListener("click", renameCollection);
@@ -69,7 +68,7 @@ export function Entry({collectionName, img, getCollection}) {
 
     function openDeleteModal() {
         setDeleteModal(name);
-        setContextMenu(false);
+        setContextMenu("");
     };
 
     async function deleteCollection() {
@@ -102,7 +101,7 @@ export function Entry({collectionName, img, getCollection}) {
                 setDeleteModal={setDeleteModal}
                 deleteCollection={deleteCollection}
             />}
-            {contextMenu && <ContextMenu
+            {contextMenu === collectionName && <ContextMenu
                 setContextMenu={setContextMenu}
                 openDeleteModal={openDeleteModal} 
                 editCoverImage={editCoverImage}
