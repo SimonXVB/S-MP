@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-export function ContextMenu({ setContextMenu, openDeleteModal, editCoverImage, coords }) {
+export function ContextMenu({ setContextMenu, openDeleteModal, editCoverImage, enableRename, coords }) {
     const contextRef = useRef();
 
     const contextMenuEntries = [
@@ -26,10 +26,6 @@ export function ContextMenu({ setContextMenu, openDeleteModal, editCoverImage, c
 
     };
 
-    function enableRename() {
-
-    };
-
     function getCoords() {
         let x, y;
 
@@ -43,17 +39,15 @@ export function ContextMenu({ setContextMenu, openDeleteModal, editCoverImage, c
     };
 
     useEffect(() => {
-        if(contextRef.current) {
-            const closeContextMenu = e => !contextRef.current.contains(e.target) && setContextMenu({});
+        const closeContextMenu = e => !contextRef.current.contains(e.target) && setContextMenu(false);
 
-            contextRef.current.style.top = getCoords().y + "px";
-            contextRef.current.style.left = getCoords().x + "px";
+        contextRef.current.style.top = getCoords().y + "px";
+        contextRef.current.style.left = getCoords().x + "px";
 
-            document.addEventListener("click", closeContextMenu);
+        document.addEventListener("click", closeContextMenu);
 
-            return () => {
-                document.removeEventListener("click", closeContextMenu);
-            };
+        return () => {
+            document.removeEventListener("click", closeContextMenu);
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [coords.x, coords.y]);

@@ -12,6 +12,11 @@ async function editName(event, editData) {
 			throw new Error("empty");
 		};
 
+		// Return function early when old name and new name are the same
+		if(editData.newName === editData.oldName) {			
+			return;
+		};
+
         // Throw error when a folder with the same name aleady exists
        	if(collections.some(col => col.name === editData.newName)) {
             throw new Error("exists");

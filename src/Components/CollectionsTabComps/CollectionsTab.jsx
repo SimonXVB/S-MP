@@ -24,8 +24,8 @@ export function CollectionsTab() {
         <>
             <div className="w-full h-[calc(100vh-54px)] overflow-y-auto flex flex-wrap gap-2 p-6 bg-gray-950 grow">
                 <NewCollectionButton setPlaylistModal={setNewColletion}/>
-                {collection.map((entry, i) => (
-                    <Entry key={i} name={entry.name} img={entry.img} getCollection={getCollection}/>
+                {collection.map(entry => (
+                    <Entry key={entry.name} collectionName={entry.name} img={entry.img} getCollection={getCollection}/>
                 ))}
             </div>
             {newCollection && <NewCollectionModal setCollectionModal={setNewColletion} getCollection={getCollection}/>}
