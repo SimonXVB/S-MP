@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { mainContext } from "../../../Context/context";
-import { ContextMenu } from "./ContextMenu";
+import { ContextMenu } from "../../ContextMenu";
 import { DeleteCollectionModal } from "./DeleteCollectionModal";
 
 export function Entry({collectionName, img, getCollection, contextMenu, setContextMenu}) {
@@ -12,9 +12,32 @@ export function Entry({collectionName, img, getCollection, contextMenu, setConte
     const [deleteModal, setDeleteModal] = useState(false);
     const [coords, setCoords] = useState({});
 
+    const contextMenuEntries = [
+        {
+            text: "Open",
+            action: () => openCollection()
+        },
+        {
+            text: "Change Cover Image",
+            action: () => editCoverImage()
+        },
+        {
+            text: "Rename",
+            action: () => enableRename()
+        },
+        {
+            text: "Delete",
+            action: () => openDeleteModal()
+        }
+    ];
+
     function setContextData(e) {
         setCoords({x: e.clientX, y: e.clientY});
         setContextMenu(collectionName);
+    };
+
+    function openCollection() {
+
     };
 
     async function editCoverImage() {
@@ -44,7 +67,7 @@ export function Entry({collectionName, img, getCollection, contextMenu, setConte
     };
 
     async function renameCollection(e) {
-        // Checks if input field exists or is focused or Enter/Esc key is pressed and returns function early
+        // Checks if input field exists/is focused or Enter/Esc key is pressed and returns function early
         if(!inputRef.current) return;
         if(!e.key && e.target === inputRef.current) return;
         if(e.key && (e.key !== "Enter" && e.key !== "Escape")) return;
@@ -67,7 +90,7 @@ export function Entry({collectionName, img, getCollection, contextMenu, setConte
     };
 
     function openDeleteModal() {
-        setDeleteModal(name);
+        setDeleteModal(true);
         setContextMenu("");
     };
 
@@ -79,7 +102,6 @@ export function Entry({collectionName, img, getCollection, contextMenu, setConte
 
         if(res === "deleted") {
             await getCollection();
-            setDeleteModal(false);
         };
     };
 
@@ -91,7 +113,7 @@ export function Entry({collectionName, img, getCollection, contextMenu, setConte
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return(
+    return (
         <>
             <div onContextMenu={e => setContextData(e)} className="relative w-50 h-50 flex flex-col justify-center items-center bg-red-400">
                 <img src={img && `${img}?${Date.now()}`}/>
@@ -103,9 +125,7 @@ export function Entry({collectionName, img, getCollection, contextMenu, setConte
             />}
             {contextMenu === collectionName && <ContextMenu
                 setContextMenu={setContextMenu}
-                openDeleteModal={openDeleteModal} 
-                editCoverImage={editCoverImage}
-                enableRename={enableRename}
+                entries={contextMenuEntries}
                 coords={coords}
             />}
         </>

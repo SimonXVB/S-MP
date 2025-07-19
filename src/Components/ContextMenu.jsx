@@ -1,30 +1,7 @@
 import { useEffect, useRef } from "react";
 
-export function ContextMenu({ setContextMenu, openDeleteModal, editCoverImage, enableRename, coords }) {
+export function ContextMenu({ setContextMenu, coords, entries }) {
     const contextRef = useRef();
-
-    const contextMenuEntries = [
-        {
-            text: "Open",
-            action: () => openCollection()
-        },
-        {
-            text: "Change Cover Image",
-            action: () => editCoverImage()
-        },
-        {
-            text: "Rename",
-            action: () => enableRename()
-        },
-        {
-            text: "Delete",
-            action: () => openDeleteModal()
-        }
-    ];
-
-    function openCollection() {
-
-    };
 
     function getCoords() {
         let x, y;
@@ -54,7 +31,7 @@ export function ContextMenu({ setContextMenu, openDeleteModal, editCoverImage, e
 
     return (
         <div ref={contextRef} className="fixed flex flex-col z-20">
-            {contextMenuEntries.map((entry, i) => (
+            {entries.map((entry, i) => (
                 <button key={i} onClick={entry.action} className="bg-white text-red-400 text-left font-bold p-2 pr-4 py-1 cursor-pointer last:rounded-b-md first:rounded-t-md hover:bg-red-300 hover:text-white">
                     <p>{entry.text}</p>
                 </button>
