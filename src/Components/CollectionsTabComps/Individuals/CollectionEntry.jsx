@@ -3,7 +3,7 @@ import { mainContext } from "../../../Context/context";
 import { ContextMenu } from "../../ContextMenu";
 import { DeleteCollectionModal } from "./DeleteCollectionModal";
 
-export function Entry({collectionName, img, getCollection, contextMenu, setContextMenu}) {
+export function CollectionEntry({collectionName, img, getCollection, contextMenu, setContextMenu}) {
     const { current } = useContext(mainContext);
 
     const inputRef = useRef();
