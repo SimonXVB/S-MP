@@ -4,7 +4,7 @@ import { ContextMenu } from "../../ContextMenu";
 import { DeleteCollectionModal } from "./DeleteCollectionModal";
 
 export function CollectionEntry({collectionName, img, getCollection, contextMenu, setContextMenu}) {
-    const { tabInfo } = useContext(mainContext);
+    const { tabInfo, setTabInfo } = useContext(mainContext);
 
     const inputRef = useRef();
 
@@ -37,7 +37,10 @@ export function CollectionEntry({collectionName, img, getCollection, contextMenu
     };
 
     function openCollection() {
-
+        setTabInfo(prev => ({
+            ...prev,
+            currentCollection: collectionName
+        }));
     };
 
     async function editCoverImage() {

@@ -28,7 +28,7 @@ export function CurrentCollection() {
         <div className="w-full h-[calc(100vh-54px)] overflow-y-auto flex flex-wrap gap-2 p-6 bg-gray-950 grow">
             <CurrentCollectionControls/>
             {searchCollection().map(entry => (
-                <CurrentCollectionEntry key={entry.name} collectionName={entry.name} img={entry.img} getCurrentCollection={getCurrentCollection} contextMenu={contextMenu} setContextMenu={setContextMenu}/>
+                <CurrentCollectionEntry key={entry.name} fileName={entry.name} img={entry.img} getCurrentCollection={getCurrentCollection} contextMenu={contextMenu} setContextMenu={setContextMenu}/>
             ))}
         </div>
     )
