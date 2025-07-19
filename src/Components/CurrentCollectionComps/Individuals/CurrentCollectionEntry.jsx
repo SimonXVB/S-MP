@@ -1,9 +1,9 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { mainContext } from "../../../Context/context";
 import { ContextMenu } from "../../ContextMenu";
-import { DeleteCollectionModal } from "./DeleteCollectionModal";
+import { DeleteCollectionModal } from "./DeleteFileModal";
 
-export function CollectionEntry({collectionName, img, getCollection, contextMenu, setContextMenu}) {
+export function CurrentCollectionEntry({collectionName, img, getCollection, contextMenu, setContextMenu}) {
     const { tabInfo } = useContext(mainContext);
 
     const inputRef = useRef();

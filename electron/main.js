@@ -9,7 +9,7 @@ const { handleCopyFile } = require("./handlers/fileHandlers/copyFileHandler");
 const { handleReadDir } = require("./handlers/fileHandlers/readFileHandler");
 const { handleDelFile } = require("./handlers/fileHandlers/delFileHandler");
 const { handleRenameFile } = require("./handlers/fileHandlers/renameFileHandler");
-const { handleOpenFolder } = require("./handlers/fileHandlers/openFolderHandler");
+const { openFolder } = require("./handlers/openFolder");
 
 const createWindow = () => {
   const displays = screen.getAllDisplays()

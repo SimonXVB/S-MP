@@ -2,12 +2,12 @@ import { useEffect, useRef, useContext } from "react"
 import { mainContext } from "../../../Context/context";
 
 export function CollectionModalError({ error, setError }) {
-    const { current } = useContext(mainContext);
+    const { tabInfo } = useContext(mainContext);
 
     const timeoutRef = useRef(0);
     const errorRef = useRef();
 
-    const collectionType = current === "vidoes" ? "Collection" : "Playlist";
+    const collectionType = tabInfo.currentTab === "vidoes" ? "Collection" : "Playlist";
 
     const getErrorMessage = () => {
         switch(error) {

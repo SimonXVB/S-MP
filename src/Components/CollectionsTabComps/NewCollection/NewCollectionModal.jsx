@@ -3,7 +3,7 @@ import { mainContext } from "../../../Context/context";
 import { CollectionModalError } from "./NewCollectionModalError";
 
 export function NewCollectionModal({ setCollectionModal, getCollection }) {
-    const { current } = useContext(mainContext);
+    const { tabInfo } = useContext(mainContext);
 
     const [error, setError] = useState("");
 
@@ -11,7 +11,7 @@ export function NewCollectionModal({ setCollectionModal, getCollection }) {
     const collectionDataRef = useRef({
         name: "",
         img: null,
-        targetDir: current
+        targetDir: tabInfo.currentTab
     });
 
     function setCoverData(e) {

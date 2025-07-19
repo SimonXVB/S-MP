@@ -5,14 +5,14 @@ import { NewCollectionModal } from "./NewCollection/NewCollectionModal";
 import { CollectionEntry } from "./Individuals/CollectionEntry";
 
 export function CollectionsTab() {
-    const { current, searchValue } = useContext(mainContext);
+    const { tabInfo, searchValue } = useContext(mainContext);
 
     const [newCollection, setNewColletion] = useState(false);
     const [collection, setCollection] = useState([]);
     const [contextMenu, setContextMenu] = useState("");
 
     async function getCollection() {
-        const data = await window.collection.getCollections(current);
+        const data = await window.collection.getCollections(tabInfo.currentTab);
         setCollection(data);
     };
 

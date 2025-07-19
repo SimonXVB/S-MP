@@ -2,9 +2,9 @@ import { useContext } from "react";
 import { mainContext } from "../../../Context/context";
 
 export function DeleteCollectionModal({ setDeleteModal, deleteCollection }) {
-    const { current } = useContext(mainContext);
+    const { tabInfo } = useContext(mainContext);
     
-    const collectionType = current === "videos" ? "Collection" : "Playlist";
+    const collectionType = tabInfo.currentTab === "videos" ? "Collection" : "Playlist";
 
     return (
         <div className="fixed top-0 left-0 flex justify-center items-center w-screen h-screen bg-gray-400/20 z-10">

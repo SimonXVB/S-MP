@@ -6,7 +6,7 @@ import { VideoPlayer } from "./Components/PlayerComps/VideoPlayer";
 import { AudioPlayer } from "./Components/PlayerComps/AudioPlayer";
 
 export function Main() {
-    const { current } = useContext(mainContext);
+    const { tabInfo } = useContext(mainContext);
 
     useEffect(() => {
         async function createRootDirs() {
@@ -18,10 +18,10 @@ export function Main() {
     return (
         <div className="h-screen flex flex-col">
             <Navbar/>
-            {current === "videos" && <CollectionsTab/>}
-            {current === "music" && <CollectionsTab/>}
-            {current === "playingVideo" && <VideoPlayer/>}
-            {current === "playingMusic" && <AudioPlayer/>}
+            {tabInfo.currentCollection === "" && tabInfo.currentTab === "videos" && <CollectionsTab/>}
+            {tabInfo.currentCollection === "" && tabInfo.currentTab === "music" && <CollectionsTab/>}
+            {tabInfo.currentTab === "playingVideo" && <VideoPlayer/>}
+            {tabInfo.currentTab === "playingMusic" && <AudioPlayer/>}
         </div>
     );
 };
