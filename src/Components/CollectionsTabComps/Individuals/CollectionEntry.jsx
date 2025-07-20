@@ -4,7 +4,7 @@ import { ContextMenu } from "../../ContextMenu";
 import { DeleteCollectionModal } from "./DeleteCollectionModal";
 
 export function CollectionEntry({collectionName, img, getCollection, contextMenu, setContextMenu}) {
-    const { tabInfo, setTabInfo } = useContext(mainContext);
+    const { tabInfo, setTabInfo, setError } = useContext(mainContext);
 
     const inputRef = useRef();
 
@@ -46,12 +46,16 @@ export function CollectionEntry({collectionName, img, getCollection, contextMenu
     async function editCoverImage() {
         setContextMenu("");
 
-        await window.collection.editCover({
+        const res = await window.collection.editCover({
             name: collectionName,
             targetDir: tabInfo.currentTab
         });
 
-        await getCollection();
+        if(res === "edited") {
+            await getCollection();
+        } else {
+            setError(res);
+        };
     };
 
     function enableRename() {
@@ -86,6 +90,8 @@ export function CollectionEntry({collectionName, img, getCollection, contextMenu
         } else {
             setName(collectionName);
             inputRef.current.disabled = true;
+
+            setError(res);
         };
 
         document.body.removeEventListener("click", renameCollection);
@@ -105,6 +111,8 @@ export function CollectionEntry({collectionName, img, getCollection, contextMenu
 
         if(res === "deleted") {
             await getCollection();
+        } else {
+            setError(res);
         };
     };
 

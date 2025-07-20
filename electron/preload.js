@@ -5,7 +5,6 @@ contextBridge.exposeInMainWorld('files', {
   getCollection: getData => ipcRenderer.invoke('getCollection', getData),
   deleteFile: deleteData => ipcRenderer.invoke('deleteFile', deleteData),
   renameFile: editData => ipcRenderer.invoke('renameFile', editData),
-  openFolder: (targetDir) => ipcRenderer.invoke("openFolder", targetDir)
 });
 
 contextBridge.exposeInMainWorld("collection", {
@@ -17,5 +16,6 @@ contextBridge.exposeInMainWorld("collection", {
 });
 
 contextBridge.exposeInMainWorld("utils", {
-  createRootDirs: () => ipcRenderer.invoke("createRootDirs")
+  createRootDirs: () => ipcRenderer.invoke("createRootDirs"),
+  openFolder: targetDir => ipcRenderer.invoke("openFolder", targetDir)
 });

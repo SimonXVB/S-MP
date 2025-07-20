@@ -5,6 +5,7 @@ import { CollectionsTab } from "./Components/CollectionsTabComps/CollectionsTab"
 import { CurrentCollection } from "./Components/CurrentCollectionComps/CurrentCollection";
 import { VideoPlayer } from "./Components/PlayerComps/VideoPlayer";
 import { AudioPlayer } from "./Components/PlayerComps/AudioPlayer";
+import { GlobalError } from "./Components/GlobalError";
 
 export function Main() {
     const { tabInfo } = useContext(mainContext);
@@ -23,6 +24,7 @@ export function Main() {
             {tabInfo.currentCollection !== "" && <CurrentCollection/>}
             {tabInfo.currentTab === "playingVideo" && <VideoPlayer/>}
             {tabInfo.currentTab === "playingMusic" && <AudioPlayer/>}
+            <GlobalError/>
         </div>
     );
 };

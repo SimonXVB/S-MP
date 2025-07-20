@@ -3,7 +3,7 @@ import { mainContext } from "../../../Context/context";
 import { ContextMenu } from "../../ContextMenu";
 
 export function CurrentCollectionEntry({fileName, img, getCurrentCollection, contextMenu, setContextMenu}) {
-    const { tabInfo } = useContext(mainContext);
+    const { tabInfo, setError } = useContext(mainContext);
 
     const inputRef = useRef();
 
@@ -67,6 +67,8 @@ export function CurrentCollectionEntry({fileName, img, getCurrentCollection, con
         } else {
             setName(fileName);
             inputRef.current.disabled = true;
+
+            setError(res);
         };
 
         document.body.removeEventListener("click", renameFile);
@@ -83,6 +85,8 @@ export function CurrentCollectionEntry({fileName, img, getCurrentCollection, con
         if(res === "deleted") {
             setContextMenu(false);
             await getCurrentCollection();
+        } else {
+            setError(res);
         };
     };
 

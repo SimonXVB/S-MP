@@ -9,13 +9,14 @@ async function renameFile(event, editData) {
     };
 
     if(editData.newName === "") {
-      throw new Error("empty");
+      return;
     };
 
     const data = await readdir(path.join(app.getPath(editData.targetDir), "Swan MP", editData.targetCol));
     
+    // Throw error when file with same name already exists
     if(data.some(e => e === (editData.newName + path.extname(editData.oldName)))) {
-      throw new Error("exists");
+      throw new Error("existsFile");
     };
     
     await rename(

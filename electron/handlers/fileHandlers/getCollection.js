@@ -13,6 +13,7 @@ async function getCollection(event, getData) {
 
     const correctFormatFiles = [];
 
+    // Loops over dir entries and checks for correct file format
     data.forEach(file => {
       const ext = path.extname(file);
 

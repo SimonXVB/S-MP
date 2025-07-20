@@ -5,15 +5,19 @@ import { NewCollectionModal } from "./NewCollection/NewCollectionModal";
 import { CollectionEntry } from "./Individuals/CollectionEntry";
 
 export function CollectionsTab() {
-    const { tabInfo, searchValue } = useContext(mainContext);
+    const { tabInfo, searchValue, setError } = useContext(mainContext);
 
     const [newCollection, setNewColletion] = useState(false);
     const [collection, setCollection] = useState([]);
     const [contextMenu, setContextMenu] = useState("");
 
     async function getCollection() {
-        const data = await window.collection.getCollections(tabInfo.currentTab);
-        setCollection(data);
+        const res = await window.collection.getCollections(tabInfo.currentTab);
+        if(res instanceof Array) {
+            setCollection(res);
+        } else {
+            setError(res)
+        };
     };
 
     function searchCollection() {
@@ -24,7 +28,7 @@ export function CollectionsTab() {
     useEffect(() => {
         getCollection();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [tabInfo.currentTab]);
 
     return (
         <>

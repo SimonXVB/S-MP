@@ -4,18 +4,22 @@ import { CurrentCollectionControls } from "./Individuals/CurrentCollectionContro
 import { CurrentCollectionEntry } from "./Individuals/CurrentCollectionEntry";
 
 export function CurrentCollection() {
-    const { tabInfo, searchValue } = useContext(mainContext);
+    const { tabInfo, searchValue, setError } = useContext(mainContext);
 
     const [currentCollection, setCurrentCollection] = useState([]);
     const [contextMenu, setContextMenu] = useState("");
 
     async function getCurrentCollection() {
-        const data = await window.files.getCollection({
+        const res = await window.files.getCollection({
             targetDir: tabInfo.currentTab,
             targetCol: tabInfo.currentCollection
         });
 
-        setCurrentCollection(data);
+        if(res instanceof Array) {
+            setCurrentCollection(res);
+        } else {
+            setError(res);
+        };
     };
 
     function searchCollection() {

@@ -67,6 +67,9 @@ app.on('window-all-closed', () => {
 // Create root directories
 ipcMain.handle("createRootDirs", createRootDirs);
 
+// Open root directories
+ipcMain.handle("openFolder", openFolder);
+
 // Collection handlers
 ipcMain.handle("createCollection", createCollection);
 ipcMain.handle("getCollections", getCollections);

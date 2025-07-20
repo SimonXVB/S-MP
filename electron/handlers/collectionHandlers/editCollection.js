@@ -7,19 +7,19 @@ async function editName(event, editData) {
 		const editPath = path.join(app.getPath(editData.targetDir), "Swan MP");
 		const collections = (await readdir(editPath, {withFileTypes: true})).filter(col => col.isDirectory());
 
-		// Throw error when name is empty
+		// Return early when name is empty
 		if(editData.newName === "") {
-			throw new Error("empty");
+			return;
 		};
 
-		// Return function early when old name and new name are the same
+		// Return early when old name and new name are the same
 		if(editData.newName === editData.oldName) {			
 			return;
 		};
 
         // Throw error when a folder with the same name aleady exists
        	if(collections.some(col => col.name === editData.newName)) {
-            throw new Error("exists");
+            throw new Error("existsCollection");
         };
 
 		// Rename corresponding folder
@@ -36,12 +36,13 @@ async function editCover(event, editData) {
 	try {
 		const res = await dialog.showOpenDialog({properties: ["openFile"]});
 		const imgPath = res.filePaths[0];
+		const formats = [".jpg", ".jpeg", ".jfif", ".pjpeg", ".pjp", ".png"];
 
 		if(res.canceled) return;
 
 		// Check for correct file format
-		if(!imgPath.endsWith("jpg") && !imgPath.endsWith("jpeg") && !imgPath.endsWith("png")) {
-			throw new Error("format");
+		if(!formats.includes(path.extname(imgPath))) {
+			throw new Error("formatImage");
 		};
 
 		//Edit image

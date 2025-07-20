@@ -2,7 +2,7 @@ import { useContext } from "react"
 import { mainContext } from "../../../Context/context"
 
 export function CurrentCollectionControls({ getCurrentCollection }) {
-    const { tabInfo } = useContext(mainContext);
+    const { tabInfo, setError } = useContext(mainContext);
 
     async function copyToCollection() {
         const res = await window.files.copyToCollection({
@@ -12,6 +12,8 @@ export function CurrentCollectionControls({ getCurrentCollection }) {
 
         if(res === "copied") {
             await getCurrentCollection();
+        } else {
+            setError(res);
         };
     };
 

@@ -24,12 +24,18 @@ async function copyToCollection(event, copyData) {
       const baseName = path.basename(file);
       const ext = path.extname(file);
 
+      // Throw error when file has incorrect file format
       if(!formats.includes(ext)) {
-        throw new Error("format");
+        if(copyData.targetDir === "videos") {
+          throw new Error("formatVideo");
+        } else {
+          throw new Error("formatAudio");
+        };
       };
 
+      // Throw error when a file with the same name already exists
       if(currentDir.some(file => file === baseName)) {
-        throw new Error("exists");
+        throw new Error("existsFile");
       };
 
       await copyFile(file, path.join(app.getPath(copyData.targetDir), "Swan MP", copyData.targetCol, baseName));

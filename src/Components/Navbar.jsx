@@ -5,6 +5,10 @@ export function Navbar() {
     const { setTabInfo, tabInfo, setSearchValue, searchValue } = useContext(mainContext);
     const [inputFocused, setInputFocused] = useState(false);
 
+    function openFolder() {
+        window.utils.openFolder(tabInfo.currentTab);
+    };
+
     function changeTab(tab) {
         setSearchValue("");
         setTabInfo({
@@ -26,7 +30,7 @@ export function Navbar() {
                 </button>
             </div>
             <div className="flex items-center gap-2">
-                <button className="flex items-center cursor-pointer px-2.5 hover:*:fill-red-400" onClick={() => window.FS.openFolder(tabInfo.currentTab)}>
+                <button className="flex items-center cursor-pointer px-2.5 hover:*:fill-red-400" onClick={openFolder}>
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff"><path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640H447l-80-80H160v480l96-320h684L837-217q-8 26-29.5 41.5T760-160H160Zm84-80h516l72-240H316l-72 240Zm0 0 72-240-72 240Zm-84-400v-80 80Z"/></svg>
                 </button>
                 <div className={`flex items-center gap-1 border-b-2 border-white ${inputFocused && "*:fill-red-400 !border-red-400"}`}>
