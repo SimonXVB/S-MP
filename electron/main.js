@@ -5,10 +5,10 @@ const { createCollection } = require("./handlers/collectionHandlers/createCollec
 const { getCollections } = require("./handlers/collectionHandlers/getCollections");
 const { deleteCollection } = require("./handlers/collectionHandlers/deleteCollection");
 const { editName, editCover } = require("./handlers/collectionHandlers/editCollection");
-const { handleCopyFile } = require("./handlers/fileHandlers/copyFileHandler");
-const { handleReadDir } = require("./handlers/fileHandlers/readFileHandler");
-const { handleDelFile } = require("./handlers/fileHandlers/delFileHandler");
-const { handleRenameFile } = require("./handlers/fileHandlers/renameFileHandler");
+const { copyToCollection } = require("./handlers/fileHandlers/copyToCollection");
+const { getCollection } = require("./handlers/fileHandlers/getCollection");
+const { deleteFile } = require("./handlers/fileHandlers/deleteFile");
+const { renameFile } = require("./handlers/fileHandlers/editFile");
 const { openFolder } = require("./handlers/openFolder");
 
 const createWindow = () => {
@@ -67,9 +67,15 @@ app.on('window-all-closed', () => {
 // Create root directories
 ipcMain.handle("createRootDirs", createRootDirs);
 
-// Collection/Playlist handlers
+// Collection handlers
 ipcMain.handle("createCollection", createCollection);
 ipcMain.handle("getCollections", getCollections);
 ipcMain.handle("deleteCollection", deleteCollection);
 ipcMain.handle("editName", editName);
 ipcMain.handle("editCover", editCover);
+
+// File handlers
+ipcMain.handle("copyToCollection", copyToCollection);
+ipcMain.handle("getCollection", getCollection);
+ipcMain.handle("renameFile", renameFile);
+ipcMain.handle("deleteFile", deleteFile);

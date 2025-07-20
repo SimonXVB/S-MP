@@ -10,12 +10,16 @@ export function CurrentCollection() {
     const [contextMenu, setContextMenu] = useState("");
 
     async function getCurrentCollection() {
-        const data = await window.files.getCurrentCollection(tabInfo.currentTab);
+        const data = await window.files.getCollection({
+            targetDir: tabInfo.currentTab,
+            targetCol: tabInfo.currentCollection
+        });
+
         setCurrentCollection(data);
     };
 
     function searchCollection() {
-        const data = currentCollection.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
+        const data = currentCollection.filter(el => el.toLowerCase().includes(searchValue.toLowerCase()));
         return data;
     };
 
@@ -26,9 +30,9 @@ export function CurrentCollection() {
 
     return (
         <div className="w-full h-[calc(100vh-54px)] overflow-y-auto flex flex-wrap gap-2 p-6 bg-gray-950 grow">
-            <CurrentCollectionControls/>
+            <CurrentCollectionControls getCurrentCollection={getCurrentCollection}/>
             {searchCollection().map(entry => (
-                <CurrentCollectionEntry key={entry.name} fileName={entry.name} img={entry.img} getCurrentCollection={getCurrentCollection} contextMenu={contextMenu} setContextMenu={setContextMenu}/>
+                <CurrentCollectionEntry key={entry} fileName={entry} getCurrentCollection={getCurrentCollection} contextMenu={contextMenu} setContextMenu={setContextMenu}/>
             ))}
         </div>
     )

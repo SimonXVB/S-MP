@@ -18,6 +18,10 @@ export function CurrentCollectionEntry({fileName, img, getCurrentCollection, con
         {
             text: "Rename",
             action: () => enableRename()
+        },
+        {
+            text: "Delete",
+            action: () => deleteFile()
         }
     ];
 
@@ -51,10 +55,11 @@ export function CurrentCollectionEntry({fileName, img, getCurrentCollection, con
         if(!e.key && e.target === inputRef.current) return;
         if(e.key && (e.key !== "Enter" && e.key !== "Escape")) return;
 
-        const res = await window.collection.editName({
+        const res = await window.files.renameFile({
             oldName: fileName,
             newName: inputRef.current.value,
-            targetDir: tabInfo.currentTab
+            targetDir: tabInfo.currentTab,
+            targetCol: tabInfo.currentCollection
         });
 
         if(res === "edited") {
@@ -69,12 +74,14 @@ export function CurrentCollectionEntry({fileName, img, getCurrentCollection, con
     };
 
     async function deleteFile() {
-        const res = await window.collection.deleteCollection({
-            name: name, 
-            targetDir: tabInfo.currentTab
+        const res = await window.files.deleteFile({
+            name: name,
+            targetDir: tabInfo.currentTab,
+            targetCol: tabInfo.currentCollection
         });
 
         if(res === "deleted") {
+            setContextMenu(false);
             await getCurrentCollection();
         };
     };
