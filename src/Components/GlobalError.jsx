@@ -2,12 +2,12 @@ import { useContext, useEffect, useRef } from "react";
 import { mainContext } from "../Context/context";
 
 export function GlobalError() {
-    const { setError, error, currentTab } = useContext(mainContext);
+    const { tabInfo, setError, error } = useContext(mainContext);
 
     const errorRef = useRef();
     const timeoutRef = useRef();
 
-    const collectionType = currentTab === "videos" ? "Collection" : "Playlist";
+    const collectionType = tabInfo.currentDir === "videos" ? "Collection" : "Playlist";
 
     function getErrorMessage() {
         switch(error) {
@@ -19,8 +19,8 @@ export function GlobalError() {
                 return "Incorrect file format. Accepted formats: '.mp4', '.webm', '.ogg'"
             case "formatAudio":
                 return "Incorrect file format. Accepted formats: '.mp3', '.wav', '.ogg'"
-            case "formatImage":
-                return "Incorrect file format. Accepted formats: 'JPEG', 'PNG'"
+            case "emptyCollection":
+                return "Name field cannot be empty"
             default:
                 return "An error occcured"
         };

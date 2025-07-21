@@ -3,7 +3,7 @@ import { mainContext } from "../../../Context/context";
 import { ContextMenu } from "../../ContextMenu";
 import { DeleteCollectionModal } from "./DeleteCollectionModal";
 
-export function CollectionEntry({collectionName, img, getCollection, contextMenu, setContextMenu}) {
+export function CollectionEntry({collectionName, getCollection, contextMenu, setContextMenu}) {
     const { tabInfo, setTabInfo, setError } = useContext(mainContext);
 
     const inputRef = useRef();
@@ -16,10 +16,6 @@ export function CollectionEntry({collectionName, img, getCollection, contextMenu
         {
             text: "Open",
             action: () => openCollection()
-        },
-        {
-            text: "Change Cover Image",
-            action: () => editCoverImage()
         },
         {
             text: "Rename",
@@ -39,30 +35,17 @@ export function CollectionEntry({collectionName, img, getCollection, contextMenu
     function openCollection() {
         setTabInfo(prev => ({
             ...prev,
-            currentCollection: collectionName
+            currentCollection: collectionName,
+            currentTab: "openCollection"
         }));
-    };
-
-    async function editCoverImage() {
-        setContextMenu("");
-
-        const res = await window.collection.editCover({
-            name: collectionName,
-            targetDir: tabInfo.currentTab
-        });
-
-        if(res === "edited") {
-            await getCollection();
-        } else {
-            setError(res);
-        };
     };
 
     function enableRename() {
         document.body.removeEventListener("click", renameCollection);
         document.body.removeEventListener("keyup", renameCollection);
 
-        inputRef.current.disabled = false;
+        inputRef.current.readOnly = false;
+        inputRef.current.style.cursor = "text";
         inputRef.current.select();
 
         setContextMenu("");
@@ -82,14 +65,16 @@ export function CollectionEntry({collectionName, img, getCollection, contextMenu
         const res = await window.collection.editName({
             oldName: collectionName,
             newName: inputRef.current.value,
-            targetDir: tabInfo.currentTab
+            targetDir: tabInfo.currentDir
         });
 
         if(res === "edited") {
             await getCollection();
         } else {
             setName(collectionName);
-            inputRef.current.disabled = true;
+
+            inputRef.current.readOnly = true;
+            inputRef.current.style.cursor = "default";
 
             setError(res);
         };
@@ -106,7 +91,7 @@ export function CollectionEntry({collectionName, img, getCollection, contextMenu
     async function deleteCollection() {
         const res = await window.collection.deleteCollection({
             name: name, 
-            targetDir: tabInfo.currentTab
+            targetDir: tabInfo.currentDir
         });
 
         if(res === "deleted") {
@@ -126,9 +111,11 @@ export function CollectionEntry({collectionName, img, getCollection, contextMenu
 
     return (
         <>
-            <div onContextMenu={e => setContextData(e)} className="relative w-50 h-50 flex flex-col justify-center items-center bg-red-400">
-                <img src={img && `${img}?${Date.now()}`}/>
-                <input ref={inputRef} onChange={e => setName(e.target.value)} className="absolute bottom-0 left-0 w-full bg-white/70 font-bold backdrop-blur-xl px-1 overflow-hidden outline-0" disabled value={name}/>
+            <div onContextMenu={e => setContextData(e)} onDoubleClick={e => {e.preventDefault(); openCollection()}} className="relative w-50 h-50 rounded-md flex flex-col justify-center items-center cursor-pointer hover:bg-gray-400/20">
+                <svg className="fill-red-400" xmlns="http://www.w3.org/2000/svg" width="135" height="135" fill="#fff" viewBox="0 0 16 16">
+                    <path d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3m-8.322.12q.322-.119.684-.12h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981z"/>
+                </svg>
+                <input ref={inputRef} onChange={e => setName(e.target.value)} className="w-full text-white font-bold text-center px-1 overflow-hidden outline-0 mt-2 cursor-pointer" readOnly value={name}/>
             </div>
             {deleteModal && <DeleteCollectionModal 
                 setDeleteModal={setDeleteModal}

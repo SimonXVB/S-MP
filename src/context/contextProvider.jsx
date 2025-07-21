@@ -3,12 +3,13 @@ import { mainContext } from "./context";
 
 export function MainContextProvider({ children }) {
     const [tabInfo, setTabInfo] = useState({
-        currentTab: "videos",
+        currentTab: "collectionsTab",
+        currentDir: "videos",
         currentCollection: ""
     });
 
-    const [searchValue, setSearchValue] = useState("");
     const [mediaSources, setMediaSources] = useState([]);
+    const [searchValue, setSearchValue] = useState("");
     const [error, setError] = useState("");
 
     return (

@@ -1,5 +1,5 @@
 const path = require('path');
-const { mkdir, writeFile, readdir } = require('fs/promises');
+const { mkdir, readdir } = require('fs/promises');
 const { app } = require("electron");
 
 async function createCollection(event, collectionData) {
@@ -9,21 +9,16 @@ async function createCollection(event, collectionData) {
 
         // Throw error when name is empty
         if(collectionData.name === "") {
-            throw new Error("empty");
+            throw new Error("emptyCollection");
         };
 
         // Throw error when a folder with the same name aleady exists
-        if(collections.some(col => col.name === collectionData.name)) {
-            throw new Error("exists");
+        if(collections.some(col => col.name.toLowerCase() === collectionData.name.toLowerCase())) {
+            throw new Error("existsCollection");
         };
 
-        //Create collection folder and add cover image to folder (if present)
+        //Create collection folder
         await mkdir(path.join(collectionPath, collectionData.name));
-
-        if(collectionData.img) {
-            const base64Img = collectionData.img.split(';base64,').pop();
-            await writeFile(path.join(collectionPath, collectionData.name, "coverImg.png"), base64Img, {encoding: "base64"});
-        };
 
         return "created";
     } catch (error) {

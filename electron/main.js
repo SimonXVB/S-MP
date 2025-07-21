@@ -4,7 +4,7 @@ const { createRootDirs } = require("./handlers/createRootDirs");
 const { createCollection } = require("./handlers/collectionHandlers/createCollection");
 const { getCollections } = require("./handlers/collectionHandlers/getCollections");
 const { deleteCollection } = require("./handlers/collectionHandlers/deleteCollection");
-const { editName, editCover } = require("./handlers/collectionHandlers/editCollection");
+const { editName } = require("./handlers/collectionHandlers/editCollection");
 const { copyToCollection } = require("./handlers/fileHandlers/copyToCollection");
 const { getCollection } = require("./handlers/fileHandlers/getCollection");
 const { deleteFile } = require("./handlers/fileHandlers/deleteFile");
@@ -75,7 +75,6 @@ ipcMain.handle("createCollection", createCollection);
 ipcMain.handle("getCollections", getCollections);
 ipcMain.handle("deleteCollection", deleteCollection);
 ipcMain.handle("editName", editName);
-ipcMain.handle("editCover", editCover);
 
 // File handlers
 ipcMain.handle("copyToCollection", copyToCollection);

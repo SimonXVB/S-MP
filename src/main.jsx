@@ -20,8 +20,8 @@ export function Main() {
     return (
         <div className="h-screen flex flex-col">
             <Navbar/>
-            {tabInfo.currentCollection === "" && <CollectionsTab/>}
-            {tabInfo.currentCollection !== "" && <CurrentCollection/>}
+            {tabInfo.currentTab === "collectionsTab" && <CollectionsTab/>}
+            {tabInfo.currentTab === "openCollection" && <CurrentCollection/>}
             {tabInfo.currentTab === "playingVideo" && <VideoPlayer/>}
             {tabInfo.currentTab === "playingMusic" && <AudioPlayer/>}
             <GlobalError/>

@@ -11,8 +11,7 @@ contextBridge.exposeInMainWorld("collection", {
   createCollection: collectionData => ipcRenderer.invoke("createCollection", collectionData),
   getCollections: currentTab => ipcRenderer.invoke("getCollections", currentTab),
   deleteCollection: deleteData => ipcRenderer.invoke("deleteCollection", deleteData),
-  editName: editData => ipcRenderer.invoke("editName", editData),
-  editCover: editData => ipcRenderer.invoke("editCover", editData)
+  editName: editData => ipcRenderer.invoke("editName", editData)
 });
 
 contextBridge.exposeInMainWorld("utils", {

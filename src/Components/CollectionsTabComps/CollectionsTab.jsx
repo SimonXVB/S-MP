@@ -1,44 +1,52 @@
 import { useState, useContext, useEffect } from "react";
 import { mainContext } from "../../Context/context";
 import { NewCollectionButton } from "./Individuals/NewCollectionButton";
-import { NewCollectionModal } from "./NewCollection/NewCollectionModal";
 import { CollectionEntry } from "./Individuals/CollectionEntry";
+import { Loading } from "../Loading";
 
 export function CollectionsTab() {
     const { tabInfo, searchValue, setError } = useContext(mainContext);
 
-    const [newCollection, setNewColletion] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [collection, setCollection] = useState([]);
     const [contextMenu, setContextMenu] = useState("");
 
     async function getCollection() {
-        const res = await window.collection.getCollections(tabInfo.currentTab);
+        setLoading(true);
+
+        const res = await window.collection.getCollections(tabInfo.currentDir);
+
         if(res instanceof Array) {
             setCollection(res);
+            setLoading(false);
         } else {
-            setError(res)
+            setError(res);
+            await getCollection();
         };
     };
 
     function searchCollection() {
-        const data = collection.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
+        const data = collection.filter(el => el.toLowerCase().includes(searchValue.toLowerCase()));
         return data;
     };
 
     useEffect(() => {
         getCollection();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [tabInfo.currentTab]);
+    }, [tabInfo.currentDir]);
 
     return (
-        <>
-            <div className="w-full h-[calc(100vh-54px)] overflow-y-auto flex flex-wrap gap-2 p-6 bg-gray-950 grow">
-                <NewCollectionButton setPlaylistModal={setNewColletion}/>
-                {searchCollection().map(entry => (
-                    <CollectionEntry key={entry.name} collectionName={entry.name} img={entry.img} getCollection={getCollection} contextMenu={contextMenu} setContextMenu={setContextMenu}/>
-                ))}
-            </div>
-            {newCollection && <NewCollectionModal setCollectionModal={setNewColletion} getCollection={getCollection}/>}
-        </>
+        <div className="w-full h-[calc(100vh-53px)] overflow-y-auto p-6 bg-gray-950 grow">
+            {loading ?
+                <Loading/>
+                :
+                <div className="flex flex-wrap gap-2">
+                    <NewCollectionButton getCollection={getCollection}/>
+                    {searchCollection().map(entry => (
+                        <CollectionEntry key={entry} collectionName={entry} getCollection={getCollection} contextMenu={contextMenu} setContextMenu={setContextMenu}/>
+                    ))}
+                </div>
+            }
+        </div>
     )
 };

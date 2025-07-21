@@ -4,10 +4,7 @@ const { rm } = require('fs/promises');
 
 async function deleteCollection(event, deleteData) {
     try {
-        const deletePath = path.join(app.getPath(deleteData.targetDir), "Swan MP", deleteData.name);
-
-        //Delete folder
-        await rm(deletePath, { recursive: true, force: true });
+        await rm(path.join(app.getPath(deleteData.targetDir), "Swan MP", deleteData.name), { recursive: true, force: true });
 
         return "deleted";
     } catch (error) {
