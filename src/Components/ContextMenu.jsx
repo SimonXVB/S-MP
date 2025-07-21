@@ -32,7 +32,7 @@ export function ContextMenu({ setContextMenu, coords, entries }) {
     return (
         <div ref={contextRef} className="fixed flex flex-col z-20">
             {entries.map((entry, i) => (
-                <button key={i} onClick={entry.action} className="bg-white text-red-400 text-left font-bold p-2 pr-4 py-1 cursor-pointer last:rounded-b-md first:rounded-t-md hover:bg-red-300 hover:text-white">
+                <button key={i} onClick={entry.action} className="bg-gray-800 text-white w-[200px] text-left font-bold p-2 pr-4 py-1 cursor-pointer last:rounded-b-md first:rounded-t-md hover:text-red-400">
                     <p>{entry.text}</p>
                 </button>
             ))}
