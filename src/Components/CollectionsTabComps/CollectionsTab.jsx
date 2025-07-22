@@ -21,7 +21,7 @@ export function CollectionsTab() {
             setLoading(false);
         } else {
             setError(res);
-            await getCollection();
+            setLoading(false);
         };
     };
 

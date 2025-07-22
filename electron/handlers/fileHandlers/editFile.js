@@ -4,18 +4,21 @@ const { rename, readdir } = require('fs/promises');
 
 async function renameFile(event, editData) {
   try {
-    if(editData.newName === editData.oldName) {
+    if(editData.newName === "") {
       return;
     };
 
-    if(editData.newName === "") {
+    const noExtNewName = editData.newName.split(path.extname(editData.oldName))[0];
+    const noExtOldName = editData.oldName.split(path.extname(editData.oldName))[0];
+
+    if(noExtNewName === noExtOldName) {
       return;
     };
 
     const data = await readdir(path.join(app.getPath(editData.targetDir), "Swan MP", editData.targetCol));
     
     // Throw error when file with same name already exists
-    if(data.some(e => e === (editData.newName + path.extname(editData.oldName)))) {
+    if(data.some(el => el === (editData.newName + path.extname(editData.oldName)))) {
       throw new Error("existsFile");
     };
     

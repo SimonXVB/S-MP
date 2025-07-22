@@ -4,9 +4,7 @@ const { unlink } = require('fs/promises');
 
 async function deleteFile(event, deleteData) {
   try {
-    const deletePath = path.join(app.getPath(deleteData.targetDir), "Swan MP", deleteData.targetCol, deleteData.name);
-
-    await unlink(deletePath);
+    await unlink(path.join(app.getPath(deleteData.targetDir), "Swan MP", deleteData.targetCol, deleteData.name));
 
     return "deleted";
   } catch (error) {

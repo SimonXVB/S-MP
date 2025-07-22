@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { mainContext } from "../../../Context/context";
 import { ContextMenu } from "../../ContextMenu";
 
-export function CurrentCollectionEntry({fileName, img, getCurrentCollection, contextMenu, setContextMenu}) {
+export function CurrentCollectionEntry({ fileName, getCurrentCollection, contextMenu, setContextMenu }) {
     const { tabInfo, setError } = useContext(mainContext);
 
     const inputRef = useRef();
@@ -38,8 +38,9 @@ export function CurrentCollectionEntry({fileName, img, getCurrentCollection, con
         document.body.removeEventListener("click", renameFile);
         document.body.removeEventListener("keyup", renameFile);
 
-        inputRef.current.disabled = false;
+        inputRef.current.readOnly = false;
         inputRef.current.select();
+        inputRef.current.style.cursor = "text";
 
         setContextMenu("");
 
@@ -58,7 +59,7 @@ export function CurrentCollectionEntry({fileName, img, getCurrentCollection, con
         const res = await window.files.renameFile({
             oldName: fileName,
             newName: inputRef.current.value,
-            targetDir: tabInfo.currentTab,
+            targetDir: tabInfo.currentDir,
             targetCol: tabInfo.currentCollection
         });
 
@@ -66,7 +67,9 @@ export function CurrentCollectionEntry({fileName, img, getCurrentCollection, con
             await getCurrentCollection();
         } else {
             setName(fileName);
-            inputRef.current.disabled = true;
+
+            inputRef.current.readOnly = true;
+            inputRef.current.style.cursor = "pointer";
 
             setError(res);
         };
@@ -78,14 +81,14 @@ export function CurrentCollectionEntry({fileName, img, getCurrentCollection, con
     async function deleteFile() {
         const res = await window.files.deleteFile({
             name: name,
-            targetDir: tabInfo.currentTab,
+            targetDir: tabInfo.currentDir,
             targetCol: tabInfo.currentCollection
         });
 
         if(res === "deleted") {
-            setContextMenu(false);
             await getCurrentCollection();
         } else {
+            setContextMenu(false);
             setError(res);
         };
     };
@@ -100,9 +103,19 @@ export function CurrentCollectionEntry({fileName, img, getCurrentCollection, con
 
     return (
         <>
-            <div onContextMenu={e => setContextData(e)} className="relative w-50 h-50 flex flex-col justify-center items-center bg-red-400">
-                <img src={img && `${img}?${Date.now()}`}/>
-                <input ref={inputRef} onChange={e => setName(e.target.value)} className="absolute bottom-0 left-0 w-full bg-white/70 font-bold backdrop-blur-xl px-1 overflow-hidden outline-0" disabled value={name}/>
+            <div onContextMenu={e => setContextData(e)} onDoubleClick={playFile} className="relative w-50 h-50 select-none rounded-md flex flex-col justify-center items-center cursor-pointer hover:bg-gray-400/20">
+                {tabInfo.currentDir === "videos" ?
+                    <svg className="fill-red-400" xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M6 6.883v4.234a.5.5 0 0 0 .757.429l3.528-2.117a.5.5 0 0 0 0-.858L6.757 6.454a.5.5 0 0 0-.757.43z"/>
+                        <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+                    </svg>
+                    :
+                    <svg className="fill-red-400" xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M11 6.64a1 1 0 0 0-1.243-.97l-1 .25A1 1 0 0 0 8 6.89v4.306A2.6 2.6 0 0 0 7 11c-.5 0-.974.134-1.338.377-.36.24-.662.628-.662 1.123s.301.883.662 1.123c.364.243.839.377 1.338.377s.974-.134 1.338-.377c.36-.24.662-.628.662-1.123V8.89l2-.5z"/>
+                        <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+                    </svg>
+                }
+                <input ref={inputRef} onChange={e => setName(e.target.value)} className="w-full text-white font-bold text-center px-1 overflow-hidden outline-0 mt-4 cursor-pointer" readOnly value={name}/>
             </div>
             {contextMenu === fileName && <ContextMenu
                 setContextMenu={setContextMenu}

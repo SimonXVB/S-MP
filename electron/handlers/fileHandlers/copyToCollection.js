@@ -9,9 +9,7 @@ async function copyToCollection(event, copyData) {
     });
 
     // Set formats based on targetDir
-    const formatsVideo = [".mp4", ".webm", ".ogg"];
-    const formatsAudio = [".mp3", ".wav", ".ogg"];
-    const formats = copyData.targetDir === "videos" ? formatsVideo : formatsAudio;
+    const formats = copyData.targetDir === "videos" ? [".mp4", ".webm", ".ogg"] : [".mp3", ".wav", ".ogg"];
 
     if (canceled) {
       return;
