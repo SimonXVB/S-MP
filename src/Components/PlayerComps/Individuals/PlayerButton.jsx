@@ -1,5 +1,9 @@
-export function PlayerButton({ onclick, text }) {
+export function PlayerButton({ onclick, img, style }) {
     return(
-        <button className="max-w-12 rounded-2xl w-full bg-gray-900 cursor-pointer hover:bg-red-400 text-white font-bold py-1 flex justify-center items-center" onClick={onclick}>{text}</button>
+        <button 
+            className={`${style} flex justify-center items-center cursor-pointer py-2 w-14 text-white hover:bg-red-400`}
+            onClick={onclick}>
+            {img}
+        </button>
     );
 };

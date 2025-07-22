@@ -16,5 +16,6 @@ contextBridge.exposeInMainWorld("collection", {
 
 contextBridge.exposeInMainWorld("utils", {
   createRootDirs: () => ipcRenderer.invoke("createRootDirs"),
-  openFolder: targetDir => ipcRenderer.invoke("openFolder", targetDir)
+  openFolder: targetDir => ipcRenderer.invoke("openFolder", targetDir),
+  getMediaSource: sourceData => ipcRenderer.invoke("getMediaSource", sourceData)
 });

@@ -22,8 +22,8 @@ export function Main() {
             <Navbar/>
             {tabInfo.currentTab === "collectionsTab" && <CollectionsTab/>}
             {tabInfo.currentTab === "openCollection" && <CurrentCollection/>}
-            {tabInfo.currentTab === "playingVideo" && <VideoPlayer/>}
-            {tabInfo.currentTab === "playingMusic" && <AudioPlayer/>}
+            {tabInfo.currentTab === "videoPlayer" && <VideoPlayer/>}
+            {tabInfo.currentTab === "musicPlayer" && <AudioPlayer/>}
             <GlobalError/>
         </div>
     );

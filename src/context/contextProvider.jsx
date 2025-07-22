@@ -8,12 +8,16 @@ export function MainContextProvider({ children }) {
         currentCollection: ""
     });
 
-    const [mediaSources, setMediaSources] = useState([]);
+    const [mediaData, setMediaData] = useState({
+        sourceIndex: null,
+        sources: []
+    });
+
     const [searchValue, setSearchValue] = useState("");
     const [error, setError] = useState("");
 
     return (
-        <mainContext.Provider value={{ setTabInfo, tabInfo, setMediaSources, mediaSources, setSearchValue, searchValue, setError, error }}>
+        <mainContext.Provider value={{ setTabInfo, tabInfo, setMediaData, mediaData, setSearchValue, searchValue, setError, error }}>
             { children }
         </mainContext.Provider>
     )

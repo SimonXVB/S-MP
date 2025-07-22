@@ -2,8 +2,8 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { mainContext } from "../../../Context/context";
 import { ContextMenu } from "../../ContextMenu";
 
-export function CurrentCollectionEntry({ fileName, getCurrentCollection, contextMenu, setContextMenu }) {
-    const { tabInfo, setError } = useContext(mainContext);
+export function CurrentCollectionEntry({ fileName, currentCollection, getCurrentCollection, contextMenu, setContextMenu }) {
+    const { tabInfo, setTabInfo, setMediaData, setError } = useContext(mainContext);
 
     const inputRef = useRef();
 
@@ -31,7 +31,15 @@ export function CurrentCollectionEntry({ fileName, getCurrentCollection, context
     };
 
     function playFile() {
+        setMediaData({
+            sourceIndex: currentCollection.findIndex(el => el.name === fileName),
+            sources: currentCollection
+        });
 
+        setTabInfo(prev => ({
+            ...prev,
+            currentTab: tabInfo.currentDir === "videos" ? "videoPlayer" : "musicPlayer"
+        }));
     };
 
     function enableRename() {

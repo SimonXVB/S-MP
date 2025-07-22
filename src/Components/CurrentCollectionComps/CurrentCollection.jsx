@@ -29,7 +29,7 @@ export function CurrentCollection() {
     };
 
     function searchCollection() {
-        const data = currentCollection.filter(el => el.toLowerCase().includes(searchValue.toLowerCase()));
+        const data = currentCollection.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
         return data;
     };
 
@@ -46,7 +46,7 @@ export function CurrentCollection() {
                 <div className="flex flex-wrap gap-2">
                     <CurrentCollectionButtons getCurrentCollection={getCurrentCollection}/>
                     {searchCollection().map(entry => (
-                        <CurrentCollectionEntry key={entry} fileName={entry} getCurrentCollection={getCurrentCollection} contextMenu={contextMenu} setContextMenu={setContextMenu}/>
+                        <CurrentCollectionEntry key={entry.name} fileName={entry.name} currentCollection={currentCollection} getCurrentCollection={getCurrentCollection} contextMenu={contextMenu} setContextMenu={setContextMenu}/>
                     ))}
                 </div>
             }

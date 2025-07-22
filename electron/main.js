@@ -10,6 +10,7 @@ const { getCollection } = require("./handlers/fileHandlers/getCollection");
 const { deleteFile } = require("./handlers/fileHandlers/deleteFile");
 const { renameFile } = require("./handlers/fileHandlers/editFile");
 const { openFolder } = require("./handlers/openFolder");
+const { getMediaSource } = require("./handlers/getMediaSource");
 
 const createWindow = () => {
   const displays = screen.getAllDisplays()
@@ -69,6 +70,9 @@ ipcMain.handle("createRootDirs", createRootDirs);
 
 // Open root directories
 ipcMain.handle("openFolder", openFolder);
+
+// Get media source for video/music player
+ipcMain.handle("getMediaSource", getMediaSource);
 
 // Collection handlers
 ipcMain.handle("createCollection", createCollection);
