@@ -81,44 +81,36 @@ export function VideoPlayer() {
         }, 3000);
     };
 
+    function resetPlayer(index) {
+        setSourceIndex(index);
+        clearInterval(intervalRef.current);
+        setIsPlaying(false);
+        setMetaDataLoaded(false);
+        setCurrentTime(0);
+        videoRef.current.pause();
+        seekerRef.current.value = 0;
+    };
+
     function next() {
         if(sourceIndex + 1 < mediaData.sources.length) {
-            setSourceIndex(sourceIndex + 1);
-            clearInterval(intervalRef.current);
-            setIsPlaying(false);
-            setMetaDataLoaded(false);
-            setCurrentTime(0);
-            videoRef.current.pause();
-            seekerRef.current.value = 0;
+            resetPlayer(sourceIndex + 1);
         } else {
-            setSourceIndex(0);
-            clearInterval(intervalRef.current);
-            setIsPlaying(false);
-            setMetaDataLoaded(false);
-            setCurrentTime(0);
-            videoRef.current.pause();
-            seekerRef.current.value = 0;
+            resetPlayer(0);
         };
     };
 
     function prev() {
         if(sourceIndex - 1 >= 0) {
-            setSourceIndex(sourceIndex - 1);
-            clearInterval(intervalRef.current);
-            setIsPlaying(false);
-            setMetaDataLoaded(false);
-            setCurrentTime(0);
-            videoRef.current.pause();
-            seekerRef.current.value = 0;
+            resetPlayer(sourceIndex - 1)
         } else {
-            setSourceIndex(mediaData.sources.length - 1);
-            clearInterval(intervalRef.current);
-            setIsPlaying(false);
-            setMetaDataLoaded(false);
-            setCurrentTime(0);
-            videoRef.current.pause();
-            seekerRef.current.value = 0;
+            resetPlayer(mediaData.sources.length - 1);
         };
+    };
+
+    function onVideoEnd() {
+        clearInterval(intervalRef.current); 
+        setIsPlaying(false);
+        setControls(true);
     };
 
     function spacePause(e) {
@@ -139,12 +131,13 @@ export function VideoPlayer() {
     }, []);
     
     return (
-        <div className="relative h-[calc(100vh-53px)] w-full bg-gray-950 flex flex-col items-center justify-center">
+        <div className="relative h-[calc(100vh-53px)] w-full bg-gray-950 flex flex-col items-center">
             <div className="relative h-full flex flex-col items-center justify-center" ref={fullscreenRef} onMouseMove={displayControls}>
                 {!metaDataLoaded && <Loading/>}
-                <video ref={videoRef} 
+                <video 
+                    ref={videoRef} 
                     onDoubleClick={toggleFullscreen} 
-                    onEnded={() => {clearInterval(intervalRef.current); setIsPlaying(false)}} 
+                    onEnded={onVideoEnd} 
                     onLoadedMetadata={() => setMetaDataLoaded(true)} 
                     onClick={play} 
                     src={mediaData.sources[sourceIndex].source} 
@@ -152,26 +145,26 @@ export function VideoPlayer() {
                 />
                 {metaDataLoaded &&
                     <div className={`w-full ${!controls && "hidden"}`}>
-                        <div className="w-full absolute top-0 text-white text-2xl font-medium m-2 overflow-hidden whitespace-nowrap">{mediaData.sources[sourceIndex].name}</div>
-                        <div className="flex flex-col w-full absolute bottom-0">
+                        <div className="w-[95%] left-[50%] -translate-x-[50%] absolute top-0 text-white text-2xl font-medium mt-2.5 overflow-hidden whitespace-nowrap">{mediaData.sources[sourceIndex].name}</div>
+                        <div className="w-[95%] left-[50%] -translate-x-[50%] absolute bottom-0 flex flex-col mb-2.5">
                             <input type="range" ref={seekerRef} defaultValue={0} step={0.1} min={0} max={100} onChange={seek} id="videoSlider"/>
-                            <div className="relative flex justify-between w-full bg-gray-900">
+                            <div className="relative flex justify-between w-full mt-5">
                                 <div className="flex">
-                                    <div className="flex items-center justify-center text-white font-medium mx-2">
+                                    <div className="flex items-center text-white font-medium w-20">
                                         <div>{Math.floor(currentTime / 60) + ":" + ("0" + Math.floor(currentTime % 60)).slice(-2)}</div>
                                         <div>/{Math.floor(videoRef.current.duration / 60) + ":" + ("0" + Math.floor(videoRef.current.duration % 60)).slice(-2)}</div>
                                     </div>
                                     <div className="flex items-center justify-center">
-                                        <PlayerButton img={<img className="h-[28px]" src={isMuted ? "../src/assets/playerAssets/muted.png": "../src/assets/playerAssets/volume.png"}/>} onclick={mute}/>
+                                        <PlayerButton style={"mx-2"} img={isMuted ? "../src/assets/playerAssets/muted.svg" : "../src/assets/playerAssets/volume.svg"} onclick={mute}/>
                                         <input type="range" ref={audioRef} defaultValue={0.3} step={0.01} min={0} max={1} onChange={changeAudio} id="audioSlider"/>
                                     </div>
                                 </div>
                                 <div className="flex absolute left-[50%] -translate-x-[50%]">
-                                    <PlayerButton img={<img className="h-[28px]" src="../src/assets/playerAssets/prev.png"/>} onclick={prev}/>
-                                    <PlayerButton img={<img className="h-[28px]" src={isPlaying ? "../src/assets/playerAssets/pause.png" : "../src/assets/playerAssets/play.png"}/>} onclick={play}/>
-                                    <PlayerButton img={<img className="h-[28px]" src="../src/assets/playerAssets/next.png"/>} onclick={next}/>
+                                    <PlayerButton img={"../src/assets/playerAssets/prev.svg"} onclick={prev}/>
+                                    <PlayerButton img={isPlaying ? "../src/assets/playerAssets/pause.svg" : "../src/assets/playerAssets/play.svg"} onclick={play}/>
+                                    <PlayerButton img={"../src/assets/playerAssets/next.svg"} onclick={next}/>
                                 </div>
-                                <PlayerButton img={<img className="h-[28px]" src="../src/assets/playerAssets/fullscreen.png"/>} onclick={toggleFullscreen}/>
+                                <PlayerButton img={"../src/assets/playerAssets/fullscreen.svg"} onclick={toggleFullscreen}/>
                             </div>
                         </div>
                     </div>
