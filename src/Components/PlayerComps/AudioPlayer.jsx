@@ -1,105 +1,105 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
+import { mainContext } from "../../Context/context";
 import { PlayerButton } from "./Individuals/PlayerButton";
+import { Loading } from "../Loading";
 
-export function AudioPlayer({ src }) {
-    const audioRef = useRef();
+export function AudioPlayer() {
+    const { mediaData } = useContext(mainContext);
+
+    const musicRef = useRef();
     const seekerRef = useRef();
-    const volumeRef = useRef();
-    const controlsRef = useRef();
+    const audioRef = useRef();
+    const volumeRef = useRef(0.3);
     const intervalRef = useRef();
 
     const [isPlaying, setIsPlaying] = useState(false);
     const [isMuted, setIsMuted] = useState(false);
-    const [currentTime, setCurrentTime] = useState(Number);
+    const [currentTime, setCurrentTime] = useState(0);
 
-    const [source, setSource] = useState(src[1]);
-    const [metadata, setMetadata] = useState(false);
+    const [sourceIndex, setSourceIndex] = useState(mediaData.sourceIndex);
+    const [metaDataLoaded, setMetaDataLoaded] = useState(false);
 
     function play() {
-        if(audioRef.current.paused) {
-            audioRef.current.play();
+        if(musicRef.current.paused) {
+            musicRef.current.play();
             setIsPlaying(true);
             intervalRef.current = setInterval(() => {
-                updateTime();
+                seekerRef.current.value = (musicRef.current.currentTime / musicRef.current.duration) * 100;
+                setCurrentTime(musicRef.current.currentTime);
             }, 100);
         } else {
-            audioRef.current.pause();
+            musicRef.current.pause();
             setIsPlaying(false);
             clearInterval(intervalRef.current);
         };
     };
 
-    function updateTime() {
-        seekerRef.current.value = (audioRef.current.currentTime / audioRef.current.duration) * 100;
-        setCurrentTime(audioRef.current.currentTime);
-    };
-
     function seek() {
-        if(audioRef.current.duration) {
-            audioRef.current.currentTime = audioRef.current.duration * (seekerRef.current.value / 100);
-            setCurrentTime(audioRef.current.currentTime);
-        };
+        musicRef.current.currentTime = musicRef.current.duration * (seekerRef.current.value / 100);
+        setCurrentTime(musicRef.current.currentTime);
     };
 
     function changeAudio() {
-        audioRef.current.volume = volumeRef.current.value;
-        audioRef.current.muted = false;
+        musicRef.current.volume = audioRef.current.value;
+        musicRef.current.muted = false;
+        volumeRef.current = audioRef.current.value;
         setIsMuted(false);
     };
 
     function mute() {
         if(isMuted) {
-            audioRef.current.muted = false;
+            musicRef.current.muted = false;
+            audioRef.current.value = volumeRef.current;
             setIsMuted(false);
         } else {
-            audioRef.current.muted = true;
+            musicRef.current.muted = true;
+            audioRef.current.value = 0;
             setIsMuted(true);
         };
     };
 
-    function next() {
-        if((src[2].indexOf(source) + 1) < src[2].length) {   
-            setSource(src[2][src[2].indexOf(source) + 1]);
-            clearInterval(intervalRef.current);
-            setMetadata(false);
-            setIsPlaying(false);
-            setCurrentTime(0);
-            audioRef.current.pause();
-            seekerRef.current.value = 0;
-        };
+    function resetPlayer(index) {
+        setSourceIndex(index);
+        clearInterval(intervalRef.current);
+        setIsPlaying(false);
+        setMetaDataLoaded(false);
+        setCurrentTime(0);
+        musicRef.current.pause();
+        seekerRef.current.value = 0;
     };
 
-    async function autoPlay() {
-        if((src[2].indexOf(source) + 1) < src[2].length) {   
-            setSource(src[2][src[2].indexOf(source) + 1]);
-
-            setTimeout(() => {
-                audioRef.current.pause();
-                audioRef.current.load();
-                audioRef.current.play();
-            }, 0);
-
-            seekerRef.current.value = 0;
-            setCurrentTime(0);
-        } else if((src[2].indexOf(source) + 1) >= src[2].length) {
-            clearInterval(intervalRef.current);
+    function next() {
+        if(sourceIndex + 1 < mediaData.sources.length) {
+            resetPlayer(sourceIndex + 1);
+        } else {
+            resetPlayer(0);
         };
     };
 
     function prev() {
-        if((src[2].indexOf(source) - 1) >= 0) {
-            setSource(src[2][src[2].indexOf(source) - 1]);
+        if(sourceIndex - 1 >= 0) {
+            resetPlayer(sourceIndex - 1)
+        } else {
+            resetPlayer(mediaData.sources.length - 1);
+        };
+    };
+
+    async function autoPlay() {
+        if(sourceIndex + 1 < mediaData.sources.length) {   
+            next();
+
+            setTimeout(() => {
+                musicRef.current.load();
+                play();
+            }, 0);
+        } else {
             clearInterval(intervalRef.current);
-            setMetadata(false);
             setIsPlaying(false);
-            setCurrentTime(0);
-            audioRef.current.pause();
-            seekerRef.current.value = 0;
         };
     };
  
     function spacePause(e) {
-        if(audioRef.current && e.code === "Space") {
+        if(musicRef.current && e.code === "Space") {
             play();
         };
     };
@@ -115,30 +115,35 @@ export function AudioPlayer({ src }) {
     }, []);
     
     return (
-        <section className="h-screen w-full flex flex-col items-center justify-center p-8 relative">
-            <h1 className="absolute top-0 right-0 flex items-center w-full min-h-[50px] py-2 text-xl bg-red-400 text-white font-semibold"></h1>
-            <div className="max-h-[90%] relative flex flex-col items-center justify-center max-w-[80%] w-full">
-                <audio ref={audioRef} onEnded={autoPlay} src={src[0] + source} onLoadedMetadata={() => setMetadata(true)} className="max-h-full"/>
-                {metadata &&
-                    <div className="flex flex-col w-full border-4 border-red-400 bg-gray-900 rounded-2xl" ref={controlsRef}>
-                        <div className="text-white text-2xl font-bold p-2 max-w-[95%] overflow-x-auto whitespace-nowrap">{source}</div>
-                        <input type="range" ref={seekerRef} defaultValue={0} step={1} min={0} max={100} onChange={seek} id="videoSlider"/>
-                        <div className="flex w-full bg-gray-900 rounded-b-2xl">
-                            <PlayerButton text={<img className="h-[24px]" src="../src/assets/playerAssets/prev.png"/>} onclick={prev}/>
-                            <PlayerButton text={<img className="h-[24px]" src={isPlaying ? "../src/assets/playerAssets/pause.png" : "../src/assets/playerAssets/play.png"}/>} onclick={play}/>
-                            <PlayerButton text={<img className="h-[24px]" src="../src/assets/playerAssets/next.png"/>} onclick={next}/>
-                            <div className="flex items-center justify-center text-white py-1 max-w-24 w-full bg-gray-900 font-bold">
-                                <div>{Math.floor(currentTime / 60) + ":" + ("0" + Math.floor(currentTime % 60)).slice(-2)}</div>
-                                <div>/{Math.floor(audioRef.current.duration / 60) + ":" + ("0" + Math.floor(audioRef.current.duration % 60)).slice(-2)}</div>
-                            </div>
-                            <div className="flex items-center justify-center">
-                                <PlayerButton text={<img className="h-[24px]" src={isMuted ? "../src/assets/playerAssets/muted.png" : "../src/assets/playerAssets/volume.png"}/>} onclick={mute}/>
-                                <input type="range" ref={volumeRef} defaultValue={0.3} step={0.01} min={0} max={1} onChange={changeAudio} id="audioSlider"/>
-                            </div>
+        <div className="min-h-[calc(100vh-53px)] w-full bg-gray-950 flex flex-col items-center justify-center">
+            <audio 
+                ref={musicRef} 
+                onEnded={autoPlay} 
+                src={mediaData.sources[sourceIndex].source}
+                onLoadedMetadata={() => setMetaDataLoaded(true)}
+            />
+            {!metaDataLoaded && <Loading/>}
+            {metaDataLoaded &&
+                <div className="flex flex-col w-full bg-gray-800 rounded-md p-2.5 my-4 max-w-[600px]">
+                    <p className="text-white text-xl font-medium p-2 pl-0 overflow-x-auto whitespace-nowrap">{mediaData.sources[sourceIndex].name}</p>
+                    <div className="w-full">
+                        <input type="range" ref={seekerRef} defaultValue={0} step={0.1} min={0} max={100} onChange={seek} id="musicSlider"/>
+                        <div className="flex items-center text-white w-full font-medium text-sm">
+                            <div>{Math.floor(currentTime / 60) + ":" + ("0" + Math.floor(currentTime % 60)).slice(-2)}</div>
+                            <div>/{Math.floor(musicRef.current.duration / 60) + ":" + ("0" + Math.floor(musicRef.current.duration % 60)).slice(-2)}</div>
                         </div>
                     </div>
-                }
-            </div>
-        </section>
+                    <div className="flex justify-center gap-5 w-full">
+                        <PlayerButton img={"../src/assets/playerAssets/prev.svg"} onclick={prev}/>
+                        <PlayerButton img={isPlaying ? "../src/assets/playerAssets/pause.svg" : "../src/assets/playerAssets/play.svg"} onclick={play}/>
+                        <PlayerButton img={"../src/assets/playerAssets/next.svg"} onclick={next}/>
+                    </div>
+                    <div className="relative flex items-center justify-center gap-2 py-5">
+                        <PlayerButton style={"absolute right-[71%]"} img={isMuted ? "../src/assets/playerAssets/muted.svg" : "../src/assets/playerAssets/volume.svg"} onclick={mute}/>
+                        <input type="range" ref={audioRef} defaultValue={0.3} step={0.01} min={0} max={1} onChange={changeAudio} id="volumeSlider"/>
+                    </div>
+                </div>
+            }
+        </div>
     );
 };

@@ -30,15 +30,17 @@ export function Navbar() {
                     <p className="text-xl ml-1.5 font-bold">Audio</p>
                 </button>
             </div>
-            <div className="flex items-center gap-2">
-                <button className="flex items-center cursor-pointer px-2.5 hover:*:fill-red-400" onClick={openFolder}>
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff"><path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640H447l-80-80H160v480l96-320h684L837-217q-8 26-29.5 41.5T760-160H160Zm84-80h516l72-240H316l-72 240Zm0 0 72-240-72 240Zm-84-400v-80 80Z"/></svg>
-                </button>
-                <div className={`flex items-center gap-1 border-b-2 border-white ${inputFocused && "*:fill-red-400 !border-red-400"}`}>
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-                    <input type="text" className="text-[14px] p-1 outline-0 text-white font-semibold" onFocus={() => setInputFocused(true)} onBlur={() => setInputFocused(false)} onChange={e => setSearchValue(e.target.value)} value={searchValue}/>
+            {!tabInfo.currentTab.endsWith("Player") &&
+                <div className="flex items-center gap-2">
+                    <button className="flex items-center cursor-pointer px-2.5 hover:*:fill-red-400" onClick={openFolder}>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff"><path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640H447l-80-80H160v480l96-320h684L837-217q-8 26-29.5 41.5T760-160H160Zm84-80h516l72-240H316l-72 240Zm0 0 72-240-72 240Zm-84-400v-80 80Z"/></svg>
+                    </button>
+                    <div className={`flex items-center gap-1 border-b-2 border-white ${inputFocused && "*:fill-red-400 !border-red-400"}`}>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+                        <input type="text" className="text-[14px] p-1 outline-0 text-white font-semibold" onFocus={() => setInputFocused(true)} onBlur={() => setInputFocused(false)} onChange={e => setSearchValue(e.target.value)} value={searchValue}/>
+                    </div>
                 </div>
-            </div>
+            }
         </nav>
     );
 };

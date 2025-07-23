@@ -18,7 +18,7 @@ export function Main() {
     }, []);
 
     return (
-        <div className="h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col">
             <Navbar/>
             {tabInfo.currentTab === "collectionsTab" && <CollectionsTab/>}
             {tabInfo.currentTab === "openCollection" && <CurrentCollection/>}

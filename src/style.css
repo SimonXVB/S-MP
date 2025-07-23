@@ -1,9 +1,6 @@
 @import "tailwindcss";
 
-:root {
-    --track-height: 36px
-}
-
+/* Slider for video player*/
 #videoSlider {
     -webkit-appearance: none;
     appearance: none;
@@ -25,7 +22,9 @@
     background: #ff6467;
     cursor: pointer;
 }
+/* Slider for video player*/
 
+/* Audio slider for video player*/
 #audioSlider {
     -webkit-appearance: none;
     appearance: none;
@@ -47,3 +46,52 @@
     background: #ff6467;
     cursor: pointer;
 }
+/* Audio slider for video player*/
+
+/* Slider for video player*/
+#musicSlider {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+#musicSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    cursor: pointer;
+    height: 12px;
+    width: 6px;
+    background: #ffffff;
+    border-radius: 12px;
+    margin-top: calc((5px/2) - (12px/2));
+}
+
+#musicSlider::-webkit-slider-runnable-track {
+    height: 5px;
+    background: #ff6467;
+    cursor: pointer;
+}
+/* Slider for video player*/
+
+/* Audio slider for video player*/
+#volumeSlider {
+    width: 40%;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+#volumeSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    cursor: pointer;
+    height: 12px;
+    width: 6px;
+    background: #ffffff;
+    border-radius: 12px;
+    margin-top: calc((5px/2) - (12px/2));
+}
+
+#volumeSlider::-webkit-slider-runnable-track {
+    height: 5px;
+    background: #ff6467;
+    cursor: pointer;
+}
+/* Audio slider for video player*/

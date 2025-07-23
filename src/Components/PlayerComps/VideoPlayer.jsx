@@ -108,7 +108,7 @@ export function VideoPlayer() {
     };
 
     function onVideoEnd() {
-        clearInterval(intervalRef.current); 
+        clearInterval(intervalRef.current);
         setIsPlaying(false);
         setControls(true);
     };
