@@ -10,15 +10,15 @@ async function editName(event, editData) {
 		};
 
 		// Return early when old name and new name are the same
-		if(editData.newName === editData.oldName) {			
+		if(editData.newName === editData.oldName) {
 			return;
 		};
 
 		const editPath = path.join(app.getPath(editData.targetDir), "Swan MP");
-		const collections = (await readdir(editPath, {withFileTypes: true})).filter(col => col.isDirectory());
+		const allCollections = (await readdir(editPath, {withFileTypes: true})).filter(col => col.isDirectory());
 
         // Throw error when a folder with the same name aleady exists
-       	if(collections.some(col => col.name.toLowerCase() === editData.newName.toLowerCase())) {
+       	if(allCollections.some(col => col.name === editData.newName)) {
             throw new Error("existsCollection");
         };
 

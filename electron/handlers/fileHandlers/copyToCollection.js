@@ -15,7 +15,7 @@ async function copyToCollection(event, copyData) {
       return;
     };
 
-    const currentDir = await readdir(path.join(app.getPath(copyData.targetDir), "Swan MP", copyData.targetCol));
+    const currentCol = await readdir(path.join(app.getPath(copyData.targetDir), "Swan MP", copyData.targetCol));
 
     // Loop over filePaths and copy files to target Collection + handle errors
     for (const file of filePaths) {
@@ -32,7 +32,7 @@ async function copyToCollection(event, copyData) {
       };
 
       // Throw error when a file with the same name already exists
-      if(currentDir.some(file => file === baseName)) {
+      if(currentCol.some(file => file === baseName)) {
         throw new Error("existsFile");
       };
 

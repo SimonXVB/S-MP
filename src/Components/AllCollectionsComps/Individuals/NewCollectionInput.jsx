@@ -1,12 +1,12 @@
 import { useEffect, useRef } from "react"
 
-export function NewCollectionInput({ createCollection, setCollectionName, setNewCollectionInput }) {
+export function NewCollectionInput({ createCollection, setCollectionName, setInputOpen }) {
     const inputRef = useRef();
 
     useEffect(() => {
         function closeContextMenu(e) {
             if(!inputRef.current.contains(e.target)) {
-                setNewCollectionInput(false);
+                setInputOpen(false);
                 setCollectionName("");
             };
         };
@@ -23,7 +23,7 @@ export function NewCollectionInput({ createCollection, setCollectionName, setNew
         <form ref={inputRef} onSubmit={e => createCollection(e)} className="absolute left-full top-[50%] -translate-y-[50%] bg-gray-800 ml-4 p-5 flex flex-col gap-2.5 rounded-md shadow-2xl z-10">
             <fieldset className="border-2 border-red-400 rounded-md">
                 <legend className="ml-2 px-1 font-bold text-red-400">Name</legend>
-                <input className="outline-0 px-2 p-1 pt-0 font-bold text-white" type="text" onChange={e => setCollectionName(e.target.value)}/>
+                <input className="outline-0 p-1 px-2 pt-0 font-bold text-white" type="text" onChange={e => setCollectionName(e.target.value)}/>
             </fieldset>
             <button type="submit" className="flex justify-center items-center rounded-md bg-green-400 cursor-pointer hover:bg-gray-950 hover:*:fill-green-400 hover:*:text-green-400">
                 <p className="font-bold text-white">Create</p>

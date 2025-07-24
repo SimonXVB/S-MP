@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* Hide Scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+/* Hide Scrollbar */
+
 /* Slider for video player*/
 #videoSlider {
     -webkit-appearance: none;
@@ -24,7 +30,7 @@
 }
 /* Slider for video player*/
 
-/* Audio slider for video player*/
+/* Volume slider for video player*/
 #audioSlider {
     -webkit-appearance: none;
     appearance: none;
@@ -46,9 +52,9 @@
     background: #ff6467;
     cursor: pointer;
 }
-/* Audio slider for video player*/
+/* Volume slider for video player*/
 
-/* Slider for video player*/
+/* Slider for audio player*/
 #musicSlider {
     width: 100%;
     -webkit-appearance: none;
@@ -70,9 +76,9 @@
     background: #ff6467;
     cursor: pointer;
 }
-/* Slider for video player*/
+/* Slider for audio player*/
 
-/* Audio slider for video player*/
+/* Volume slider for audio player*/
 #volumeSlider {
     width: 40%;
     -webkit-appearance: none;
@@ -94,4 +100,4 @@
     background: #ff6467;
     cursor: pointer;
 }
-/* Audio slider for video player*/
+/* Volume slider for audio player*/

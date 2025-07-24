@@ -8,8 +8,6 @@ export function VideoPlayer() {
 
     const videoRef = useRef();
     const seekerRef = useRef();
-    const audioRef = useRef();
-    const volumeRef = useRef(0.3);
     const fullscreenRef = useRef();
     const intervalRef = useRef();
     const controlsTimeoutRef = useRef();
@@ -22,6 +20,7 @@ export function VideoPlayer() {
     const [controls, setControls] = useState(true);
 
     const [currentTime, setCurrentTime] = useState(0);
+    const [volume, setVolume] = useState(0.3);
  
     function play() {
         if(videoRef.current.paused) {
@@ -52,21 +51,21 @@ export function VideoPlayer() {
         setCurrentTime(videoRef.current.currentTime);
     };
 
-    function changeAudio() {
-        videoRef.current.volume = audioRef.current.value;
+    function changeAudio(e) {
+        videoRef.current.volume = e.target.value;
         videoRef.current.muted = false;
-        volumeRef.current = audioRef.current.value;
-        setIsMuted(false);
+
+        setVolume(e.target.value);
+
+        e.target.value == 0 ? setIsMuted(true) : setIsMuted(false);
     };
 
     function mute() {
         if(isMuted) {
             videoRef.current.muted = false;
-            audioRef.current.value = volumeRef.current;
             setIsMuted(false);
         } else {
             videoRef.current.muted = true;
-            audioRef.current.value = 0;
             setIsMuted(true);
         };
     };
@@ -87,8 +86,8 @@ export function VideoPlayer() {
         setIsPlaying(false);
         setMetaDataLoaded(false);
         setCurrentTime(0);
-        videoRef.current.pause();
         seekerRef.current.value = 0;
+        videoRef.current.pause();
     };
 
     function next() {
@@ -144,7 +143,7 @@ export function VideoPlayer() {
                     className={`h-full ${!metaDataLoaded && "hidden"}`}
                 />
                 {metaDataLoaded &&
-                    <div className={`w-full ${!controls && "hidden"}`}>
+                    <div className={`w-full ${!controls && "opacity-0"} transition-opacity duration-200`}>
                         <div className="w-[95%] left-[50%] -translate-x-[50%] absolute top-0 text-white text-2xl font-medium mt-2.5 overflow-hidden whitespace-nowrap">{mediaData.sources[sourceIndex].name}</div>
                         <div className="w-[95%] left-[50%] -translate-x-[50%] absolute bottom-0 flex flex-col mb-2.5">
                             <input type="range" ref={seekerRef} defaultValue={0} step={0.1} min={0} max={100} onChange={seek} id="videoSlider"/>
@@ -156,7 +155,7 @@ export function VideoPlayer() {
                                     </div>
                                     <div className="flex items-center justify-center">
                                         <PlayerButton style={"mx-2"} img={isMuted ? "../src/assets/playerAssets/muted.svg" : "../src/assets/playerAssets/volume.svg"} onclick={mute}/>
-                                        <input type="range" ref={audioRef} defaultValue={0.3} step={0.01} min={0} max={1} onChange={changeAudio} id="audioSlider"/>
+                                        <input type="range" value={isMuted ? 0 : volume} step={0.01} min={0} max={1} onChange={changeAudio} id="audioSlider"/>
                                     </div>
                                 </div>
                                 <div className="flex absolute left-[50%] -translate-x-[50%]">

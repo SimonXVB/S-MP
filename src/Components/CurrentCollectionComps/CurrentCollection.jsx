@@ -29,7 +29,7 @@ export function CurrentCollection() {
     };
 
     function searchCollection() {
-        const data = currentCollection.filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()));
+        const data = currentCollection.filter(entry => entry.name.toLowerCase().includes(searchValue.toLowerCase()));
         return data;
     };
 
@@ -39,7 +39,7 @@ export function CurrentCollection() {
     }, []);
 
     return (
-        <div className="w-full h-[calc(100vh-53px)] overflow-y-auto p-6 bg-gray-950 grow">
+        <div className="w-full h-[calc(100vh-53px)] overflow-y-auto p-6 bg-gray-950 grow no-scrollbar">
             {loading ? 
                 <Loading/>
                 :

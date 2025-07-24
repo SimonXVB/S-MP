@@ -5,7 +5,7 @@ const { app } = require("electron");
 async function createCollection(event, collectionData) {
     try {
         const collectionPath = path.join(app.getPath(collectionData.targetDir), "Swan MP");
-        const collections = (await readdir(collectionPath, {withFileTypes: true})).filter(col => col.isDirectory());
+        const allCollections = (await readdir(collectionPath, {withFileTypes: true})).filter(col => col.isDirectory());
 
         // Throw error when name is empty
         if(collectionData.name === "") {
@@ -13,7 +13,7 @@ async function createCollection(event, collectionData) {
         };
 
         // Throw error when a folder with the same name aleady exists
-        if(collections.some(col => col.name.toLowerCase() === collectionData.name.toLowerCase())) {
+        if(allCollections.some(col => col.name.toLowerCase() === collectionData.name.toLowerCase())) {
             throw new Error("existsCollection");
         };
 

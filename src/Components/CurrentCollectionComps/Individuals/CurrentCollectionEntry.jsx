@@ -94,9 +94,10 @@ export function CurrentCollectionEntry({ fileName, currentCollection, getCurrent
         });
 
         if(res === "deleted") {
+            setContextMenu("");
             await getCurrentCollection();
         } else {
-            setContextMenu(false);
+            setContextMenu("");
             setError(res);
         };
     };
@@ -111,7 +112,7 @@ export function CurrentCollectionEntry({ fileName, currentCollection, getCurrent
 
     return (
         <>
-            <div onContextMenu={e => setContextData(e)} onDoubleClick={playFile} className="relative w-50 h-50 select-none rounded-md flex flex-col justify-center items-center cursor-pointer hover:bg-gray-400/20">
+            <div onContextMenu={e => setContextData(e)} onDoubleClick={playFile} title={name} className="relative w-50 h-50 rounded-md flex flex-col justify-center items-center cursor-pointer hover:bg-gray-400/20">
                 {tabInfo.currentDir === "videos" ?
                     <svg className="fill-red-400" xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" viewBox="0 0 16 16">
                         <path d="M6 6.883v4.234a.5.5 0 0 0 .757.429l3.528-2.117a.5.5 0 0 0 0-.858L6.757 6.454a.5.5 0 0 0-.757.43z"/>

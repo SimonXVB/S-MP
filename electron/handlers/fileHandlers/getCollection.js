@@ -5,8 +5,7 @@ const path = require('path');
 async function getCollection(event, getData) {
   try {
     const basePath = path.join(app.getPath(getData.targetDir), "Swan MP", getData.targetCol);
-
-    const data = await readdir(basePath);
+    const entries = await readdir(basePath);
 
     // Set formats based on targetDir
     const formats = getData.targetDir === "videos" ? [".mp4", ".webm", ".ogg"] : [".mp3", ".wav", ".ogg"];
@@ -14,7 +13,7 @@ async function getCollection(event, getData) {
     const correctFormatFiles = [];
 
     // Filter files based on format
-    data.forEach(file => {
+    entries.forEach(file => {
       const ext = path.extname(file);
 
       if(formats.includes(ext)) {

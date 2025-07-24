@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { mainContext } from "./Context/context";
 import { Navbar } from "./components/Navbar";
-import { CollectionsTab } from "./Components/CollectionsTabComps/CollectionsTab";
+import { AllCollections } from "./Components/AllCollectionsComps/AllCollections";
 import { CurrentCollection } from "./Components/CurrentCollectionComps/CurrentCollection";
 import { VideoPlayer } from "./Components/PlayerComps/VideoPlayer";
 import { AudioPlayer } from "./Components/PlayerComps/AudioPlayer";
@@ -20,7 +20,7 @@ export function Main() {
     return (
         <div className="min-h-screen flex flex-col">
             <Navbar/>
-            {tabInfo.currentTab === "collectionsTab" && <CollectionsTab/>}
+            {tabInfo.currentTab === "collectionsTab" && <AllCollections/>}
             {tabInfo.currentTab === "openCollection" && <CurrentCollection/>}
             {tabInfo.currentTab === "videoPlayer" && <VideoPlayer/>}
             {tabInfo.currentTab === "musicPlayer" && <AudioPlayer/>}
