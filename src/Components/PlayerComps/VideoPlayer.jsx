@@ -3,6 +3,14 @@ import { mainContext } from "../../Context/context";
 import { PlayerButton } from "./Individuals/PlayerButton";
 import { Loading } from "../Loading";
 
+import fullscreenSVG from "../../Assets/PlayerAssets/fullscreen.svg";
+import mutedSVG from "../../Assets/PlayerAssets/muted.svg";
+import nextSVG from "../../Assets/PlayerAssets/next.svg";
+import pauseSVG from "../../Assets/PlayerAssets/pause.svg";
+import playSVG from "../../Assets/PlayerAssets/play.svg";
+import prevSVG from "../../Assets/PlayerAssets/prev.svg";
+import volumeSVG from "../../Assets/PlayerAssets/volume.svg";
+
 export function VideoPlayer() {
     const { mediaData } = useContext(mainContext);
 
@@ -154,16 +162,16 @@ export function VideoPlayer() {
                                         <div>/{Math.floor(videoRef.current.duration / 60) + ":" + ("0" + Math.floor(videoRef.current.duration % 60)).slice(-2)}</div>
                                     </div>
                                     <div className="flex items-center justify-center">
-                                        <PlayerButton style={"mx-2"} img={isMuted ? "../src/assets/playerAssets/muted.svg" : "../src/assets/playerAssets/volume.svg"} onclick={mute}/>
+                                        <PlayerButton style={"mx-2"} img={isMuted ? mutedSVG : volumeSVG} onclick={mute}/>
                                         <input type="range" value={isMuted ? 0 : volume} step={0.01} min={0} max={1} onChange={changeAudio} id="audioSlider"/>
                                     </div>
                                 </div>
                                 <div className="flex absolute left-[50%] -translate-x-[50%]">
-                                    <PlayerButton img={"../src/assets/playerAssets/prev.svg"} onclick={prev}/>
-                                    <PlayerButton img={isPlaying ? "../src/assets/playerAssets/pause.svg" : "../src/assets/playerAssets/play.svg"} onclick={play}/>
-                                    <PlayerButton img={"../src/assets/playerAssets/next.svg"} onclick={next}/>
+                                    <PlayerButton img={prevSVG} onclick={prev}/>
+                                    <PlayerButton img={isPlaying ? pauseSVG : playSVG} onclick={play}/>
+                                    <PlayerButton img={nextSVG} onclick={next}/>
                                 </div>
-                                <PlayerButton img={"../src/assets/playerAssets/fullscreen.svg"} onclick={toggleFullscreen}/>
+                                <PlayerButton img={fullscreenSVG} onclick={toggleFullscreen}/>
                             </div>
                         </div>
                     </div>

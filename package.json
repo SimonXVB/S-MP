@@ -1,6 +1,6 @@
 {
   "name": "swan-mp",
-  "productName": "SMP",
+  "productName": "S-MP",
   "private": true,
   "version": "1.1.0",
   "main": "./electron/main.js",
@@ -8,16 +8,26 @@
   "description": "S-MP is a simple multimedia app",
   "scripts": {
     "dev": "vite build && electron .",
-    "vite": "vite"
+    "build": "vite build",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "vite build && electron-forge make"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.3",
     "electron-squirrel-startup": "^1.0.1",
-    "electron-store": "^10.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^7.8.1",
+    "@electron-forge/maker-deb": "^7.8.1",
+    "@electron-forge/maker-dmg": "^7.8.1",
+    "@electron-forge/maker-rpm": "^7.8.1",
+    "@electron-forge/maker-squirrel": "^7.8.1",
+    "@electron-forge/maker-zip": "^7.8.1",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.8.1",
+    "@electron-forge/plugin-fuses": "^7.8.1",
     "@electron/fuses": "^1.8.0",
     "@eslint/js": "^9.17.0",
     "@types/react": "^18.3.18",

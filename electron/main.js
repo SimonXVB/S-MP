@@ -11,6 +11,8 @@ const { deleteFile } = require("./handlers/fileHandlers/deleteFile");
 const { renameFile } = require("./handlers/fileHandlers/editFile");
 const { openFolder } = require("./handlers/openFolder");
 
+if (require('electron-squirrel-startup')) app.quit();
+
 const createWindow = () => {
   const window = new BrowserWindow({
     width: 1600,
@@ -22,6 +24,7 @@ const createWindow = () => {
     }
   });
 
+  window.setMenu(null)
   window.loadFile('./dist/index.html');
 };
 

@@ -2,6 +2,13 @@ import { useEffect, useRef, useState, useContext } from "react";
 import { mainContext } from "../../Context/context";
 import { PlayerButton } from "./Individuals/PlayerButton";
 
+import mutedSVG from "../../Assets/PlayerAssets/muted.svg";
+import nextSVG from "../../Assets/PlayerAssets/next.svg";
+import pauseSVG from "../../Assets/PlayerAssets/pause.svg";
+import playSVG from "../../Assets/PlayerAssets/play.svg";
+import prevSVG from "../../Assets/PlayerAssets/prev.svg";
+import volumeSVG from "../../Assets/PlayerAssets/volume.svg";
+
 export function AudioPlayer() {
     const { mediaData } = useContext(mainContext);
 
@@ -136,12 +143,12 @@ export function AudioPlayer() {
                     </div>
                 </div>
                 <div className="flex justify-center gap-5 w-full">
-                    <PlayerButton img={"../src/assets/playerAssets/prev.svg"} onclick={prev}/>
-                    <PlayerButton img={isPlaying ? "../src/assets/playerAssets/pause.svg" : "../src/assets/playerAssets/play.svg"} onclick={metaDataLoaded && play}/>
-                    <PlayerButton img={"../src/assets/playerAssets/next.svg"} onclick={next}/>
+                    <PlayerButton img={prevSVG} onclick={prev}/>
+                    <PlayerButton img={isPlaying ? pauseSVG : playSVG} onclick={metaDataLoaded && play}/>
+                    <PlayerButton img={nextSVG} onclick={next}/>
                 </div>
                 <div className="relative flex items-center justify-center gap-2 py-5">
-                    <PlayerButton style={"absolute right-[71%]"} img={isMuted ? "../src/assets/playerAssets/muted.svg" : "../src/assets/playerAssets/volume.svg"} onclick={mute}/>
+                    <PlayerButton style={"absolute right-[71%]"} img={isMuted ? mutedSVG : volumeSVG} onclick={mute}/>
                     <input type="range" value={isMuted ? 0 : volume} step={0.01} min={0} max={1} onChange={changeVolume} id="volumeSlider"/>
                 </div>
             </div>
