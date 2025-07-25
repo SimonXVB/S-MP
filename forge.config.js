@@ -11,9 +11,8 @@ module.exports = {
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-        iconURL: "./icons/icon.ico",
         setupIcon: "./icons/icon.ico",
-        icon: "./icons/icon.ico"
+        iconUrl: "https://github.com/SimonXVB/S-MP/raw/refs/heads/main/icons/icon.ico",
       },
     },
     {
