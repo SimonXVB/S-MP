@@ -1,11 +1,11 @@
 {
-  "name": "swan-mp",
+  "name": "s-mp",
   "productName": "S-MP",
   "private": true,
   "version": "1.1.0",
   "main": "./electron/main.js",
   "author": "SimonXVB",
-  "description": "S-MP is a simple multimedia app",
+  "description": "S-MP by SimonXVB",
   "scripts": {
     "dev": "vite build && electron .",
     "build": "vite build",
